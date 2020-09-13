@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>PageDevices.qml</file>
+        <file>PageMedia.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>PageStreaming.qml</file>
+        <file>PageSink.qml</file>
+    </qresource>
+    <qresource prefix="/res/wav">
+        <file>incoming.wav</file>
+    </qresource>
+</RCC>
