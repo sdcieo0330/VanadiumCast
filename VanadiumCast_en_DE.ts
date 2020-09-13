@@ -2,14 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_DE">
 <context>
+    <name>DeviceListModel</name>
+    <message>
+        <location filename="DeviceListModel.qml" line="5"/>
+        <source>MyDevice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DeviceListModel.qml" line="9"/>
+        <source>MyDevice2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PageDevices</name>
     <message>
-        <location filename="PageDevices.qml" line="10"/>
+        <location filename="PageDevices.qml" line="11"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PageDevices.qml" line="19"/>
+        <location filename="PageDevices.qml" line="57"/>
         <source>Trigger incoming connection popup</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,43 +69,43 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="main.qml" line="9"/>
+        <location filename="main.qml" line="10"/>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="56"/>
+        <location filename="main.qml" line="61"/>
         <source>Incoming Connection Request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="65"/>
+        <location filename="main.qml" line="70"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="76"/>
+        <location filename="main.qml" line="81"/>
         <source>Decline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="109"/>
+        <location filename="main.qml" line="112"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="112"/>
+        <location filename="main.qml" line="115"/>
         <source>Media</source>
         <oldsource>Medias</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="115"/>
+        <location filename="main.qml" line="118"/>
         <source>Streaming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.qml" line="118"/>
+        <location filename="main.qml" line="121"/>
         <source>Sink</source>
         <translation type="unfinished"></translation>
     </message>

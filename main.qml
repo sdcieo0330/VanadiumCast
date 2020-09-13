@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtMultimedia 5.12
+import QtQuick.Controls.Styles 1.4
 
 ApplicationWindow {
     width: 512
@@ -29,7 +30,7 @@ ApplicationWindow {
                 property: "x"
                 from: newConnPopup.parent.width
                 to: newConnPopup.parent.width - newConnPopup.width
-                duration: 320
+                duration: 512
                 easing.type: Easing.OutElastic
             }
         }
@@ -38,10 +39,11 @@ ApplicationWindow {
                 property: "x"
                 from: newConnPopup.parent.width - newConnPopup.width
                 to: newConnPopup.parent.width
-                duration: 128
+                duration: 512
                 easing.type: Easing.InBack
             }
         }
+
         contentItem: Item {
             id: newConnPopupContent
             Item {
@@ -93,11 +95,9 @@ ApplicationWindow {
         }
 
         PageStreaming {
-
         }
 
         PageSink {
-
         }
     }
 

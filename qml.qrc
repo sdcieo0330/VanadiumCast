@@ -6,6 +6,7 @@
         <file>qtquickcontrols2.conf</file>
         <file>PageStreaming.qml</file>
         <file>PageSink.qml</file>
+        <file>DeviceListModel.qml</file>
     </qresource>
     <qresource prefix="/res/wav">
         <file>incoming.wav</file>
