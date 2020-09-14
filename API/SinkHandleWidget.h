@@ -6,6 +6,7 @@
 #ifndef _SINKHANDLEWIDGET_H
 #define _SINKHANDLEWIDGET_H
 #include <QtCore>
+#include "MediaProcessing/NetworkInput.h"
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavdevice/avdevice.h>
@@ -13,9 +14,8 @@ extern "C" {
 #include <libavutil/avutil.h>
 }
 class SinkHandleWidget {
-public: 
-    
-void newConnection();
+public slots:
+    void newConnection(NetworkInput *input);
 };
 
 #endif //_SINKHANDLEWIDGET_H

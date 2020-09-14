@@ -5,6 +5,7 @@
 
 #include "NetworkDeviceScanner.h"
 
+#include "Commands.h"
 /**
  * NetworkDeviceScanner implementation
  */
@@ -13,25 +14,30 @@
 /**
  * @param deviceDirectory
  */
-NetworkDeviceScanner::NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirectory) {
+NetworkDeviceScanner::NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirectory): deviceDirectory(deviceDirectory) {
 
 }
 
-/**
- * @return bool
- */
-bool NetworkDeviceScanner::start() {
-    return false;
+void NetworkDeviceScanner::run() {
+    udpSocket = new QUdpSocket(this);
+    udpSocket->bind(QHostAddress::Any, 55553);
+    connect(udpSocket, SIGNAL(readyRead()), this, SLOT(handleDeviceResponse()));
+    while (isRunning) {
+        udpSocket->writeDatagram(Command::SCAN, 1, QHostAddress::Broadcast, 55554);
+    }
 }
 
-/**
- * @return bool
- */
-bool NetworkDeviceScanner::stop() {
-    return false;
+void NetworkDeviceScanner::start() {
+    isRunning = true;
+    QThread::start();
 }
 
-void NetworkDeviceScanner::reset() {
+void NetworkDeviceScanner::stop() {
+    isRunning = false;
+}
+
+void NetworkDeviceScanner::handleDeviceResponse() {
+    QNetworkDatagram dg = udpSocket->receiveDatagram();
 
 }
 
@@ -40,5 +46,6 @@ void NetworkDeviceScanner::reset() {
  * @return bool
  */
 bool NetworkDeviceScanner::setDeviceDirectory(NetworkDeviceDirectory* deviceDirectory) {
-    return false;
+    int i = deviceDirectory->addDevice(new NetworkDevice(QHostAddress::Any, ""));
+    return deviceDirectory->removeDevice(i);
 }

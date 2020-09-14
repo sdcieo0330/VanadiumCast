@@ -16,19 +16,34 @@ extern "C" {
 #include <libavutil/avutil.h>
 }
 
-class NetworkDevice: public Device {
+class NetworkDevice: public QObject, public Device {
+    Q_OBJECT
 public: 
     
-/**
+    /**
  * @param address
  */
-NetworkDevice(QHostAddress address);
+    NetworkDevice(QHostAddress address, QString name);
     
-QHostAddress getAddress();
-    
-QString getName();
+    const QHostAddress &getAddress() const;
+
+    /**
+     * @return QString
+     */
+    Q_INVOKABLE QString getAddressString() const {
+        return peerAddress.toString();
+    };
+
+    /**
+     * @return QString
+     */
+    Q_INVOKABLE QString getName() const {
+        return name;
+    }
+    void setName(QString newName);
 private: 
-    QHostAddress peerAddress;
+    const QHostAddress peerAddress;
+    QString name;
 };
 
 #endif //_NETWORKDEVICE_H

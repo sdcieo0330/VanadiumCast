@@ -7,6 +7,7 @@
 #define _NETWORKDEVICESCANNER_H
 
 #include "DeviceScan.h"
+#include "Commands.h"
 #include "NetworkDeviceDirectory.h"
 #include <QtCore>
 #include <QtNetwork>
@@ -17,24 +18,30 @@ extern "C" {
 #include <libavutil/avutil.h>
 }
 
-class NetworkDeviceScanner final : public DeviceScan {
+class NetworkDeviceScanner final : public DeviceScan, public QThread {
 public: 
     
-/**
+    /**
  * @param deviceDirectory
  */
-NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirectory);
+    NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirectory);
     
-bool start();
+    void start() override;
     
-bool stop();
+    void stop() override;
+
+    void run() override;
     
-void reset();
+    void reset() override {
+        deviceDirectory->reset();
+    };
     
-/**
+    /**
  * @param deviceDirectory
  */
-bool setDeviceDirectory(NetworkDeviceDirectory* deviceDirectory);
+    bool setDeviceDirectory(NetworkDeviceDirectory* deviceDirectory);
+public slots:
+    void handleDeviceResponse();
 private: 
     QUdpSocket* udpSocket;
     NetworkDeviceDirectory* deviceDirectory;

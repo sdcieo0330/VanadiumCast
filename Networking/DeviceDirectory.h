@@ -17,24 +17,26 @@ extern "C" {
 class DeviceDirectory {
 public: 
     
-/**
+    /**
  * @param device
  */
-virtual int addDevice(Device* device) = 0;
+    virtual int addDevice(Device* device) = 0;
     
-/**
+    /**
  * @param device
  */
-virtual bool removeDevice(Device* device) = 0;
+    virtual bool removeDevice(Device* device) = 0;
     
-/**
+    /**
  * @param int index
  */
-virtual bool removeDevice(int index) = 0;
+    virtual bool removeDevice(int index) = 0;
+
+    virtual void reset() = 0;
     
-virtual int count() = 0;
+    virtual int count() = 0;
     
-virtual QList<Device*>* getDevices() = 0;
+    virtual QList<Device*>* getDevices() = 0;
 };
 
 #endif //_DEVICEDIRECTORY_H

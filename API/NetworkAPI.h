@@ -17,6 +17,7 @@
 #include "MediaProcessing/VideoEncoder.h"
 #include "MediaProcessing/Demuxer.h"
 #include "MediaProcessing/Input.h"
+#include "MediaProcessing/NetworkInput.h"
 #include <QtCore>
 #include <QtWidgets>
 extern "C" {
@@ -29,49 +30,52 @@ extern "C" {
 class NetworkAPI final : public API {
 public: 
     
-bool init();
+    bool init();
     
-bool stop();
+    bool stop();
     
-/**
+    /**
  * @param inputFileName
  */
-bool setInputFile(QString inputFileName);
+    bool setInputFile(QString inputFileName);
     
-QList<Device*>* getDeviceList();
+    QList<Device*>* getDeviceList();
     
-/**
+    /**
  * @param device
  */
-bool setDevice(Device* device);
+    bool setDevice(Device* device);
     
-bool start();
+    bool start();
     
-bool togglePlayPause();
+    bool togglePlayPause();
     
-/**
+    /**
  * @param sec
  */
-bool forward(int sec);
+    bool forward(int sec);
     
-/**
+    /**
  * @param sec
  */
-bool backward(int sec);
+    bool backward(int sec);
     
-/**
+    /**
  * @param secPos
  */
-bool seek(int secPos);
+    bool seek(int secPos);
     
-int getPlaybackPosition();
+    int getPlaybackPosition();
     
-bool toggleSourceSinkDisplay();
+    bool toggleSourceSinkDisplay();
     
-/**
+    /**
  * @param widget
  */
-bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
+    bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
+
+public slots:
+    void newSinkConnection(NetworkDevice* device);
 private: 
     QApplication *app;
     Input *inputFile;
@@ -83,6 +87,7 @@ private:
     Demuxer *demuxer;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;
+    NetworkInput *sinkInput;
 };
 
 #endif //_NETWORKAPI_H

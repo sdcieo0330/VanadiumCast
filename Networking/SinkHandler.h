@@ -15,12 +15,9 @@ extern "C" {
 }
 class SinkHandler {
 public: 
+    virtual void start() = 0;
     
-virtual bool start() = 0;
-    
-virtual bool stop() = 0;
-    
-virtual QQueue<QByteArray*>* getOutputStream() = 0;
+    virtual void stop() = 0;
 };
 
 #endif //_SINKHANDLER_H

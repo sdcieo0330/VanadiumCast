@@ -18,23 +18,23 @@ extern "C" {
 class Demuxer final : public Demux {
 public: 
     
-/**
+    /**
  * @param inputDevice
  */
-Demuxer(QIODevice* inputDevice);
+    Demuxer(QIODevice* inputDevice);
     
-bool start();
+    bool start();
     
-bool stop();
+    bool stop();
     
-/**
+    /**
  * @param inputDevice
  */
-bool setInputDevice(QIODevice* inputDevice);
+    bool setInputDevice(QIODevice* inputDevice);
     
-QQueue<AVPacket*>* getVideoStream();
+    QQueue<AVPacket*>* getVideoStream();
     
-QQueue<AVPacket*>* getAudioStream();
+    QQueue<AVPacket*>* getAudioStream();
 private: 
     QIODevice* inputDevice;
     AVFormatContext inputContext;

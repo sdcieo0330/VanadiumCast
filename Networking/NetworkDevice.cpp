@@ -12,21 +12,22 @@
 
 /**
  * @param address
+ * @param name
  */
-NetworkDevice::NetworkDevice(QHostAddress address) {
+NetworkDevice::NetworkDevice(QHostAddress address, QString name): QObject(nullptr), peerAddress(std::move(address)), name(name) {
 
 }
 
 /**
  * @return QHostAddress
  */
-QHostAddress NetworkDevice::getAddress() {
-    return QHostAddress::Null;
+const QHostAddress &NetworkDevice::getAddress() const {
+    return peerAddress;
 }
 
 /**
- * @return QString
+ * @param newName
  */
-QString NetworkDevice::getName() {
-    return nullptr;
+void NetworkDevice::setName(QString newName) {
+    name = newName;
 }

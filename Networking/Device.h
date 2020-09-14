@@ -15,7 +15,7 @@ extern "C" {
 class Device {
 public: 
     
-virtual QString getName() = 0;
+Q_INVOKABLE virtual QString getName() const = 0;
 };
 
 #endif //_DEVICE_H

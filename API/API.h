@@ -17,51 +17,51 @@ extern "C" {
 class API {
 public: 
     
-virtual bool init() = 0;
+    virtual bool init() = 0;
     
-virtual bool stop() = 0;
+    virtual bool stop() = 0;
     
-/**
+    /**
  * @param inputFileName
  */
-virtual bool setInputFile(QString inputFileName) = 0;
+    virtual bool setInputFile(QString inputFileName) = 0;
     
-virtual QList<Device*>* getDeviceList() = 0;
+    virtual QList<Device*>* getDeviceList() = 0;
     
-/**
+    /**
  * @param device
  */
-virtual bool setDevice(Device* device) = 0;
+    virtual bool setDevice(Device* device) = 0;
     
-virtual bool startSource() = 0;
+    virtual bool startSource() = 0;
     
-bool startSink();
+    bool startSink();
     
-virtual bool togglePlayPause() = 0;
+    virtual bool togglePlayPause() = 0;
     
-/**
+    /**
  * @param sec
  */
-virtual bool forward(int sec) = 0;
+    virtual bool forward(int sec) = 0;
     
-/**
+    /**
  * @param sec
  */
-virtual bool backward(int sec) = 0;
+    virtual bool backward(int sec) = 0;
     
-/**
+    /**
  * @param secPos
  */
-virtual bool seek(int secPos) = 0;
+    virtual bool seek(int secPos) = 0;
     
-virtual int getPlaybackPosition() = 0;
+    virtual int getPlaybackPosition() = 0;
     
-virtual bool toggleSourceSinkDisplay() = 0;
+    virtual bool toggleSourceSinkDisplay() = 0;
     
-/**
+    /**
  * @param widget
  */
-bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
+    bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
 };
 
 #endif //_API_H

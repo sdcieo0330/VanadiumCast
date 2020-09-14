@@ -19,25 +19,30 @@ extern "C" {
 
 class NetworkDeviceDirectory final : public DeviceDirectory {
 public: 
-    
-/**
+    NetworkDeviceDirectory();
+    /**
  * @param device
  */
-int addDevice(NetworkDevice* device);
+    int addDevice(Device* device);
     
-/**
+    /**
  * @param device
  */
-bool removeDevice(NetworkDevice* device);
+    bool removeDevice(Device* device);
     
-/**
+    /**
  * @param int index
  */
-bool removeDevice(int index);
+    bool removeDevice(int index);
+
+    void reset() {
+        qDeleteAll(*deviceList);
+        deviceList->clear();
+    }
     
-int count();
+    int count();
     
-QList<Device*>* getDevices();
+    QList<Device*>* getDevices();
 private: 
     QList<Device*>* deviceList;
 };

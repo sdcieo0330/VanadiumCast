@@ -106,3 +106,7 @@ bool NetworkAPI::toggleSourceSinkDisplay() {
 bool NetworkAPI::connectWidgetToSinkHandler(SinkHandleWidget* widget) {
     return false;
 }
+
+void NetworkAPI::newSinkConnection(NetworkDevice *device) {
+    sinkInput = new NetworkInput(device);
+}

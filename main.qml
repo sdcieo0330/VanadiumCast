@@ -23,7 +23,12 @@ ApplicationWindow {
         visible: false
         modal: true
         focus: true
+        property var callback: function(){}
         closePolicy: Popup.NoAutoClose
+
+        function setCallback(cb) {
+            callback = cb
+        }
 
         enter: Transition {
             PropertyAnimation {
@@ -42,6 +47,10 @@ ApplicationWindow {
                 duration: 512
                 easing.type: Easing.InBack
             }
+        }
+
+        onClosed: {
+            callback()
         }
 
         contentItem: Item {
@@ -67,6 +76,11 @@ ApplicationWindow {
                 text: qsTr("Accept")
                 onClicked: {
                     newConnPopup.close()
+                    newConnPopup.setCallback(function () {
+                        pageDevices.getListModel().append({"name": someDevice.getName(), "address": someDevice.getAddressString()})
+                        swipeView.setCurrentIndex(3)
+                        newConnPopup.setCallback(function(){})
+                    })
                 }
             }
             Button {
@@ -89,6 +103,7 @@ ApplicationWindow {
         currentIndex: tabBar.currentIndex
 
         PageDevices {
+            id: pageDevices
         }
 
         PageMedia{

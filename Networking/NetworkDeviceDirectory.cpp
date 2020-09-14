@@ -4,26 +4,31 @@
 
 
 #include "NetworkDeviceDirectory.h"
+#include <QtCore>
 
 /**
  * NetworkDeviceDirectory implementation
  */
 
+NetworkDeviceDirectory::NetworkDeviceDirectory(): deviceList(new QList<Device*>()) {
+
+}
 
 /**
  * @param device
  * @return int
  */
-int NetworkDeviceDirectory::addDevice(NetworkDevice* device) {
-    return 0;
+int NetworkDeviceDirectory::addDevice(Device* device) {
+    deviceList->append(device);
+    return deviceList->indexOf(device);
 }
 
 /**
  * @param device
  * @return bool
  */
-bool NetworkDeviceDirectory::removeDevice(NetworkDevice* device) {
-    return false;
+bool NetworkDeviceDirectory::removeDevice(Device* device) {
+    return deviceList->removeOne(device);
 }
 
 /**
@@ -31,19 +36,24 @@ bool NetworkDeviceDirectory::removeDevice(NetworkDevice* device) {
  * @return bool
  */
 bool NetworkDeviceDirectory::removeDevice(int index) {
-    return false;
+    if (deviceList->size() >= index) {
+        deviceList->removeAt(index);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
  * @return int
  */
 int NetworkDeviceDirectory::count() {
-    return 0;
+    return deviceList->size();
 }
 
 /**
  * @return QList<NetworkDevice*>*
  */
 QList<Device*>* NetworkDeviceDirectory::getDevices() {
-    return nullptr;
+    return deviceList;
 }

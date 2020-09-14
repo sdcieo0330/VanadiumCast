@@ -22,32 +22,63 @@ Page {
                 Text {text: name}
                 Text {text: "(" + address + ")"}
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: devicesListView.currentIndex = index
+            }
         }
     }
+    function getListModel() {
+        return devicesListModel
+    }
 
-    ListView {
-        id: devicesListView
-        width: parent.width - 20
-        height: parent.height - triggerIncomingConn.height - 20
-        anchors.centerIn: parent
-        model: DeviceListModel {id: devicesListModel}
-        delegate: deviceDelegate
-        highlight: Rectangle {
-            radius: 2
-            border.color: Material.accentColor
-            color: Qt.lighter(Material.accentColor, 1.8)
+    Rectangle {
+        anchors.top: parent.top
+        anchors.bottom: triggerIncomingConn.top
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.margins: 8
+        border.width: 1
+        radius: 2
+        border.color: Material.accentColor
+        color: Qt.rgba(0, 0, 0, 0)
+        ListView {
+            id: devicesListView
+            width: parent.width - 20
+            height: parent.height - triggerIncomingConn.height - 20
+            anchors.centerIn: parent
+            model: DeviceListModel {id: devicesListModel}
+            delegate: deviceDelegate
+            highlight: Rectangle {
+                radius: 2
+                border.color: Material.accentColor
+                color: Qt.lighter(Material.accentColor, 1.8)
+                y: devicesListView.currentItem.y
+                Behavior on y {
+                    NumberAnimation {
+                        easing.type: Easing.OutBack
+                        easing.overshoot: 1.1
+                    }
+                }
+            }
+            highlightFollowsCurrentItem: true
+
+            flickableDirection: Flickable.AutoFlickDirection
+            add: Transition {
+                PropertyAnimation {
+                    property: "scale"
+                    from: 0.0
+                    to: 1.0
+                    duration: 160
+                    easing.type: Easing.OutBack
+                    easing.overshoot: 1.2
+                }
+            }
+            addDisplaced: Transition {
+                NumberAnimation { properties: "x,y"; duration: 128 }
+            }
+            focus: true
         }
-        highlightFollowsCurrentItem: true
-        highlightMoveDuration: 1000
-        highlightMoveVelocity: -1
-        flickableDirection: Flickable.AutoFlickDirection
-        add: Transition {
-            NumberAnimation { properties: "x,y"; from: 100; duration: 128 }
-        }
-        addDisplaced: Transition {
-            NumberAnimation { properties: "x,y"; duration: 128 }
-        }
-        focus: true
     }
 
     Button {
@@ -58,9 +89,6 @@ Page {
         onClicked: {
             incomingPing.play()
             newConnPopup.open()
-            newConnPopup.aboutToHide = function () {
-                devicesListModel.append({"name": "troll", "address": "lol"})
-            }
         }
     }
 }
