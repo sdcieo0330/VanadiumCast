@@ -12,11 +12,13 @@
  * NetworkSinkHandler implementation
  */
 
-NetworkSinkHandler::NetworkSinkHandler(NetworkInput *input, QObject *parent): QThread(parent), networkInput(input) {
-    tcpServer = new NetworkSinkTcpServer(this);
-    tcpServer->listen(QHostAddress::Any, 55554);
+NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
+    tcpServer = new NetworkSinkTcpServer;
+    tcpServer->listen(QHostAddress::Any, 55555);
     connect(tcpServer, SIGNAL(newConnection(qintptr)), this, SLOT(incomingTcpConnect(qintptr)));
-    udpBroadcast = new QUdpSocket(this);
+    udpSocket = new QUdpSocket;
+    udpBroadcast = new QUdpSocket;
+    udpBroadcast->bind(55554, QUdpSocket::ShareAddress);
     connect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
 }
 
@@ -24,16 +26,16 @@ NetworkSinkHandler::NetworkSinkHandler(NetworkInput *input, QObject *parent): QT
   * @return void
   */
 void NetworkSinkHandler::run() {
-    controlConnection = new QTcpSocket(this);
+    controlConnection = new QTcpSocket;
     controlConnection->setSocketDescriptor(controlConnectionHandle);
     controlConnection->write(Command::NAME);
     controlConnection->write("Test Device");
     controlConnection->flush();
-    controlConnection->write(Command::CONNECTDATA, 1);
+    controlConnection->write(Command::CONNECTDATA);
     controlConnection->flush();
     if (controlConnection->waitForReadyRead(100)) {
         if (controlConnection->read(1) == Command::OK) {
-            dataConnection = new QTcpSocket(this);
+            dataConnection = new QTcpSocket;
             dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
         } else {
             controlConnection->close();
@@ -41,7 +43,7 @@ void NetworkSinkHandler::run() {
             return;
         }
     }
-    while (isRunning) {
+    while (running) {
         if (!networkInput->getCache()->isFull()) {
             controlConnection->write(Command::REQUESTFRAG);
             controlConnection->flush();
@@ -67,7 +69,8 @@ void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
 void NetworkSinkHandler::answerScanRequest() {
     QNetworkDatagram dg = udpBroadcast->receiveDatagram();
     if (dg.data() == Command::SCAN) {
-        udpBroadcast->writeDatagram(Command::OK, 1, dg.senderAddress(), 55553);
-        udpBroadcast->flush();
+        udpSocket->writeDatagram(Command::OK, dg.senderAddress(), 55553);
+        udpSocket->writeDatagram("Test Device lol", 16, dg.senderAddress(), 55553);
+        udpSocket->flush();
     }
 }

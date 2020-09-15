@@ -27,8 +27,6 @@ public:
     NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirectory);
     
     void start() override;
-    
-    void stop() override;
 
     void run() override;
     
@@ -42,10 +40,13 @@ public:
     bool setDeviceDirectory(NetworkDeviceDirectory* deviceDirectory);
 public slots:
     void handleDeviceResponse();
+
+    void stop() override;
 private: 
     QUdpSocket* udpSocket;
+    QUdpSocket* udpBroadcast;
     NetworkDeviceDirectory* deviceDirectory;
-    bool isRunning = false;
+    bool running = false;
 };
 
 #endif //_NETWORKDEVICESCANNER_H

@@ -10,7 +10,7 @@
  * NetworkDeviceDirectory implementation
  */
 
-NetworkDeviceDirectory::NetworkDeviceDirectory(): deviceList(new QList<Device*>()) {
+NetworkDeviceDirectory::NetworkDeviceDirectory(): listLock(new QMutex(QMutex::Recursive)), deviceList(new QList<Device*>()) {
 
 }
 
@@ -19,6 +19,7 @@ NetworkDeviceDirectory::NetworkDeviceDirectory(): deviceList(new QList<Device*>(
  * @return int
  */
 int NetworkDeviceDirectory::addDevice(Device* device) {
+    QMutexLocker locker(listLock);
     deviceList->append(device);
     return deviceList->indexOf(device);
 }
@@ -28,6 +29,7 @@ int NetworkDeviceDirectory::addDevice(Device* device) {
  * @return bool
  */
 bool NetworkDeviceDirectory::removeDevice(Device* device) {
+    QMutexLocker locker(listLock);
     return deviceList->removeOne(device);
 }
 
@@ -36,6 +38,7 @@ bool NetworkDeviceDirectory::removeDevice(Device* device) {
  * @return bool
  */
 bool NetworkDeviceDirectory::removeDevice(int index) {
+    QMutexLocker locker(listLock);
     if (deviceList->size() >= index) {
         deviceList->removeAt(index);
         return true;
@@ -54,6 +57,6 @@ int NetworkDeviceDirectory::count() {
 /**
  * @return QList<NetworkDevice*>*
  */
-QList<Device*>* NetworkDeviceDirectory::getDevices() {
-    return deviceList;
+std::pair<QList<Device*>*, QMutex*> NetworkDeviceDirectory::getDevices() {
+    return std::make_pair(deviceList, listLock);
 }

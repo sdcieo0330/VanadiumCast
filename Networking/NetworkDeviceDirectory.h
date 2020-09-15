@@ -42,8 +42,9 @@ public:
     
     int count();
     
-    QList<Device*>* getDevices();
-private: 
+    std::pair<QList<Device*>*, QMutex*> getDevices();
+private:
+    QMutex *listLock;
     QList<Device*>* deviceList;
 };
 

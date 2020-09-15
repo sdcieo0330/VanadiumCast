@@ -16,16 +16,19 @@
 class NetworkSinkHandler final : public QThread, public SinkHandler {
     Q_OBJECT
 public: 
-    NetworkSinkHandler(NetworkInput* input, QObject *parent = nullptr);
+    NetworkSinkHandler(QObject *parent = nullptr);
     void start() override {
-        isRunning = true;
+        running = true;
         tcpServer->pauseAccepting();
         QThread::start();
     }
 
     void stop() override {
         tcpServer->resumeAccepting();
-        isRunning = false;
+        running = false;
+        while (this->isRunning()) {
+            QThread::msleep(10);
+        }
     }
 
     void run() override;
@@ -38,11 +41,12 @@ signals:
 private:
     NetworkInput *networkInput;
     QUdpSocket* udpBroadcast;
+    QUdpSocket* udpSocket;
     NetworkSinkTcpServer* tcpServer;
     QTcpSocket* controlConnection;
     QTcpSocket* dataConnection;
     qintptr controlConnectionHandle;
-    bool isRunning = false;
+    bool running = false;
     bool shouldReset = false;
 };
 

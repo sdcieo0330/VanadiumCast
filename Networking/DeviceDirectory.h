@@ -36,7 +36,7 @@ public:
     
     virtual int count() = 0;
     
-    virtual QList<Device*>* getDevices() = 0;
+    virtual std::pair<QList<Device*>*, QMutex*> getDevices() = 0;
 };
 
 #endif //_DEVICEDIRECTORY_H

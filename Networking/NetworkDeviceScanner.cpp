@@ -15,30 +15,47 @@
  * @param deviceDirectory
  */
 NetworkDeviceScanner::NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirectory): deviceDirectory(deviceDirectory) {
-
+    udpSocket = new QUdpSocket;
+    udpSocket->bind(QHostAddress::Any, 55553);
+    connect(udpSocket, &QUdpSocket::readyRead, this, &NetworkDeviceScanner::handleDeviceResponse);
 }
 
 void NetworkDeviceScanner::run() {
-    udpSocket = new QUdpSocket(this);
-    udpSocket->bind(QHostAddress::Any, 55553);
-    connect(udpSocket, SIGNAL(readyRead()), this, SLOT(handleDeviceResponse()));
-    while (isRunning) {
-        udpSocket->writeDatagram(Command::SCAN, 1, QHostAddress::Broadcast, 55554);
+    udpBroadcast = new QUdpSocket;
+    while (running) {
+        udpBroadcast->writeDatagram(Command::SCAN, QHostAddress::Broadcast, 55554);
+        udpBroadcast->flush();
+        sleep(5);
     }
 }
 
 void NetworkDeviceScanner::start() {
-    isRunning = true;
+    running = true;
     QThread::start();
 }
 
 void NetworkDeviceScanner::stop() {
-    isRunning = false;
+    running = false;
+    while (this->isRunning()) {
+        QThread::msleep(10);
+    }
 }
 
 void NetworkDeviceScanner::handleDeviceResponse() {
-    QNetworkDatagram dg = udpSocket->receiveDatagram();
-
+    while (udpSocket->hasPendingDatagrams()) {
+        QNetworkDatagram dg = udpSocket->receiveDatagram();
+        if (dg.isValid()) {
+            QString name = "";
+            if (dg.data() == Command::OK) {
+                            if (udpSocket->waitForReadyRead(1000)){
+                                QNetworkDatagram namedg = udpSocket->receiveDatagram();
+                                name = QString::fromUtf8(namedg.data());
+                            }
+                deviceDirectory->addDevice(new NetworkDevice(dg.senderAddress(), name));
+                qDebug() << "New Device '" + name + "':" << dg.senderAddress();
+            }
+        }
+    }
 }
 
 /**
