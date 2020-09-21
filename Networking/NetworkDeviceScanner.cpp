@@ -26,6 +26,7 @@ void NetworkDeviceScanner::run() {
         udpBroadcast->writeDatagram(Command::SCAN, QHostAddress::Broadcast, 55554);
         udpBroadcast->flush();
         sleep(5);
+        deviceDirectory->syncLists();
     }
 }
 
@@ -47,12 +48,13 @@ void NetworkDeviceScanner::handleDeviceResponse() {
         if (dg.isValid()) {
             QString name = "";
             if (dg.data() == Command::OK) {
-                            if (udpSocket->waitForReadyRead(1000)){
-                                QNetworkDatagram namedg = udpSocket->receiveDatagram();
-                                name = QString::fromUtf8(namedg.data());
-                            }
-                deviceDirectory->addDevice(new NetworkDevice(dg.senderAddress(), name));
-                qDebug() << "New Device '" + name + "':" << dg.senderAddress();
+                if (udpSocket->waitForReadyRead(1000)){
+                    QNetworkDatagram namedg = udpSocket->receiveDatagram();
+                    name = QString::fromUtf8(namedg.data());
+                }
+                if (deviceDirectory->addDevice(new NetworkDevice(dg.senderAddress(), name)) > -1) {
+                    qDebug() << "New Device '" + name + "':" << dg.senderAddress();
+                }
             }
         }
     }

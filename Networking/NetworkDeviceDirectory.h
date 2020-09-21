@@ -10,42 +10,69 @@
 #include "NetworkDevice.h"
 #include <QtCore>
 #include <QtNetwork>
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavdevice/avdevice.h>
-#include <libavformat/avformat.h>
-#include <libavutil/avutil.h>
-}
 
-class NetworkDeviceDirectory final : public DeviceDirectory {
+class NetworkDeviceDirectory : public QObject, public DeviceDirectory<NetworkDevice> {
+    Q_OBJECT
 public: 
     NetworkDeviceDirectory();
     /**
- * @param device
- */
-    int addDevice(Device* device);
+     * @param device
+     */
+    int addDevice(NetworkDevice* device);
+
+
+    /**
+     * @brief syncLists
+     * @return QPair<QList<T*>*, QList<T*>*>
+     */
+    QPair<QList<NetworkDevice*>, QList<NetworkDevice*>> syncLists();
     
     /**
- * @param device
- */
-    bool removeDevice(Device* device);
+     * @param device
+     */
+    bool removeDevice(NetworkDevice* device);
     
     /**
- * @param int index
- */
+     * @param int index
+     */
     bool removeDevice(int index);
 
+    /**
+     * @brief reset
+     */
     void reset() {
         qDeleteAll(*deviceList);
         deviceList->clear();
     }
     
+    /**
+     * @brief count
+     * @return int
+     */
     int count();
+
+    /**
+     * @brief containsDevice
+     * @param device
+     * @return bool
+     */
+    bool containsDevice(NetworkDevice* device);
     
-    std::pair<QList<Device*>*, QMutex*> getDevices();
+    /**
+     * @brief getDevices
+     * @return std::pair<QList<NetworkDevice*>*, QMutex*>
+     */
+    QPair<QList<NetworkDevice*>*, QMutex*> getDeviceList(){
+        return QPair<QList<NetworkDevice*>*, QMutex*>(deviceList, listLock);
+    }
+
+signals:
+    void addedDevice(NetworkDevice* device);
+    void removedDevice(NetworkDevice* device);
 private:
     QMutex *listLock;
-    QList<Device*>* deviceList;
+    QList<NetworkDevice*>* deviceList;
+    QList<NetworkDevice*>* newDeviceList;
 };
 
 #endif //_NETWORKDEVICEDIRECTORY_H

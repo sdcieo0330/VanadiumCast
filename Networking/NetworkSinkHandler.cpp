@@ -19,7 +19,6 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
     udpSocket = new QUdpSocket;
     udpBroadcast = new QUdpSocket;
     udpBroadcast->bind(55554, QUdpSocket::ShareAddress);
-    connect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
 }
 
 /**

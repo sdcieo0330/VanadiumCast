@@ -78,7 +78,6 @@ ApplicationWindow {
                     newConnPopup.close()
                     newConnPopup.setCallback(function () {
                         pageDevices.getListModel().append({"name": someDevice.getName(), "address": someDevice.getAddressString()})
-                        swipeView.setCurrentIndex(3)
                         newConnPopup.setCallback(function(){})
                     })
                 }

@@ -17,6 +17,10 @@ class NetworkSinkHandler final : public QThread, public SinkHandler {
     Q_OBJECT
 public: 
     NetworkSinkHandler(QObject *parent = nullptr);
+
+    void run() override;
+
+public slots:
     void start() override {
         running = true;
         tcpServer->pauseAccepting();
@@ -31,9 +35,14 @@ public:
         }
     }
 
-    void run() override;
+    void makeDiscoverable() {
+        connect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
+    }
 
-public slots:
+    void stopDiscoverable() {
+        disconnect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
+    }
+
     void incomingTcpConnect(qintptr handle);
     void answerScanRequest();
 signals:

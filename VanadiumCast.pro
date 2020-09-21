@@ -7,6 +7,9 @@ windows: QMAKE_LIBDIR += C:\\Users\\Silas\\Documents\\ffmpeg-dev\\lib
 LIBS += -lavformat -lavcodec -lavdevice -lavfilter
 
 CONFIG += c++20
+CONFIG += qmltypes
+QML_IMPORT_NAME = silas.vanadiumcast
+QML_IMPORT_MAJOR_VERSION = 1
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

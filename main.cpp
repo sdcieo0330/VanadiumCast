@@ -26,6 +26,12 @@ int main(int argc, char *argv[])
 
     NetworkDevice *nd = new NetworkDevice(QHostAddress::AnyIPv4, "C++ Device");
 
+    NetworkSinkHandler sinkHandler;
+    NetworkDeviceDirectory directory;
+    NetworkDeviceScanner scanner(&directory);
+    sinkHandler.makeDiscoverable();
+    scanner.start();
+
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -35,13 +41,15 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
     engine.rootContext()->setContextProperty("someDevice", nd);
-
-    NetworkSinkHandler sinkHandler;
-    NetworkDeviceDirectory directory;
-    NetworkDeviceScanner scanner(&directory);
-    scanner.start();
+    engine.rootContext()->setContextProperty("deviceDirectory", &directory);
+    engine.rootContext()->setContextProperty("deviceScanner", &scanner);
+    QTimer timer;
+    timer.setSingleShot(true);
+    QObject::connect(&timer, &QTimer::timeout, &sinkHandler, &NetworkSinkHandler::stopDiscoverable);
+    timer.start(10000);
 
     QObject::connect(app, &QGuiApplication::aboutToQuit, &scanner, &NetworkDeviceScanner::stop);
+    QObject::connect(app, &QGuiApplication::aboutToQuit, &sinkHandler, &NetworkSinkHandler::stop);
 
     return app->exec();
 }

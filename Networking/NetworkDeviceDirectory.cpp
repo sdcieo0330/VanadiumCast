@@ -10,7 +10,7 @@
  * NetworkDeviceDirectory implementation
  */
 
-NetworkDeviceDirectory::NetworkDeviceDirectory(): listLock(new QMutex(QMutex::Recursive)), deviceList(new QList<Device*>()) {
+NetworkDeviceDirectory::NetworkDeviceDirectory(): listLock(new QMutex(QMutex::Recursive)), deviceList(new QList<NetworkDevice*>()), newDeviceList(new QList<NetworkDevice*>()) {
 
 }
 
@@ -18,17 +18,22 @@ NetworkDeviceDirectory::NetworkDeviceDirectory(): listLock(new QMutex(QMutex::Re
  * @param device
  * @return int
  */
-int NetworkDeviceDirectory::addDevice(Device* device) {
+int NetworkDeviceDirectory::addDevice(NetworkDevice* device) {
     QMutexLocker locker(listLock);
-    deviceList->append(device);
-    return deviceList->indexOf(device);
+    for (auto e: *newDeviceList) {
+        if (e->getAddress().toIPv4Address() == device->getAddress().toIPv4Address()) {
+            return -1;
+        }
+    }
+    newDeviceList->append(device);
+    return deviceList->count() - 1;
 }
 
 /**
  * @param device
  * @return bool
  */
-bool NetworkDeviceDirectory::removeDevice(Device* device) {
+bool NetworkDeviceDirectory::removeDevice(NetworkDevice* device) {
     QMutexLocker locker(listLock);
     return deviceList->removeOne(device);
 }
@@ -48,15 +53,78 @@ bool NetworkDeviceDirectory::removeDevice(int index) {
 }
 
 /**
+  * @return bool
+  */
+bool NetworkDeviceDirectory::containsDevice(NetworkDevice *device) {
+    QMutexLocker locker(listLock);
+    for (auto d: *deviceList) {
+        if (d->getAddress().toIPv4Address() == device->getAddress().toIPv4Address()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+/**
  * @return int
  */
 int NetworkDeviceDirectory::count() {
     return deviceList->size();
 }
 
-/**
- * @return QList<NetworkDevice*>*
- */
-std::pair<QList<Device*>*, QMutex*> NetworkDeviceDirectory::getDevices() {
-    return std::make_pair(deviceList, listLock);
+QPair<QList<NetworkDevice*>, QList<NetworkDevice*>> NetworkDeviceDirectory::syncLists(){
+    QMutexLocker locker(listLock);
+    QList<NetworkDevice*> addedList;
+    QList<NetworkDevice*> removedList;
+    QList<NetworkDevice*> oldList;
+    for (auto e: *newDeviceList) {
+        bool isOld = false;
+        for (auto e2: *deviceList) {
+            if (e->getAddress().toIPv4Address() == e2->getAddress().toIPv4Address()) {
+                isOld = true;
+                oldList.append(e2);
+                break;
+            }
+        }
+        if (!isOld) {
+            addedList.append(e);
+        }
+    }
+    for (auto e: *deviceList) {
+        bool isRemoved = true;
+        for (auto e2: oldList) {
+            if (e == e2) {
+                isRemoved = false;
+            }
+        }
+        if (isRemoved) {
+            removedList.append(e);
+        }
+    }
+
+    for (auto e: addedList) {
+        addedDevice(e);
+    }
+    for (auto e: removedList) {
+        removedDevice(e);
+    }
+
+    int i = 0;
+    for (auto &e: oldList) {
+        deviceList->removeAll(e);
+        qDebug() << "Iteration" << i++;
+        if (e != nullptr) {
+            delete e;
+            e = nullptr;
+        }
+    }
+    oldList.clear();
+
+    deviceList->clear();
+    delete deviceList;
+    deviceList = newDeviceList;
+    newDeviceList = new QList<NetworkDevice*>;
+
+    return QPair<QList<NetworkDevice*>, QList<NetworkDevice*>>(addedList, removedList);
 }

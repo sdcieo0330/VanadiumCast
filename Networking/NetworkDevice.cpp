@@ -18,16 +18,13 @@ NetworkDevice::NetworkDevice(QHostAddress address, QString name): QObject(nullpt
 
 }
 
+NetworkDevice::~NetworkDevice() {
+    qDebug() << "NetworkDevice destroyed";
+}
+
 /**
  * @return QHostAddress
  */
 const QHostAddress &NetworkDevice::getAddress() const {
     return peerAddress;
-}
-
-/**
- * @param newName
- */
-void NetworkDevice::setName(QString newName) {
-    name = newName;
 }

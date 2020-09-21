@@ -8,6 +8,7 @@
 
 #include "Device.h"
 #include <QtCore>
+#include <QtQml>
 #include <QtNetwork>
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -18,14 +19,36 @@ extern "C" {
 
 class NetworkDevice: public QObject, public Device {
     Q_OBJECT
-public: 
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QHostAddress peerAddress READ getAddress WRITE setPeerAddress NOTIFY peerAddressChanged)
+public:
     
     /**
  * @param address
  */
-    NetworkDevice(QHostAddress address, QString name);
+    NetworkDevice(QHostAddress address = QHostAddress::Null, QString name = "");
+
+    ~NetworkDevice();
     
     const QHostAddress &getAddress() const;
+
+    /**
+     * @brief setName
+     * @param name
+     */
+    Q_INVOKABLE void setName(QString newName) {
+        name = newName;
+        nameChanged();
+    }
+
+    /**
+     * @brief setPeerAddress
+     * @param newPeerAddress
+     */
+    Q_INVOKABLE void setPeerAddress(QHostAddress newPeerAddress) {
+        peerAddress = newPeerAddress;
+        peerAddressChanged();
+    }
 
     /**
      * @return QString
@@ -40,9 +63,12 @@ public:
     Q_INVOKABLE QString getName() const {
         return name;
     }
-    void setName(QString newName);
-private: 
-    const QHostAddress peerAddress;
+
+signals:
+    void nameChanged();
+    void peerAddressChanged();
+private:
+    QHostAddress peerAddress;
     QString name;
 };
 

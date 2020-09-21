@@ -1,6 +1,7 @@
 import QtQuick 2.12
 
 ListModel {
+    signal addedDevice
     ListElement {
         name: qsTr("MyDevice")
         address: "192.168.7.21"

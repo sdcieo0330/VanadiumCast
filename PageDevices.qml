@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.12
-
 Page {
     width: 600
     height: 400
@@ -47,7 +46,25 @@ Page {
             width: parent.width - 20
             height: parent.height - triggerIncomingConn.height - 20
             anchors.centerIn: parent
-            model: DeviceListModel {id: devicesListModel}
+            model: DeviceListModel {
+                id: devicesListModel
+            }
+            Connections {
+                id: addConn
+                target: deviceDirectory
+                function onAddedDevice (device) {
+                    devicesListModel.append({"name": device.getName(), "address": device.getAddressString()})
+                }
+                function onRemovedDevice (device) {
+                    for (var i = 0; i < devicesListModel.count; ++i) {
+                        if (devicesListModel.get(i)["address"] === device.getAddressString()) {
+                            devicesListModel.remove(i);
+                            break;
+                        }
+                    }
+                    console.log("exited removedDevice()");
+                }
+            }
             delegate: deviceDelegate
             highlight: Rectangle {
                 radius: 2
@@ -75,7 +92,26 @@ Page {
                 }
             }
             addDisplaced: Transition {
-                NumberAnimation { properties: "x,y"; duration: 128 }
+                NumberAnimation {
+                    properties: "x,y"
+                    duration: 128
+                }
+            }
+            remove: Transition {
+                PropertyAnimation {
+                    property: "scale"
+                    from: 1.0
+                    to: 0.0
+                    duration: 160
+                    easing.type: Easing.InBack
+                    easing.overshoot: 1.2
+                }
+            }
+            removeDisplaced: Transition {
+                NumberAnimation {
+                    properties: "x,y"
+                    duration: 128
+                }
             }
             focus: true
         }
