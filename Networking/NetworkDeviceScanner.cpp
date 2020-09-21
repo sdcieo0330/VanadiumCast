@@ -47,7 +47,7 @@ void NetworkDeviceScanner::handleDeviceResponse() {
         QNetworkDatagram dg = udpSocket->receiveDatagram();
         if (dg.isValid()) {
             QString name = "";
-            if (dg.data() == Command::OK) {
+            if (dg.data() == Command::NAME) {
                 if (udpSocket->waitForReadyRead(1000)){
                     QNetworkDatagram namedg = udpSocket->receiveDatagram();
                     name = QString::fromUtf8(namedg.data());

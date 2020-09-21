@@ -27,9 +27,6 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
 void NetworkSinkHandler::run() {
     controlConnection = new QTcpSocket;
     controlConnection->setSocketDescriptor(controlConnectionHandle);
-    controlConnection->write(Command::NAME);
-    controlConnection->write("Test Device");
-    controlConnection->flush();
     controlConnection->write(Command::CONNECTDATA);
     controlConnection->flush();
     if (controlConnection->waitForReadyRead(100)) {
@@ -68,7 +65,7 @@ void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
 void NetworkSinkHandler::answerScanRequest() {
     QNetworkDatagram dg = udpBroadcast->receiveDatagram();
     if (dg.data() == Command::SCAN) {
-        udpSocket->writeDatagram(Command::OK, dg.senderAddress(), 55553);
+        udpSocket->writeDatagram(Command::NAME, dg.senderAddress(), 55553);
         udpSocket->writeDatagram("Test Device lol", 16, dg.senderAddress(), 55553);
         udpSocket->flush();
     }
