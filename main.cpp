@@ -33,6 +33,9 @@ int main(int argc, char *argv[])
     scanner.start();
 
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("someDevice", nd);
+    engine.rootContext()->setContextProperty("deviceDirectory", &directory);
+    engine.rootContext()->setContextProperty("deviceScanner", &scanner);
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      app, [url](QObject *obj, const QUrl &objUrl) {
@@ -40,9 +43,6 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-    engine.rootContext()->setContextProperty("someDevice", nd);
-    engine.rootContext()->setContextProperty("deviceDirectory", &directory);
-    engine.rootContext()->setContextProperty("deviceScanner", &scanner);
     QTimer timer;
     timer.setSingleShot(true);
     QObject::connect(&timer, &QTimer::timeout, &sinkHandler, &NetworkSinkHandler::stopDiscoverable);
