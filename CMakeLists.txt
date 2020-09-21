@@ -24,8 +24,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Widgets Network REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets Network REQUIRED)
+
+include_directories("C:\\Users\\Silas\\Documents\\ffmpeg-dev\\include")
 
 if(ANDROID)
     add_library(VanadiumCast SHARED
@@ -33,7 +35,7 @@ if(ANDROID)
         qml.qrc
         )
 else()
-    add_library(VanadiumCastLib
+    add_library(VanadiumCastLib SHARED
         API/NetworkAPI.cpp
         MediaProcessing/AudioDecoder.cpp
         MediaProcessing/AudioEncoder.cpp
@@ -58,10 +60,14 @@ endif()
 target_compile_definitions(VanadiumCastLib
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(VanadiumCastLib
-    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_directories(VanadiumCastLib PUBLIC "C:\\Users\\Silas\\Documents\\ffmpeg-dev\\lib")
+target_link_libraries(VanadiumCastLib PUBLIC avformat avcodec avdevice avfilter)
 
 target_compile_definitions(VanadiumCast
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(VanadiumCast
-    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(VanadiumCast PRIVATE VanadiumCastLib)
+target_link_directories(VanadiumCast PUBLIC "C:\\Users\\Silas\\Documents\\ffmpeg-dev\\lib")
+target_link_libraries(VanadiumCast PUBLIC avformat avcodec avdevice avfilter)

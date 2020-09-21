@@ -21,7 +21,7 @@ NetworkDeviceDirectory::NetworkDeviceDirectory(): listLock(new QMutex(QMutex::Re
 int NetworkDeviceDirectory::addDevice(NetworkDevice* device) {
     QMutexLocker locker(listLock);
     for (auto e: *newDeviceList) {
-        if (e->getAddress().toIPv4Address() == device->getAddress().toIPv4Address()) {
+        if (e == device) {
             return -1;
         }
     }
