@@ -11,7 +11,7 @@ ApplicationWindow {
 
     SoundEffect {
         id: incomingPing
-        source: Qt.resolvedUrl("res/wav/incoming.wav")
+        source: Qt.resolvedUrl("/res/wav/incoming.wav")
     }
 
     Popup {

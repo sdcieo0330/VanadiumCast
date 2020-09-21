@@ -1,14 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>PageDevices.qml</file>
-        <file>PageMedia.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>PageStreaming.qml</file>
-        <file>PageSink.qml</file>
-        <file>DeviceListModel.qml</file>
     </qresource>
     <qresource prefix="/res/wav">
         <file>incoming.wav</file>
+    </qresource>
+    <qresource prefix="/gui">
+        <file>PageDevices.qml</file>
+        <file>main.qml</file>
+        <file>PageMedia.qml</file>
+        <file>PageStreaming.qml</file>
+        <file>PageSink.qml</file>
+    </qresource>
+    <qresource prefix="/gui/model">
+        <file>DeviceListModel.qml</file>
     </qresource>
 </RCC>

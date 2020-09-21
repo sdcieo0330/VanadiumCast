@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("someDevice", nd);
     engine.rootContext()->setContextProperty("deviceDirectory", &directory);
     engine.rootContext()->setContextProperty("deviceScanner", &scanner);
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/gui/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
