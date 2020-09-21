@@ -41,12 +41,12 @@ int main(int argc, char *argv[])
                      app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
+    });
     engine.load(url);
-    QTimer timer;
-    timer.setSingleShot(true);
-    QObject::connect(&timer, &QTimer::timeout, &sinkHandler, &NetworkSinkHandler::stopDiscoverable);
-    timer.start(10000);
+//    QTimer timer;
+//    timer.setSingleShot(true);
+//    QObject::connect(&timer, &QTimer::timeout, &sinkHandler, &NetworkSinkHandler::stopDiscoverable);
+//    timer.start(10000);
 
     QObject::connect(app, &QGuiApplication::aboutToQuit, &scanner, &NetworkDeviceScanner::stop);
     QObject::connect(app, &QGuiApplication::aboutToQuit, &sinkHandler, &NetworkSinkHandler::stop);

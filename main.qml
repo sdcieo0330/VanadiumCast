@@ -7,7 +7,7 @@ ApplicationWindow {
     width: 512
     height: 420
     visible: true
-    title: qsTr("Tabs")
+    title: qsTr("VanadiumCast")
 
     SoundEffect {
         id: incomingPing
