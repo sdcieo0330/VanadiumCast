@@ -77,7 +77,7 @@ ApplicationWindow {
                 onClicked: {
                     newConnPopup.close()
                     newConnPopup.setCallback(function () {
-                        pageDevices.getListModel().append({"name": someDevice.getName(), "address": someDevice.getAddressString()})
+                        pageDevices.getListModel().append({"name": "Random Device", "address": "0.0.0.0"})
                         newConnPopup.setCallback(function(){})
                     })
                 }
@@ -103,15 +103,35 @@ ApplicationWindow {
 
         PageDevices {
             id: pageDevices
+            Connections {
+                target: pageDevices.deviceLV
+                function onCurrentItemChanged() {
+                    pageMedia.enabled = true
+                    pageMediaBtn.enabled = true
+                }
+            }
         }
 
-        PageMedia{
+        PageMedia {
+            id: pageMedia
+            enabled: false
+            Connections {
+                target: pageMedia
+                function onSelectedMedia(fileName) {
+                    pageStreaming.enabled = true
+                    pageStreamingBtn.enabled = true
+                }
+            }
         }
 
         PageStreaming {
+            id: pageStreaming
+            enabled: false
         }
 
         PageSink {
+            id: pageSink
+            enabled: false
         }
     }
 
@@ -120,16 +140,22 @@ ApplicationWindow {
         currentIndex: swipeView.currentIndex
 
         TabButton {
+            id: pageDevicesBtn
             text: qsTr("Devices")
         }
         TabButton {
+            id: pageMediaBtn
             text: qsTr("Media")
+            enabled: false
         }
         TabButton {
+            id: pageStreamingBtn
             text: qsTr("Streaming")
+            enabled: false
         }
         TabButton {
             text: qsTr("Sink")
+            enabled: false
         }
     }
 }

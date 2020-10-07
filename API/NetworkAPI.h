@@ -7,9 +7,10 @@
 #define _NETWORKAPI_H
 
 #include "API.h"
-#include "Networking/NetworkStreamer.h"
+#include "Networking/NetworkSinkHandler.h"
 #include "Networking/NetworkDeviceScanner.h"
 #include "Networking/NetworkDeviceDirectory.h"
+#include "Networking/NetworkDevice.h"
 #include "Networking/NetworkStreamer.h"
 #include "MediaProcessing/AudioDecoder.h"
 #include "MediaProcessing/AudioEncoder.h"
@@ -27,26 +28,30 @@ extern "C" {
 #include <libavutil/avutil.h>
 }
 
-class NetworkAPI final : public API {
-public: 
+class NetworkAPI final : public QObject, public API<NetworkDevice> {
+    Q_OBJECT
+public slots:
     
     bool init();
+
+    bool start();
     
     bool stop();
-    
+
+public:
     /**
  * @param inputFileName
  */
-    bool setInputFile(QString inputFileName);
+    bool setInputFile(QUrl inputFileName);
+
+    bool startSource();
     
-    QList<Device*>* getDeviceList();
+    NetworkDeviceDirectory *getDeviceDirectory();
     
     /**
  * @param device
  */
-    bool setDevice(Device* device);
-    
-    bool start();
+    bool setDevice(NetworkDevice* device);
     
     bool togglePlayPause();
     
@@ -76,8 +81,7 @@ public:
 
 public slots:
     void newSinkConnection(NetworkDevice* device);
-private: 
-    QApplication *app;
+private:
     Input *inputFile;
     AudioDecoder *audioDecoder;
     VideoDecoder *videoDecoder;
@@ -88,6 +92,7 @@ private:
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput;
+    NetworkSinkHandler *sinkHandler;
 };
 
 #endif //_NETWORKAPI_H

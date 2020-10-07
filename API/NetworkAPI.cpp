@@ -14,36 +14,10 @@
  * @return bool
  */
 bool NetworkAPI::init() {
-    return false;
-}
+    deviceDirectory = new NetworkDeviceDirectory();
+    deviceScanner = new NetworkDeviceScanner(deviceDirectory);
 
-/**
- * @return bool
- */
-bool NetworkAPI::stop() {
-    return false;
-}
-
-/**
- * @param inputFileName
- * @return bool
- */
-bool NetworkAPI::setInputFile(QString inputFileName) {
-    return false;
-}
-
-/**
- * @return QList<Device*>*
- */
-QList<Device*>* NetworkAPI::getDeviceList() {
-    return nullptr;
-}
-
-/**
- * @param device
- * @return bool
- */
-bool NetworkAPI::setDevice(Device* device) {
+    sinkHandler = new NetworkSinkHandler(this);
     return false;
 }
 
@@ -51,6 +25,48 @@ bool NetworkAPI::setDevice(Device* device) {
  * @return bool
  */
 bool NetworkAPI::start() {
+    deviceScanner->start();
+    sinkHandler->makeDiscoverable();
+    return true;
+}
+
+/**
+ * @return bool
+ */
+bool NetworkAPI::stop() {
+    deviceScanner->stop();
+    sinkHandler->stopDiscoverable();
+    sinkHandler->stop();
+    return true;
+}
+
+/**
+ * @param inputFileName
+ * @return bool
+ */
+bool NetworkAPI::setInputFile(QUrl inputFileName) {
+    return false;
+}
+
+/**
+ * @return QList<Device*>*
+ */
+NetworkDeviceDirectory *NetworkAPI::getDeviceDirectory() {
+    return deviceDirectory;
+}
+
+/**
+ * @param device
+ * @return bool
+ */
+bool NetworkAPI::setDevice(NetworkDevice* device) {
+    return false;
+}
+
+/**
+ * @return bool
+ */
+bool NetworkAPI::startSource() {
     return false;
 }
 

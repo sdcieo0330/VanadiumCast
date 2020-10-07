@@ -7,6 +7,8 @@ Page {
     width: 600
     height: 400
 
+    property alias deviceLV: devicesListView
+
     header: Label {
         id: devicesPageHeader
         text: qsTr("Devices")
@@ -17,15 +19,25 @@ Page {
     Component {
         id: deviceDelegate
         Item {
+            id: deviceDelegateItem
             width: 240; height: 32
             Row {
                 anchors.centerIn: parent
-                Text {text: name}
-                Text {text: "(" + address + ")"}
+                Label {
+                    text: name
+                    color: Material.foreground
+                }
+                Label {
+                    text: "(" + address + ")"
+                    color: Material.foreground
+                }
             }
             MouseArea {
+                id: delegateMouseArea
                 anchors.fill: parent
-                onClicked: devicesListView.currentIndex = index
+                onClicked: {
+                    devicesListView.currentIndex = index
+                }
             }
         }
     }
@@ -34,6 +46,7 @@ Page {
     }
 
     Rectangle {
+        id: deviceViewRect
         anchors.top: parent.top
         anchors.bottom: triggerIncomingConn.top
         anchors.right: parent.right
@@ -45,12 +58,14 @@ Page {
         color: Qt.rgba(0, 0, 0, 0)
         ListView {
             id: devicesListView
+            currentIndex: -1
             width: parent.width - 20
             height: parent.height - triggerIncomingConn.height - 20
             anchors.centerIn: parent
             model: DeviceListModel {
                 id: devicesListModel
             }
+
             Connections {
                 id: addConn
                 target: deviceDirectory
@@ -71,7 +86,7 @@ Page {
             highlight: Rectangle {
                 radius: 2
                 border.color: Material.accentColor
-                color: Qt.lighter(Material.accentColor, 1.8)
+                color: Qt.darker(Material.accentColor, 1.8)
                 y: devicesListView.currentItem.y
                 Behavior on y {
                     NumberAnimation {

@@ -37,7 +37,6 @@ if(ANDROID)
         main.cpp
         qml.qrc
         )
-else()
     add_library(VanadiumCastLib SHARED
         API/NetworkAPI.cpp
         MediaProcessing/Demuxer.cpp
@@ -82,21 +81,108 @@ else()
         Networking/NetworkDeviceScanner.h
         Networking/NetworkDeviceDirectory.h
         )
+else()
+#    add_library(VanadiumCastLib SHARED
+#        API/NetworkAPI.cpp
+#        MediaProcessing/Demuxer.cpp
+#        MediaProcessing/InputFile.cpp
+#        MediaProcessing/AudioDecoder.cpp
+#        MediaProcessing/AudioEncoder.cpp
+#        MediaProcessing/NetworkInput.cpp
+#        MediaProcessing/VideoDecoder.cpp
+#        MediaProcessing/VideoEncoder.cpp
+#        Networking/NetworkDevice.cpp
+#        Networking/NetworkStreamer.cpp
+#        Networking/NetworkSinkHandler.cpp
+#        Networking/NetworkSinkTcpServer.cpp
+#        Networking/NetworkDeviceScanner.cpp
+#        Networking/NetworkDeviceDirectory.cpp
+
+#        Commands.h
+#        API/API.h
+#        API/NetworkAPI.h
+#        API/SinkHandleWidget.h
+#        MediaProcessing/Input.h
+#        MediaProcessing/Codec.h
+#        MediaProcessing/Demux.h
+#        MediaProcessing/Demuxer.h
+#        MediaProcessing/Encoder.h
+#        MediaProcessing/Decoder.h
+#        MediaProcessing/InputFile.h
+#        MediaProcessing/AudioDecoder.h
+#        MediaProcessing/AudioEncoder.h
+#        MediaProcessing/NetworkInput.h
+#        MediaProcessing/VideoDecoder.h
+#        MediaProcessing/VideoEncoder.h
+#        Networking/Device.h
+#        Networking/Streaming.h
+#        Networking/DeviceScan.h
+#        Networking/SinkHandler.h
+#        Networking/NetworkDevice.h
+#        Networking/DeviceDirectory.h
+#        Networking/NetworkStreamer.h
+#        Networking/NetworkSinkHandler.h
+#        Networking/NetworkSinkTcpServer.h
+#        Networking/NetworkDeviceScanner.h
+#        Networking/NetworkDeviceDirectory.h
+#        )
     add_executable(VanadiumCast
+        API/NetworkAPI.cpp
+        MediaProcessing/Demuxer.cpp
+        MediaProcessing/InputFile.cpp
+        MediaProcessing/AudioDecoder.cpp
+        MediaProcessing/AudioEncoder.cpp
+        MediaProcessing/NetworkInput.cpp
+        MediaProcessing/VideoDecoder.cpp
+        MediaProcessing/VideoEncoder.cpp
+        Networking/NetworkDevice.cpp
+        Networking/NetworkStreamer.cpp
+        Networking/NetworkSinkHandler.cpp
+        Networking/NetworkSinkTcpServer.cpp
+        Networking/NetworkDeviceScanner.cpp
+        Networking/NetworkDeviceDirectory.cpp
+
+        Commands.h
+        API/API.h
+        API/NetworkAPI.h
+        API/SinkHandleWidget.h
+        MediaProcessing/Input.h
+        MediaProcessing/Codec.h
+        MediaProcessing/Demux.h
+        MediaProcessing/Demuxer.h
+        MediaProcessing/Encoder.h
+        MediaProcessing/Decoder.h
+        MediaProcessing/InputFile.h
+        MediaProcessing/AudioDecoder.h
+        MediaProcessing/AudioEncoder.h
+        MediaProcessing/NetworkInput.h
+        MediaProcessing/VideoDecoder.h
+        MediaProcessing/VideoEncoder.h
+        Networking/Device.h
+        Networking/Streaming.h
+        Networking/DeviceScan.h
+        Networking/SinkHandler.h
+        Networking/NetworkDevice.h
+        Networking/DeviceDirectory.h
+        Networking/NetworkStreamer.h
+        Networking/NetworkSinkHandler.h
+        Networking/NetworkSinkTcpServer.h
+        Networking/NetworkDeviceScanner.h
+        Networking/NetworkDeviceDirectory.h
         qml.qrc
         main.cpp
         )
 endif()
 
-target_compile_definitions(VanadiumCastLib
-    PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(VanadiumCastLib
-    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(VanadiumCastLib PUBLIC avformat avcodec avdevice avfilter)
+#target_compile_definitions(VanadiumCastLib
+#    PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+#target_link_libraries(VanadiumCastLib
+#    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets)
+#target_link_libraries(VanadiumCastLib PUBLIC avformat avcodec avdevice avfilter)
 
 target_compile_definitions(VanadiumCast
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(VanadiumCast
     PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(VanadiumCast PRIVATE VanadiumCastLib)
+#target_link_libraries(VanadiumCast PRIVATE VanadiumCastLib)
 target_link_libraries(VanadiumCast PUBLIC avformat avcodec avdevice avfilter)

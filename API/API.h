@@ -6,6 +6,7 @@
 #ifndef _API_H
 #define _API_H
 #include "Networking/Device.h"
+#include "Networking/DeviceDirectory.h"
 #include "SinkHandleWidget.h"
 #include <QtCore>
 extern "C" {
@@ -14,8 +15,9 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
 }
+template <class T>
 class API {
-public: 
+public:
     
     virtual bool init() = 0;
     
@@ -24,14 +26,14 @@ public:
     /**
  * @param inputFileName
  */
-    virtual bool setInputFile(QString inputFileName) = 0;
+    virtual bool setInputFile(QUrl inputFileName) = 0;
     
-    virtual QList<Device*>* getDeviceList() = 0;
+    virtual DeviceDirectory<T> *getDeviceDirectory() = 0;
     
     /**
  * @param device
  */
-    virtual bool setDevice(Device* device) = 0;
+    virtual bool setDevice(T* device) = 0;
     
     virtual bool startSource() = 0;
     

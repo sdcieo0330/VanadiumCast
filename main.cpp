@@ -1,15 +1,17 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QtCore>
 #include <QtNetwork>
 #include <csignal>
+#include "API/NetworkAPI.h"
+#include "Networking/NetworkStreamer.h"
 #include "Networking/NetworkDevice.h"
 #include "Networking/NetworkDeviceScanner.h"
 #include "Networking/NetworkSinkHandler.h"
 
 
-QGuiApplication *app;
+QApplication *app;
 
 void signalHandler(int signum) {
     Q_UNUSED(signum)
@@ -22,20 +24,13 @@ int main(int argc, char *argv[])
     signal(SIGTERM, &signalHandler);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    app = new QGuiApplication(argc, argv);
+    app = new QApplication(argc, argv);
 
-    NetworkDevice *nd = new NetworkDevice(QHostAddress::AnyIPv4, "C++ Device");
-
-    NetworkSinkHandler sinkHandler;
-    NetworkDeviceDirectory directory;
-    NetworkDeviceScanner scanner(&directory);
-    sinkHandler.makeDiscoverable();
-    scanner.start();
+    NetworkAPI api;
+    api.init();
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("someDevice", nd);
-    engine.rootContext()->setContextProperty("deviceDirectory", &directory);
-    engine.rootContext()->setContextProperty("deviceScanner", &scanner);
+    engine.rootContext()->setContextProperty("deviceDirectory", api.getDeviceDirectory());
     const QUrl url(QStringLiteral("qrc:/gui/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      app, [url](QObject *obj, const QUrl &objUrl) {
@@ -43,13 +38,13 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     });
     engine.load(url);
+    api.start();
 //    QTimer timer;
 //    timer.setSingleShot(true);
 //    QObject::connect(&timer, &QTimer::timeout, &sinkHandler, &NetworkSinkHandler::stopDiscoverable);
 //    timer.start(10000);
 
-    QObject::connect(app, &QGuiApplication::aboutToQuit, &scanner, &NetworkDeviceScanner::stop);
-    QObject::connect(app, &QGuiApplication::aboutToQuit, &sinkHandler, &NetworkSinkHandler::stop);
+    QObject::connect(app, &QGuiApplication::aboutToQuit, &api, &NetworkAPI::stop);
 
     return app->exec();
 }
