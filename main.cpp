@@ -2,6 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QtCore>
+#include <QtAV.h>
+#include <QtAVWidgets.h>
 #include <QtNetwork>
 #include <csignal>
 #include "API/NetworkAPI.h"
@@ -28,6 +30,7 @@ int main(int argc, char *argv[])
 
     NetworkAPI api;
     api.init();
+    QtAV::Widgets::registerRenderers();
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("deviceDirectory", api.getDeviceDirectory());

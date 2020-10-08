@@ -1,36 +1,34 @@
-QT += quick core gui widgets network
+QT += quick core gui widgets network avwidgets
 
 windows: INCLUDEPATH += C:\\Users\\Silas\\Documents\\ffmpeg-dev\\include
 
 windows: QMAKE_LIBDIR += C:\\Users\\Silas\\Documents\\ffmpeg-dev\\lib
 
-LIBS += -lavformat -lavcodec -lavdevice -lavfilter
+LIBS += -lavformat -lavcodec -lavdevice -lavfilter -lQtAVWidgets -lQtAV
 
 CONFIG += c++20
-CONFIG += qmltypes
-QML_IMPORT_NAME = silas.vanadiumcast
-QML_IMPORT_MAJOR_VERSION = 1
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        API/NetworkAPI.cpp \
-        MediaProcessing/AudioDecoder.cpp \
-        MediaProcessing/AudioEncoder.cpp \
-        MediaProcessing/Demuxer.cpp \
-        MediaProcessing/InputFile.cpp \
-        MediaProcessing/NetworkInput.cpp \
-        MediaProcessing/VideoDecoder.cpp \
-        MediaProcessing/VideoEncoder.cpp \
-        Networking/NetworkDevice.cpp \
-        Networking/NetworkDeviceDirectory.cpp \
-        Networking/NetworkDeviceScanner.cpp \
-        Networking/NetworkSinkHandler.cpp \
-        Networking/NetworkSinkTcpServer.cpp \
-        Networking/NetworkStreamer.cpp \
-        main.cpp
+    main.cpp \
+    API/NetworkAPI.cpp \
+    MediaProcessing/Demuxer.cpp \
+    MediaProcessing/InputFile.cpp \
+    MediaProcessing/AudioDecoder.cpp \
+    MediaProcessing/AudioEncoder.cpp \
+    MediaProcessing/NetworkInput.cpp \
+    MediaProcessing/VideoDecoder.cpp \
+    MediaProcessing/VideoEncoder.cpp \
+    MediaProcessing/VideoTranscoder.cpp \
+    Networking/NetworkDevice.cpp \
+    Networking/NetworkStreamer.cpp \
+    Networking/NetworkSinkHandler.cpp \
+    Networking/NetworkSinkTcpServer.cpp \
+    Networking/NetworkDeviceScanner.cpp \
+    Networking/NetworkDeviceDirectory.cpp \
 
 RESOURCES += qml.qrc
 
@@ -46,34 +44,31 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Commands.h \
     API/API.h \
     API/NetworkAPI.h \
     API/SinkHandleWidget.h \
-    Commands.h \
-    MediaProcessing/AudioDecode.h \
-    MediaProcessing/AudioDecoder.h \
-    MediaProcessing/AudioEncode.h \
-    MediaProcessing/AudioEncoder.h \
+    MediaProcessing/Input.h \
     MediaProcessing/Codec.h \
-    MediaProcessing/Decoder.h \
     MediaProcessing/Demux.h \
     MediaProcessing/Demuxer.h \
     MediaProcessing/Encoder.h \
-    MediaProcessing/Input.h \
+    MediaProcessing/Decoder.h \
     MediaProcessing/InputFile.h \
+    MediaProcessing/AudioDecoder.h \
+    MediaProcessing/AudioEncoder.h \
     MediaProcessing/NetworkInput.h \
-    MediaProcessing/VideoDecode.h \
     MediaProcessing/VideoDecoder.h \
-    MediaProcessing/VideoEncode.h \
     MediaProcessing/VideoEncoder.h \
+    MediaProcessing/VideoTranscoder.h \
     Networking/Device.h \
-    Networking/DeviceDirectory.h \
+    Networking/Streaming.h \
     Networking/DeviceScan.h \
+    Networking/SinkHandler.h \
     Networking/NetworkDevice.h \
-    Networking/NetworkDeviceDirectory.h \
-    Networking/NetworkDeviceScanner.h \
+    Networking/DeviceDirectory.h \
+    Networking/NetworkStreamer.h \
     Networking/NetworkSinkHandler.h \
     Networking/NetworkSinkTcpServer.h \
-    Networking/NetworkStreamer.h \
-    Networking/SinkHandler.h \
-    Networking/Streaming.h
+    Networking/NetworkDeviceScanner.h \
+    Networking/NetworkDeviceDirectory.h \

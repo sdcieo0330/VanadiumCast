@@ -11,14 +11,15 @@ Page {
 
     header: Label {
         id: devicesPageHeader
-        text: qsTr("Devices")
-        font.pixelSize: Qt.application.font.pixelSize * 2
+        text: qsTr("1. Select device you want to stream to")
+        font.pixelSize: Qt.application.font.pixelSize * 1.2
         padding: 10
     }
 
     Component {
         id: deviceDelegate
         Item {
+            anchors.horizontalCenter: parent.horizontalCenter
             id: deviceDelegateItem
             width: 240; height: 32
             Row {
@@ -84,6 +85,7 @@ Page {
             }
             delegate: deviceDelegate
             highlight: Rectangle {
+                anchors.horizontalCenter: parent.horizontalCenter
                 radius: 2
                 border.color: Material.accentColor
                 color: Qt.darker(Material.accentColor, 1.8)
