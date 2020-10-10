@@ -48,6 +48,7 @@ HEADERS += \
     API/API.h \
     API/NetworkAPI.h \
     API/SinkHandleWidget.h \
+    MediaProcessing/EncodingProfile.h \
     MediaProcessing/Input.h \
     MediaProcessing/Codec.h \
     MediaProcessing/Demux.h \
@@ -58,6 +59,7 @@ HEADERS += \
     MediaProcessing/AudioDecoder.h \
     MediaProcessing/AudioEncoder.h \
     MediaProcessing/NetworkInput.h \
+    MediaProcessing/PlayerStateSlots.h \
     MediaProcessing/VideoDecoder.h \
     MediaProcessing/VideoEncoder.h \
     MediaProcessing/VideoTranscoder.h \

@@ -128,11 +128,6 @@ ApplicationWindow {
             id: pageStreaming
             enabled: false
         }
-
-        PageSink {
-            id: pageSink
-            enabled: false
-        }
     }
 
     footer: TabBar {
@@ -151,10 +146,6 @@ ApplicationWindow {
         TabButton {
             id: pageStreamingBtn
             text: qsTr("Streaming")
-            enabled: false
-        }
-        TabButton {
-            text: qsTr("Sink")
             enabled: false
         }
     }
