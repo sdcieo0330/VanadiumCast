@@ -16,13 +16,14 @@ extern "C" {
 }
 
 class InputFile: public Input {
-public: 
+public:
+    InputFile(QString path);
     
-bool open();
+    bool open();
     
-bool close();
+    bool close();
     
-QIODevice* getIODevice();
+    QIODevice* getIODevice();
 private: 
     QIODevice* inputDevice = nullptr;
     QString inputFileName = "";

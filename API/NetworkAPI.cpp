@@ -45,6 +45,13 @@ bool NetworkAPI::stop() {
  * @return bool
  */
 bool NetworkAPI::setInputFile(QUrl inputFileName) {
+    if (inputFileName.isLocalFile()) {
+        QFile file(inputFileName.toLocalFile());
+        if (file.exists()) {
+            inputFile = new InputFile(inputFileName.toLocalFile());
+            inputFile->
+        }
+    }
     return false;
 }
 
@@ -60,7 +67,25 @@ NetworkDeviceDirectory *NetworkAPI::getDeviceDirectory() {
  * @return bool
  */
 bool NetworkAPI::setDevice(NetworkDevice* device) {
+    if (deviceDirectory->containsDevice(device)) {
+        target = device;
+        return true;
+    }
     return false;
+}
+
+/**
+ * @param address
+ * @return bool
+ */
+bool NetworkAPI::setDevice(QString address) {
+    auto device = deviceDirectory->getDevice(address);
+    if (device == nullptr) {
+        return false;
+    } else {
+        target = device;
+        return true;
+    }
 }
 
 /**

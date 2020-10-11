@@ -31,6 +31,11 @@ public:
      * @param device
      */
     bool removeDevice(NetworkDevice* device);
+
+    /**
+     * @param address
+     */
+    NetworkDevice *getDevice(QString address);
     
     /**
      * @param int index

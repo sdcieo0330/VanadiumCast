@@ -12,12 +12,8 @@
 #include "Networking/NetworkDeviceDirectory.h"
 #include "Networking/NetworkDevice.h"
 #include "Networking/NetworkStreamer.h"
-#include "MediaProcessing/AudioDecoder.h"
-#include "MediaProcessing/AudioEncoder.h"
-#include "MediaProcessing/VideoDecoder.h"
-#include "MediaProcessing/VideoEncoder.h"
-#include "MediaProcessing/Demuxer.h"
 #include "MediaProcessing/Input.h"
+#include "MediaProcessing/InputFile.h"
 #include "MediaProcessing/NetworkInput.h"
 #include <QtCore>
 #include <QtWidgets>
@@ -53,6 +49,11 @@ public:
  */
     bool setDevice(NetworkDevice* device);
     
+    /**
+ * @param address
+ */
+    bool setDevice(QString address);
+
     bool togglePlayPause();
     
     /**
@@ -82,16 +83,12 @@ public:
 public slots:
     void newSinkConnection(NetworkDevice* device);
 private:
-    Input *inputFile;
-    AudioDecoder *audioDecoder;
-    VideoDecoder *videoDecoder;
-    AudioEncoder *audioEncoder;
-    VideoEncoder *videoEncoder;
-    NetworkStreamer *streamer;
-    Demuxer *demuxer;
+    NetworkDevice *target = nullptr;
+    Input *inputFile = nullptr;
+    NetworkStreamer *streamer = nullptr;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;
-    NetworkInput *sinkInput;
+    NetworkInput *sinkInput = nullptr;
     NetworkSinkHandler *sinkHandler;
 };
 

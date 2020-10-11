@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("deviceDirectory", api.getDeviceDirectory());
+    engine.rootContext()->setContextProperty("backendAPI", &api);
     const QUrl url(QStringLiteral("qrc:/gui/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      app, [url](QObject *obj, const QUrl &objUrl) {

@@ -29,6 +29,15 @@ int NetworkDeviceDirectory::addDevice(NetworkDevice* device) {
     return deviceList->count() - 1;
 }
 
+NetworkDevice *NetworkDeviceDirectory::getDevice(QString address) {
+    for (auto device: *deviceList) {
+        if (device->getAddressString() == address) {
+            return device;
+        }
+    }
+    return nullptr;
+}
+
 /**
  * @param device
  * @return bool

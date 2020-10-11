@@ -9,24 +9,28 @@
  * InputFile implementation
  */
 
+InputFile::InputFile(QString path) {
+    inputDevice = new QFile(path);
+}
 
 /**
  * @return bool
  */
 bool InputFile::open() {
-    return false;
+    return inputDevice->open(QIODevice::ReadOnly);
 }
 
 /**
  * @return bool
  */
 bool InputFile::close() {
-    return false;
+    inputDevice->close();
+    return true;
 }
 
 /**
  * @return QIODevice*
  */
 QIODevice* InputFile::getIODevice() {
-    return nullptr;
+    return inputDevice;
 }
