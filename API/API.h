@@ -56,7 +56,7 @@ public:
  */
     virtual bool seek(int secPos) = 0;
     
-    virtual int getPlaybackPosition() = 0;
+    virtual qint64 getPlaybackPosition() = 0;
     
     virtual bool toggleSourceSinkDisplay() = 0;
     

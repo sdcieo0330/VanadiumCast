@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Project VanadiumCast
  */
 
@@ -17,6 +17,7 @@ bool NetworkAPI::init() {
     deviceDirectory = new NetworkDeviceDirectory();
     deviceScanner = new NetworkDeviceScanner(deviceDirectory);
 
+    targetConnection = new QTcpSocket;
     sinkHandler = new NetworkSinkHandler(this);
     return false;
 }
@@ -49,7 +50,7 @@ bool NetworkAPI::setInputFile(QUrl inputFileName) {
         QFile file(inputFileName.toLocalFile());
         if (file.exists()) {
             inputFile = new InputFile(inputFileName.toLocalFile());
-            inputFile->
+            return true;
         }
     }
     return false;
@@ -92,6 +93,14 @@ bool NetworkAPI::setDevice(QString address) {
  * @return bool
  */
 bool NetworkAPI::startSource() {
+    inputFile->open();
+    target->sendDatagram(&Command::CONNECTDATA);
+    if (target->receiveDatagram(10).data() == Command::OK) {
+        targetConnection->connectToHost(target->getAddress(), 55556);
+        transcoder = new VideoTranscoder(inputFile->getIODevice(), targetConnection, VideoTranscoder::STANDARD);
+        transcoder->startTranscoding();
+        return true;
+    }
     return false;
 }
 
@@ -99,7 +108,8 @@ bool NetworkAPI::startSource() {
  * @return bool
  */
 bool NetworkAPI::togglePlayPause() {
-    return false;
+    transcoder->togglePlayPause();
+    return true;
 }
 
 /**
@@ -107,7 +117,7 @@ bool NetworkAPI::togglePlayPause() {
  * @return bool
  */
 bool NetworkAPI::forward(int sec) {
-    return false;
+    return transcoder->seek(transcoder->getPlaybackPosition() + sec);
 }
 
 /**
@@ -115,7 +125,7 @@ bool NetworkAPI::forward(int sec) {
  * @return bool
  */
 bool NetworkAPI::backward(int sec) {
-    return false;
+    return transcoder->seek(transcoder->getPlaybackPosition() - sec);
 }
 
 /**
@@ -123,14 +133,14 @@ bool NetworkAPI::backward(int sec) {
  * @return bool
  */
 bool NetworkAPI::seek(int secPos) {
-    return false;
+    return transcoder->seek(secPos);
 }
 
 /**
  * @return int
  */
-int NetworkAPI::getPlaybackPosition() {
-    return 0;
+qint64 NetworkAPI::getPlaybackPosition() {
+    return transcoder->getPlaybackPosition();
 }
 
 /**

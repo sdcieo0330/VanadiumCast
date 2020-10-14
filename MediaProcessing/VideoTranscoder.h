@@ -25,6 +25,22 @@ public:
 
     static EncodingProfile LOW, STANDARD, HIGH, ULTRA;
 
+    qint64 getPlaybackPosition() {
+        return avPlayer->position();
+    }
+
+    void togglePlayPause() {
+        avPlayer->pause(!avPlayer->isPaused());
+    }
+
+    bool seek(qint64 secPos) {
+        if (secPos <=avPlayer->duration()) {
+            avPlayer->seek(secPos);
+            return true;
+        }
+        return false;
+    }
+
 signals:
 
 private:

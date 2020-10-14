@@ -5,6 +5,7 @@ import QtAV 1.6
 import QtQuick.Controls.Material 2.12
 
 Page {
+    property alias streamButton: startStreamBtn
     Timer {
         id: timer
     }
@@ -18,7 +19,7 @@ Page {
     header: Label {
         text: qsTr("2. Select media file you want to stream")
         font.pixelSize: Qt.application.font.pixelSize * 1.2
-        padding: 10
+        padding: 8
     }
 
     FileDialog {
@@ -35,11 +36,11 @@ Page {
 
     TextField {
         anchors.top: parent.top
-        anchors.topMargin: 20
+        anchors.topMargin: 8
         anchors.left: parent.left
-        anchors.leftMargin: 20
+        anchors.leftMargin: 8
         anchors.right: selectMediaBtn.left
-        anchors.rightMargin: 20
+        anchors.rightMargin: 8
 
         id: mediaPathInput
         placeholderText: "Select media file"
@@ -62,12 +63,13 @@ Page {
         anchors.right: parent.right
         anchors.rightMargin: 20
         anchors.top: parent.top
-        anchors.topMargin: 20
+        anchors.topMargin: 12
         id: selectMediaBtn
         text: "Browse"
         onClicked: mediaSelectionDialog.open()
     }
     Item {
+        id: previewVideoContainer
         Timer {
             id: controlsAutoHideTimer
             interval: 1520
@@ -87,10 +89,10 @@ Page {
         }
 
         anchors.top: selectMediaBtn.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: streamButton.top
         anchors.right: parent.right
         anchors.left: parent.left
-        anchors.margins: 20
+        anchors.margins: 8
         Label {
             id: previewLabel
             text: qsTr("Preview")
@@ -256,5 +258,12 @@ Page {
                 controlsAutoHideTimer.stop()
             }
         }
+    }
+    Button {
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 8
+        id: startStreamBtn
+        text: qsTr("Stream")
     }
 }

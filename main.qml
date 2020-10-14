@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtMultimedia 5.12
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     width: 512
@@ -12,6 +13,11 @@ ApplicationWindow {
     SoundEffect {
         id: incomingPing
         source: Qt.resolvedUrl("/res/wav/incoming.wav")
+    }
+
+    MessageDialog {
+        id: alertDialog
+        visible: false
     }
 
     Popup {
@@ -108,6 +114,11 @@ ApplicationWindow {
                 function onCurrentItemChanged() {
                     pageMedia.enabled = true
                     pageMediaBtn.enabled = true
+                    if (!backendAPI.setDevice(pageDevices.deviceLV.currentItem["address"])) {
+                        alertDialog.setText("Can not open input file!")
+                        alertDialog.setTitle("Error")
+                        alertDialog.setIcon(StandardIcon.Critical)
+                    }
                 }
             }
         }
@@ -120,6 +131,15 @@ ApplicationWindow {
                 function onSelectedMedia(fileName) {
                     pageStreaming.enabled = true
                     pageStreamingBtn.enabled = true
+                    backendAPI.setInputFile(fileName)
+                }
+            }
+            Connections {
+                target: pageMedia.streamButton
+                function onClicked() {
+                    pageStreaming.enabled = true
+                    pageStreamingBtn.enabled = true
+                    backendAPI.startSource()
                 }
             }
         }

@@ -64,10 +64,15 @@ public:
         return name;
     }
 
+    Q_INVOKABLE bool sendDatagram(QByteArray *data);
+
+    Q_INVOKABLE QNetworkDatagram receiveDatagram(int timeout);
+
 signals:
     void nameChanged();
     void peerAddressChanged();
 private:
+    QUdpSocket *udpSocket;
     QHostAddress peerAddress;
     QString name;
 };

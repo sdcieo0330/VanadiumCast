@@ -15,6 +15,7 @@
 #include "MediaProcessing/Input.h"
 #include "MediaProcessing/InputFile.h"
 #include "MediaProcessing/NetworkInput.h"
+#include "MediaProcessing/VideoTranscoder.h"
 #include <QtCore>
 #include <QtWidgets>
 extern "C" {
@@ -38,53 +39,55 @@ public:
     /**
  * @param inputFileName
  */
-    bool setInputFile(QUrl inputFileName);
+    Q_INVOKABLE bool setInputFile(QUrl inputFileName);
 
-    bool startSource();
+    Q_INVOKABLE bool startSource();
     
-    NetworkDeviceDirectory *getDeviceDirectory();
+    Q_INVOKABLE NetworkDeviceDirectory *getDeviceDirectory();
     
     /**
  * @param device
  */
-    bool setDevice(NetworkDevice* device);
+    Q_INVOKABLE bool setDevice(NetworkDevice* device);
     
     /**
  * @param address
  */
-    bool setDevice(QString address);
+    Q_INVOKABLE bool setDevice(QString address);
 
-    bool togglePlayPause();
+    Q_INVOKABLE bool togglePlayPause();
     
     /**
  * @param sec
  */
-    bool forward(int sec);
+    Q_INVOKABLE bool forward(int sec);
     
     /**
  * @param sec
  */
-    bool backward(int sec);
+    Q_INVOKABLE bool backward(int sec);
     
     /**
  * @param secPos
  */
-    bool seek(int secPos);
+    Q_INVOKABLE bool seek(int secPos);
     
-    int getPlaybackPosition();
+    Q_INVOKABLE qint64 getPlaybackPosition();
     
-    bool toggleSourceSinkDisplay();
+    Q_INVOKABLE bool toggleSourceSinkDisplay();
     
     /**
  * @param widget
  */
-    bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
+    Q_INVOKABLE bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
 
 public slots:
     void newSinkConnection(NetworkDevice* device);
 private:
     NetworkDevice *target = nullptr;
+    QTcpSocket *targetConnection = nullptr;
     Input *inputFile = nullptr;
+    VideoTranscoder *transcoder = nullptr;
     NetworkStreamer *streamer = nullptr;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;

@@ -29,6 +29,7 @@ void VideoTranscoder::initTranscoder(EncodingProfile profile) {
 
 void VideoTranscoder::startTranscoding() {
     avTranscoder->start();
+    avTranscoder->pause(true);
 }
 
 EncodingProfile VideoTranscoder::LOW;
