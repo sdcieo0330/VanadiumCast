@@ -4,6 +4,7 @@
 
 
 #include "NetworkInput.h"
+#include "Commands.h"
 #include <QtCore>
 #include <QtNetwork>
 
@@ -11,9 +12,7 @@
  * NetworkInput implementation
  */
 
-NetworkInput::NetworkInput(NetworkDevice* device) {
-    connection = new QTcpSocket;
-    connection->connectToHost(device->getAddress(), 55556);
+NetworkInput::NetworkInput(NetworkDevice* device): device(device) {
     inputCache = new QContiguousCache<uint8_t>(10*1024*1024);
     cacheMutex = new QMutex(QMutex::Recursive);
 }
@@ -24,7 +23,7 @@ NetworkInput::NetworkInput(NetworkDevice* device) {
 bool NetworkInput::open() {
     isRunning = true;
     start();
-    return connection || connection->isOpen() || connection->open(QIODevice::ReadWrite);
+    return device->getDataConnection() || device->getDataConnection()->isOpen() || device->getDataConnection()->open(QIODevice::ReadWrite);
 }
 
 /**
@@ -34,7 +33,8 @@ void NetworkInput::run() {
     uint8_t buf, out;
     while(isRunning) {
         if (!inputCache->isFull()) {
-            connection->read(reinterpret_cast<char*>(&buf), 1);
+            device->getControlConnection()->write(Command::REQUESTFRAG);
+            device->getDataConnection()->read(reinterpret_cast<char*>(&buf), 1);
             out = qFromLittleEndian(buf);
             cacheMutex->lock();
             inputCache->append(out);
@@ -50,9 +50,13 @@ void NetworkInput::run() {
  */
 bool NetworkInput::close() {
     isRunning = false;
-    connection->close();
+    device->getControlConnection()->write(Command::CLOSEDATA);
+    if (device->getControlConnection()->waitForReadyRead(1000) && device->getControlConnection()->read(1) == Command::OK){
+        device->getDataConnection()->close();
+    }
+    device->getControlConnection()->close();
     inputCache->clear();
-    return !connection->isOpen();
+    return !device->getControlConnection()->isOpen() && !device->getDataConnection()->isOpen();
 }
 
 /**

@@ -28,7 +28,7 @@ public:
 
     QMutex *getCacheLock();
 private:
-    QTcpSocket* connection;
+    NetworkDevice* device;
     QContiguousCache<uint8_t>* inputCache;
     QMutex *cacheMutex;
     bool isRunning = false;

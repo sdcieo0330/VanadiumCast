@@ -23,7 +23,7 @@ NetworkDeviceScanner::NetworkDeviceScanner(NetworkDeviceDirectory* deviceDirecto
 void NetworkDeviceScanner::run() {
     udpBroadcast = new QUdpSocket;
     while (running) {
-        udpBroadcast->writeDatagram(Command::SCAN, QHostAddress::Broadcast, 55554);
+        udpBroadcast->writeDatagram(Command::SCAN, QHostAddress::LocalHost, 55554);
         udpBroadcast->flush();
         sleep(5);
         deviceDirectory->syncLists();

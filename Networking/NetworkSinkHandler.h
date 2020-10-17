@@ -10,6 +10,7 @@
 #include "NetworkSinkTcpServer.h"
 #include "NetworkDevice.h"
 #include "MediaProcessing/NetworkInput.h"
+#include "GUI/VideoGui.h"
 #include <QtCore>
 #include <QtNetwork>
 
@@ -54,7 +55,9 @@ private:
     NetworkSinkTcpServer* tcpServer;
     QTcpSocket* controlConnection;
     QTcpSocket* dataConnection;
+    QTcpServer* dataConnectionServer;
     qintptr controlConnectionHandle;
+    VideoGUI *videoGui;
     bool running = false;
     bool shouldReset = false;
 };

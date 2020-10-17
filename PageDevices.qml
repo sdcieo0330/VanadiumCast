@@ -18,20 +18,26 @@ Page {
 
     Component {
         id: deviceDelegate
+//        property alias name: deviceDelegateItem.name
+//        property alias address: deviceDelegateItem.address
         Item {
+//            property string name: "" + name
+//            property string address: "" + address
             anchors.horizontalCenter: parent.horizontalCenter
             id: deviceDelegateItem
             width: 240; height: 32
-            Row {
-                anchors.centerIn: parent
-                Label {
-                    text: name
-                    color: Material.foreground
-                }
-                Label {
-                    text: "(" + address + ")"
-                    color: Material.foreground
-                }
+            Label {
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                id: nameLabel
+                text: name + ":"
+                color: Material.foreground
+            }
+            Label {
+                anchors.left: nameLabel.right
+                anchors.verticalCenter: parent.verticalCenter
+                text: address
+                color: Material.foreground
             }
             MouseArea {
                 id: delegateMouseArea

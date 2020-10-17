@@ -29,6 +29,7 @@ SOURCES += \
     Networking/NetworkSinkTcpServer.cpp \
     Networking/NetworkDeviceScanner.cpp \
     Networking/NetworkDeviceDirectory.cpp \
+    GUI/VideoGui.cpp
 
 RESOURCES += qml.qrc
 
@@ -74,3 +75,7 @@ HEADERS += \
     Networking/NetworkSinkTcpServer.h \
     Networking/NetworkDeviceScanner.h \
     Networking/NetworkDeviceDirectory.h \
+    GUI/VideoGui.h
+
+FORMS += \
+    GUI/VideoGui.ui

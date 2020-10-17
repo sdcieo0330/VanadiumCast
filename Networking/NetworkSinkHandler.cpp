@@ -14,11 +14,13 @@
 
 NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
     tcpServer = new NetworkSinkTcpServer;
+    dataConnectionServer = new QTcpServer;
+    dataConnectionServer->listen(QHostAddress::Any, 55556);
     tcpServer->listen(QHostAddress::Any, 55555);
     connect(tcpServer, SIGNAL(newConnection(qintptr)), this, SLOT(incomingTcpConnect(qintptr)));
     udpSocket = new QUdpSocket;
     udpBroadcast = new QUdpSocket;
-    udpBroadcast->bind(55554, QUdpSocket::ShareAddress);
+    udpBroadcast->bind(QHostAddress::LocalHost, 55554, QUdpSocket::ShareAddress);
 }
 
 /**
@@ -27,34 +29,33 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
 void NetworkSinkHandler::run() {
     controlConnection = new QTcpSocket;
     controlConnection->setSocketDescriptor(controlConnectionHandle);
-    controlConnection->write(Command::CONNECTDATA);
-    controlConnection->flush();
-    if (controlConnection->waitForReadyRead(100)) {
-        if (controlConnection->read(1) == Command::OK) {
-            dataConnection = new QTcpSocket;
-            dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
+    if (controlConnection->waitForReadyRead()) {
+        if (controlConnection->read(1) == Command::CONNECTDATA) {
+            dataConnectionServer->resumeAccepting();
+            while (dataConnectionServer->hasPendingConnections()) {
+                dataConnectionServer->nextPendingConnection()->deleteLater();
+            }
+            controlConnection->write(Command::OK);
+            if (dataConnectionServer->waitForNewConnection(30000)) {
+                dataConnection = dataConnectionServer->nextPendingConnection();
+                dataConnectionServer->pauseAccepting();
+            } else {
+                controlConnection->close();
+                delete controlConnection;
+                return;
+            }
         } else {
             controlConnection->close();
             delete controlConnection;
             return;
         }
     }
-    while (running) {
-        if (!networkInput->getCache()->isFull()) {
-            controlConnection->write(Command::REQUESTFRAG);
-            controlConnection->flush();
-            if (controlConnection->waitForReadyRead(1000)) {
-                auto data = controlConnection->readAll();
-                networkInput->getCacheLock()->lock();
-                for (int i = 0; i < data.size(); ++i) {
-                    networkInput->getCache()->append(data.data()[i]);
-                }
-                networkInput->getCacheLock()->unlock();
-            }
-        } else {
-            usleep(100);
-        }
-    }
+    NetworkDevice *self = new NetworkDevice(QHostAddress::LocalHost, "self");
+    self->setControlConnection(controlConnection);
+    self->setDataConnection(dataConnection);
+    videoGui = new VideoGUI(self->getDataConnection());
+    videoGui->setFixedSize(480, 360);
+    videoGui->show();
 }
 
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {

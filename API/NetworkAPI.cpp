@@ -38,6 +38,9 @@ bool NetworkAPI::stop() {
     deviceScanner->stop();
     sinkHandler->stopDiscoverable();
     sinkHandler->stop();
+    if (transcoder != nullptr) {
+        transcoder->stopTranscoding();
+    }
     return true;
 }
 
@@ -85,6 +88,7 @@ bool NetworkAPI::setDevice(QString address) {
         return false;
     } else {
         target = device;
+        qDebug() << "Set device:" << target->getAddress();
         return true;
     }
 }
@@ -93,10 +97,16 @@ bool NetworkAPI::setDevice(QString address) {
  * @return bool
  */
 bool NetworkAPI::startSource() {
+    target->setControlConnection(new QTcpSocket);
+    qDebug() << "Sending data connection request to" << target->getAddress();
+    target->getControlConnection()->connectToHost(target->getAddress(), 55555);
+    target->getControlConnection()->waitForConnected();
     inputFile->open();
-    target->sendDatagram(&Command::CONNECTDATA);
+    target->getControlConnection()->write(Command::CONNECTDATA);
+    qDebug() << "Sent data connection request";
     if (target->receiveDatagram(10).data() == Command::OK) {
         targetConnection->connectToHost(target->getAddress(), 55556);
+        target->setDataConnection(targetConnection);
         transcoder = new VideoTranscoder(inputFile->getIODevice(), targetConnection, VideoTranscoder::STANDARD);
         transcoder->startTranscoding();
         return true;
@@ -108,8 +118,12 @@ bool NetworkAPI::startSource() {
  * @return bool
  */
 bool NetworkAPI::togglePlayPause() {
-    transcoder->togglePlayPause();
-    return true;
+    if (transcoder != nullptr) {
+        transcoder->togglePlayPause();
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -117,7 +131,11 @@ bool NetworkAPI::togglePlayPause() {
  * @return bool
  */
 bool NetworkAPI::forward(int sec) {
-    return transcoder->seek(transcoder->getPlaybackPosition() + sec);
+    if (transcoder != nullptr) {
+        return transcoder->seek(transcoder->getPlaybackPosition() + sec);
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -125,7 +143,11 @@ bool NetworkAPI::forward(int sec) {
  * @return bool
  */
 bool NetworkAPI::backward(int sec) {
-    return transcoder->seek(transcoder->getPlaybackPosition() - sec);
+    if (transcoder != nullptr) {
+        return transcoder->seek(transcoder->getPlaybackPosition() + sec);
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -133,14 +155,22 @@ bool NetworkAPI::backward(int sec) {
  * @return bool
  */
 bool NetworkAPI::seek(int secPos) {
-    return transcoder->seek(secPos);
+    if (transcoder != nullptr) {
+        return transcoder->seek(secPos);
+    } else {
+        return false;
+    }
 }
 
 /**
  * @return int
  */
 qint64 NetworkAPI::getPlaybackPosition() {
-    return transcoder->getPlaybackPosition();
+    if (transcoder != nullptr) {
+        return transcoder->getPlaybackPosition();
+    } else {
+        return 0;
+    }
 }
 
 /**

@@ -18,6 +18,10 @@ ApplicationWindow {
     MessageDialog {
         id: alertDialog
         visible: false
+        standardButtons: "Ok"
+        onAccepted: {
+            alertDialog.close()
+        }
     }
 
     Popup {
@@ -114,10 +118,12 @@ ApplicationWindow {
                 function onCurrentItemChanged() {
                     pageMedia.enabled = true
                     pageMediaBtn.enabled = true
-                    if (!backendAPI.setDevice(pageDevices.deviceLV.currentItem["address"])) {
-                        alertDialog.setText("Can not open input file!")
+                    console.debug(pageDevices.deviceLV.currentItem.data[1].text) // second data entry is the address label
+                    if (!backendAPI.setDevice(pageDevices.deviceLV.currentItem.data[1].text)) {
+                        alertDialog.setText("Cannot select device!")
                         alertDialog.setTitle("Error")
                         alertDialog.setIcon(StandardIcon.Critical)
+                        alertDialog.setVisible(true)
                     }
                 }
             }

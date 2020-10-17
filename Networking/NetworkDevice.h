@@ -68,11 +68,28 @@ public:
 
     Q_INVOKABLE QNetworkDatagram receiveDatagram(int timeout);
 
+    QTcpSocket *getControlConnection() {
+        return controlConnection;
+    }
+
+    QTcpSocket *getDataConnection() {
+        return dataConnection;
+    }
+
+    void setDataConnection(QTcpSocket *value) {
+        dataConnection = value;
+    }
+
+    void setControlConnection(QTcpSocket *value){
+        controlConnection = value;
+    }
+
 signals:
     void nameChanged();
     void peerAddressChanged();
 private:
     QUdpSocket *udpSocket;
+    QTcpSocket *controlConnection, *dataConnection;
     QHostAddress peerAddress;
     QString name;
 };

@@ -17,6 +17,8 @@ public:
 
     void startTranscoding();
 
+    void stopTranscoding();
+
     void connectPlayerSignals(PlayerStateControl *stateController) {
         connect(avPlayer, &QtAV::AVPlayer::positionChanged, stateController, &PlayerStateControl::positionChanged);
         connect(stateController, &PlayerStateControl::setPaused, avPlayer, &QtAV::AVPlayer::pause);

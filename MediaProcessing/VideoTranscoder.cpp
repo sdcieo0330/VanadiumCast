@@ -32,6 +32,13 @@ void VideoTranscoder::startTranscoding() {
     avTranscoder->pause(true);
 }
 
+void VideoTranscoder::stopTranscoding() {
+    avTranscoder->stop();
+    avPlayer->stop();
+    avTranscoder->deleteLater();
+    avPlayer->deleteLater();
+}
+
 EncodingProfile VideoTranscoder::LOW;
 EncodingProfile VideoTranscoder::STANDARD;
 EncodingProfile VideoTranscoder::HIGH;
