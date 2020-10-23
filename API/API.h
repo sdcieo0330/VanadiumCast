@@ -26,7 +26,7 @@ public:
     /**
  * @param inputFileName
  */
-    virtual bool setInputFile(QUrl inputFileName) = 0;
+    virtual bool setInputFile() = 0;
     
     virtual DeviceDirectory<T> *getDeviceDirectory() = 0;
     
@@ -35,9 +35,11 @@ public:
  */
     virtual bool setDevice(T* device) = 0;
     
-    virtual bool startSource() = 0;
+    virtual bool startSource(QUrl inputFileName, QString deviceAddress) = 0;
+
+    virtual QUrl getInputFile() = 0;
     
-    bool startSink();
+    virtual bool startSink() = 0;
     
     virtual bool togglePlayPause() = 0;
     

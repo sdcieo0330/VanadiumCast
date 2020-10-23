@@ -66,7 +66,12 @@ Page {
         anchors.topMargin: 12
         id: selectMediaBtn
         text: "Browse"
-        onClicked: mediaSelectionDialog.open()
+        onClicked: {
+            backendAPI.setInputFile()
+            if (backendAPI.getInputFile() != Qt.resolvedUrl("")) {
+                selectedMedia(backendAPI.getInputFile().toString())
+            }
+        }
     }
     Item {
         id: previewVideoContainer

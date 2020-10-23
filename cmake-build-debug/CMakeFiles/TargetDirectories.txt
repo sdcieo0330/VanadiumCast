@@ -1,0 +1,4 @@
+/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir
+/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast_autogen.dir

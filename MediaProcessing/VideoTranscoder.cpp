@@ -1,6 +1,6 @@
 #include "VideoTranscoder.h"
 
-VideoTranscoder::VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice, EncodingProfile profile, QObject *parent) : QObject(parent), inputDevice(inputDevice), outputDevice(outputDevice)
+VideoTranscoder::VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice, EncodingProfile profile, QObject *dataObject, QObject *parent) : QObject(parent), inputDevice(inputDevice), outputDevice(outputDevice), dataObject(dataObject)
 {
     initializeProfiles();
     initTranscoder(profile);
@@ -37,6 +37,11 @@ void VideoTranscoder::stopTranscoding() {
     avPlayer->stop();
     avTranscoder->deleteLater();
     avPlayer->deleteLater();
+}
+
+VideoTranscoder::~VideoTranscoder() {
+    dataObject->deleteLater();
+    QObject::~QObject();
 }
 
 EncodingProfile VideoTranscoder::LOW;

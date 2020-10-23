@@ -2,8 +2,8 @@
 #define VIDEOGUI_H
 
 #include <QWidget>
-#include <QtAV>
-#include <QtAVWidgets>
+#include <QtAV/QtAV>
+#include <QtAVWidgets/QtAVWidgets>
 #include <QtAVWidgets/OpenGLWidgetRenderer.h>
 
 namespace Ui {

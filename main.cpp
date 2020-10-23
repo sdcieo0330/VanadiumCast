@@ -2,12 +2,11 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QtCore>
-#include <QtAV.h>
-#include <QtAVWidgets.h>
+#include <QtAV/QtAV>
+#include <QtAVWidgets/QtAVWidgets>
 #include <QtNetwork>
 #include <csignal>
 #include "API/NetworkAPI.h"
-#include "Networking/NetworkStreamer.h"
 #include "Networking/NetworkDevice.h"
 #include "Networking/NetworkDeviceScanner.h"
 #include "Networking/NetworkSinkHandler.h"

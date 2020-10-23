@@ -3,27 +3,30 @@
  */
 
 
-#ifndef _NETWORKAPI_H
-#define _NETWORKAPI_H
-
-#include "API.h"
-#include "Networking/NetworkSinkHandler.h"
-#include "Networking/NetworkDeviceScanner.h"
-#include "Networking/NetworkDeviceDirectory.h"
-#include "Networking/NetworkDevice.h"
-#include "Networking/NetworkStreamer.h"
-#include "MediaProcessing/Input.h"
-#include "MediaProcessing/InputFile.h"
-#include "MediaProcessing/NetworkInput.h"
-#include "MediaProcessing/VideoTranscoder.h"
 #include <QtCore>
 #include <QtWidgets>
+#include <QtNetwork>
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavdevice/avdevice.h>
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
 }
+#include "API.h"
+#include "Networking/NetworkSinkHandler.h"
+#include "Networking/NetworkDeviceScanner.h"
+#include "Networking/NetworkDeviceDirectory.h"
+#include "Networking/NetworkDevice.h"
+#include "Networking/StreamInitThread.h"
+#include "MediaProcessing/Input.h"
+#include "MediaProcessing/InputFile.h"
+#include "MediaProcessing/NetworkInput.h"
+#include "MediaProcessing/VideoTranscoder.h"
+
+
+#ifndef _NETWORKAPI_H
+#define _NETWORKAPI_H
+
 
 class NetworkAPI final : public QObject, public API<NetworkDevice> {
     Q_OBJECT
@@ -39,9 +42,13 @@ public:
     /**
  * @param inputFileName
  */
-    Q_INVOKABLE bool setInputFile(QUrl inputFileName);
+    Q_INVOKABLE bool setInputFile();
 
-    Q_INVOKABLE bool startSource();
+    Q_INVOKABLE QUrl getInputFile();
+
+    Q_INVOKABLE bool startSource(QUrl inputFileName, QString address);
+
+    Q_INVOKABLE bool startSink();
     
     Q_INVOKABLE NetworkDeviceDirectory *getDeviceDirectory();
     
@@ -49,6 +56,10 @@ public:
  * @param device
  */
     Q_INVOKABLE bool setDevice(NetworkDevice* device);
+
+    NetworkDevice *getDevice() {
+        return target;
+    }
     
     /**
  * @param address
@@ -85,14 +96,16 @@ public slots:
     void newSinkConnection(NetworkDevice* device);
 private:
     NetworkDevice *target = nullptr;
-    QTcpSocket *targetConnection = nullptr;
-    Input *inputFile = nullptr;
+    QTcpSocket *controlConnection = nullptr, *dataConnection = nullptr;
+    QUrl inputFileName;
+    InputFile *inputFile = nullptr;
     VideoTranscoder *transcoder = nullptr;
-    NetworkStreamer *streamer = nullptr;
+    StreamInitThread *streamInitThread = nullptr;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;
     NetworkSinkHandler *sinkHandler;
+
 };
 
 #endif //_NETWORKAPI_H

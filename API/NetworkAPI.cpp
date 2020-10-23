@@ -4,6 +4,7 @@
 
 
 #include "NetworkAPI.h"
+#include <iostream>
 
 /**
  * NetworkAPI implementation
@@ -16,8 +17,6 @@
 bool NetworkAPI::init() {
     deviceDirectory = new NetworkDeviceDirectory();
     deviceScanner = new NetworkDeviceScanner(deviceDirectory);
-
-    targetConnection = new QTcpSocket;
     sinkHandler = new NetworkSinkHandler(this);
     return false;
 }
@@ -48,7 +47,8 @@ bool NetworkAPI::stop() {
  * @param inputFileName
  * @return bool
  */
-bool NetworkAPI::setInputFile(QUrl inputFileName) {
+bool NetworkAPI::setInputFile() {
+    inputFileName = QFileDialog::getOpenFileUrl(nullptr, "Please select an input media file", QUrl::fromLocalFile("~"), "Video File ( *.mp4 *.mkv *.webm *.m4v );; Audio File ( *.mp3 *.wav *.m4a *.webm )", nullptr, QFileDialog::DontUseNativeDialog);
     if (inputFileName.isLocalFile()) {
         QFile file(inputFileName.toLocalFile());
         if (file.exists()) {
@@ -57,6 +57,14 @@ bool NetworkAPI::setInputFile(QUrl inputFileName) {
         }
     }
     return false;
+}
+
+/**
+ * @return QUrl
+ */
+
+QUrl NetworkAPI::getInputFile() {
+    return inputFileName;
 }
 
 /**
@@ -83,12 +91,12 @@ bool NetworkAPI::setDevice(NetworkDevice* device) {
  * @return bool
  */
 bool NetworkAPI::setDevice(QString address) {
-    auto device = deviceDirectory->getDevice(address);
+    NetworkDevice *device = deviceDirectory->getDevice(address);
     if (device == nullptr) {
         return false;
     } else {
         target = device;
-        qDebug() << "Set device:" << target->getAddress();
+        qDebug() << "Set device:" << target;
         return true;
     }
 }
@@ -96,21 +104,27 @@ bool NetworkAPI::setDevice(QString address) {
 /**
  * @return bool
  */
-bool NetworkAPI::startSource() {
-    target->setControlConnection(new QTcpSocket);
-    qDebug() << "Sending data connection request to" << target->getAddress();
-    target->getControlConnection()->connectToHost(target->getAddress(), 55555);
-    target->getControlConnection()->waitForConnected();
-    inputFile->open();
-    target->getControlConnection()->write(Command::CONNECTDATA);
-    qDebug() << "Sent data connection request";
-    if (target->receiveDatagram(10).data() == Command::OK) {
-        targetConnection->connectToHost(target->getAddress(), 55556);
-        target->setDataConnection(targetConnection);
-        transcoder = new VideoTranscoder(inputFile->getIODevice(), targetConnection, VideoTranscoder::STANDARD);
-        transcoder->startTranscoding();
-        return true;
+bool NetworkAPI::startSource(QUrl inputFileName, QString address) {
+    qDebug() << "Start source entered";
+    if (inputFileName.isEmpty()) {
+        setInputFile();
     }
+    setDevice(address);
+    if (!target) {
+        return false;
+    }
+    qDebug() << "target != nullptr";
+    qDebug() << target;
+    qDebug() << "Current thread:" << QThread::currentThread();
+    streamInitThread = new StreamInitThread(target, inputFile);
+    streamInitThread->start();
+    return true;
+}
+
+/**
+ * @return bool
+ */
+bool NetworkAPI::startSink() {
     return false;
 }
 

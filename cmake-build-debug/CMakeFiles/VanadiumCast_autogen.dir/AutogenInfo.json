@@ -1,0 +1,294 @@
+{
+	"BUILD_DIR" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen",
+	"CMAKE_BINARY_DIR" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/silas/CLionProjects/VanadiumCast",
+	"CMAKE_EXECUTABLE" : "/home/silas/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.6397.106/bin/cmake/linux/bin/cmake",
+	"CMAKE_SOURCE_DIR" : "/home/silas/CLionProjects/VanadiumCast",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/home/silas/CLionProjects/VanadiumCast/API/API.h",
+			"MU",
+			"5FTMMMYCF2/moc_API.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/API/NetworkAPI.h",
+			"MU",
+			"5FTMMMYCF2/moc_NetworkAPI.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/API/SinkHandleWidget.h",
+			"MU",
+			"5FTMMMYCF2/moc_SinkHandleWidget.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Commands.h",
+			"MU",
+			"EWIEGA46WW/moc_Commands.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.h",
+			"MU",
+			"2LCCYRVYXB/moc_VideoGui.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_AudioDecoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioEncoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_AudioEncoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Codec.h",
+			"MU",
+			"B3LAUSLW6T/moc_Codec.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Decoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_Decoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Demux.h",
+			"MU",
+			"B3LAUSLW6T/moc_Demux.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Demuxer.h",
+			"MU",
+			"B3LAUSLW6T/moc_Demuxer.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Encoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_Encoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Input.h",
+			"MU",
+			"B3LAUSLW6T/moc_Input.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/InputFile.h",
+			"MU",
+			"B3LAUSLW6T/moc_InputFile.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/NetworkInput.h",
+			"MU",
+			"B3LAUSLW6T/moc_NetworkInput.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoDecoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_VideoDecoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoEncoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_VideoEncoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoTranscoder.h",
+			"MU",
+			"B3LAUSLW6T/moc_VideoTranscoder.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/Device.h",
+			"MU",
+			"GNPD5J52UC/moc_Device.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/DeviceDirectory.h",
+			"MU",
+			"GNPD5J52UC/moc_DeviceDirectory.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/DeviceScan.h",
+			"MU",
+			"GNPD5J52UC/moc_DeviceScan.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkDevice.h",
+			"MU",
+			"GNPD5J52UC/moc_NetworkDevice.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkDeviceDirectory.h",
+			"MU",
+			"GNPD5J52UC/moc_NetworkDeviceDirectory.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkDeviceScanner.h",
+			"MU",
+			"GNPD5J52UC/moc_NetworkDeviceScanner.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkHandler.h",
+			"MU",
+			"GNPD5J52UC/moc_NetworkSinkHandler.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkTcpServer.h",
+			"MU",
+			"GNPD5J52UC/moc_NetworkSinkTcpServer.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/SinkHandler.h",
+			"MU",
+			"GNPD5J52UC/moc_SinkHandler.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.h",
+			"MU",
+			"GNPD5J52UC/moc_StreamInitThread.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/Streaming.h",
+			"MU",
+			"GNPD5J52UC/moc_Streaming.cpp"
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : 
+	[
+		"QT_CORE_LIB",
+		"QT_GUI_LIB",
+		"QT_MULTIMEDIA_LIB",
+		"QT_NETWORK_LIB",
+		"QT_QMLMODELS_LIB",
+		"QT_QML_DEBUG",
+		"QT_QML_LIB",
+		"QT_QUICK_LIB",
+		"QT_WIDGETS_LIB"
+	],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/home/silas/CLionProjects/VanadiumCast/cmake-build-debug",
+		"/home/silas/CLionProjects/VanadiumCast",
+		"/usr/include/QtAV",
+		"/usr/include",
+		"/usr/include/QtAVWidgets",
+		"/usr/include",
+		"/usr/include/qt",
+		"/usr/include/qt/QtCore",
+		"/usr/lib/qt/mkspecs/linux-g++",
+		"/usr/include/qt/QtQuick",
+		"/usr/include/qt/QtQmlModels",
+		"/usr/include/qt/QtQml",
+		"/usr/include/qt/QtNetwork",
+		"/usr/include/qt/QtGui",
+		"/usr/include/qt/QtMultimedia",
+		"/usr/include/qt/QtWidgets",
+		"/usr/include/c++/10.2.0",
+		"/usr/include/c++/10.2.0/x86_64-pc-linux-gnu",
+		"/usr/include/c++/10.2.0/backward",
+		"/usr/local/include",
+		"/usr/lib/clang/10.0.1/include",
+		"/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : true,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/usr/bin/clang++",
+		"-dM",
+		"-E",
+		"-c",
+		"/home/silas/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.6397.106/bin/cmake/linux/share/cmake-3.17/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 4,
+	"PARSE_CACHE_FILE" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/bin/moc",
+	"QT_UIC_EXECUTABLE" : "/usr/bin/uic",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[ "/home/silas/CLionProjects/VanadiumCast/API/NetworkAPI.cpp", "MU" ],
+		[ "/home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.cpp", "MU" ],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioEncoder.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Demuxer.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/InputFile.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/NetworkInput.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoDecoder.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoEncoder.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoTranscoder.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkDevice.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkDeviceDirectory.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkDeviceScanner.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkHandler.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkTcpServer.cpp",
+			"MU"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp",
+			"MU"
+		],
+		[ "/home/silas/CLionProjects/VanadiumCast/main.cpp", "MU" ]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"VERBOSITY" : 0
+}

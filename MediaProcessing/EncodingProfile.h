@@ -2,7 +2,7 @@
 #define ENCODINGPROFILE_H
 
 #include <QObject>
-#include <QtAV>
+#include <QtAV/QtAV>
 
 struct EncodingProfile
 {

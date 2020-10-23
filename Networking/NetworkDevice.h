@@ -10,12 +10,6 @@
 #include <QtCore>
 #include <QtQml>
 #include <QtNetwork>
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavdevice/avdevice.h>
-#include <libavformat/avformat.h>
-#include <libavutil/avutil.h>
-}
 
 class NetworkDevice: public QObject, public Device {
     Q_OBJECT
@@ -89,7 +83,7 @@ signals:
     void peerAddressChanged();
 private:
     QUdpSocket *udpSocket;
-    QTcpSocket *controlConnection, *dataConnection;
+    QTcpSocket *controlConnection = nullptr, *dataConnection = nullptr;
     QHostAddress peerAddress;
     QString name;
 };

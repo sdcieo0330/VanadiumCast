@@ -28,14 +28,17 @@ Page {
             width: 240; height: 32
             Label {
                 anchors.left: parent.left
+                anchors.leftMargin: (parent.width - nameLabel.width - addressLabel.width) / 2
                 anchors.verticalCenter: parent.verticalCenter
                 id: nameLabel
                 text: name + ":"
                 color: Material.foreground
             }
             Label {
+                id: addressLabel
                 anchors.left: nameLabel.right
                 anchors.verticalCenter: parent.verticalCenter
+                anchors.rightMargin: (parent.width - nameLabel.width - addressLabel.width) / 2
                 text: address
                 color: Material.foreground
             }

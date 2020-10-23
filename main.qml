@@ -18,6 +18,8 @@ ApplicationWindow {
     MessageDialog {
         id: alertDialog
         visible: false
+        title: "Error"
+        icon: StandardIcon.Critical
         standardButtons: "Ok"
         onAccepted: {
             alertDialog.close()
@@ -112,6 +114,7 @@ ApplicationWindow {
         currentIndex: tabBar.currentIndex
 
         PageDevices {
+            property string deviceAddress;
             id: pageDevices
             Connections {
                 target: pageDevices.deviceLV
@@ -121,15 +124,15 @@ ApplicationWindow {
                     console.debug(pageDevices.deviceLV.currentItem.data[1].text) // second data entry is the address label
                     if (!backendAPI.setDevice(pageDevices.deviceLV.currentItem.data[1].text)) {
                         alertDialog.setText("Cannot select device!")
-                        alertDialog.setTitle("Error")
-                        alertDialog.setIcon(StandardIcon.Critical)
                         alertDialog.setVisible(true)
                     }
+                    pageDevices.deviceAddress = pageDevices.deviceLV.currentItem.data[1].text
                 }
             }
         }
 
         PageMedia {
+            property url inputFileName;
             id: pageMedia
             enabled: false
             Connections {
@@ -137,7 +140,8 @@ ApplicationWindow {
                 function onSelectedMedia(fileName) {
                     pageStreaming.enabled = true
                     pageStreamingBtn.enabled = true
-                    backendAPI.setInputFile(fileName)
+                    console.debug(fileName) // second data entry is the address label
+                    inputFileName = fileName
                 }
             }
             Connections {
@@ -145,7 +149,7 @@ ApplicationWindow {
                 function onClicked() {
                     pageStreaming.enabled = true
                     pageStreamingBtn.enabled = true
-                    backendAPI.startSource()
+                    backendAPI.startSource(pageMedia.inputFileName, pageDevices.deviceAddress)
                 }
             }
         }

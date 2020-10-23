@@ -2,9 +2,9 @@
 #define VIDEOTRANSCODER_H
 
 #include <QObject>
-#include <QtAV.h>
+#include <QtAV/QtAV>
 #include <QtAV/AVTranscoder.h>
-#include <QtAVWidgets>
+#include <QtAVWidgets/QtAVWidgets>
 #include "PlayerStateSlots.h"
 #include "EncodingProfile.h"
 
@@ -13,7 +13,9 @@ class VideoTranscoder : public QObject
     Q_OBJECT
 
 public:
-    explicit VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice, EncodingProfile profile, QObject *parent = nullptr);
+    explicit VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice, EncodingProfile profile, QObject *dataObject, QObject *parent = nullptr);
+
+    ~VideoTranscoder() override;
 
     void startTranscoding();
 
@@ -95,6 +97,7 @@ private:
     QtAV::AVTranscoder *avTranscoder;
     QtAV::AVPlayer *avPlayer;
     QIODevice *inputDevice, *outputDevice;
+    QObject *dataObject;
 };
 
 #endif // VIDEOTRANSCODER_H
