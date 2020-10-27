@@ -35,6 +35,11 @@
 			"2LCCYRVYXB/moc_VideoGui.cpp"
 		],
 		[
+			"/home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.h",
+			"MU",
+			"2LCCYRVYXB/moc_VideoGuiLauncher.cpp"
+		],
+		[
 			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.h",
 			"MU",
 			"B3LAUSLW6T/moc_AudioDecoder.cpp"
@@ -70,6 +75,11 @@
 			"B3LAUSLW6T/moc_Encoder.cpp"
 		],
 		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/EncodingProfile.h",
+			"MU",
+			"B3LAUSLW6T/moc_EncodingProfile.cpp"
+		],
+		[
 			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Input.h",
 			"MU",
 			"B3LAUSLW6T/moc_Input.cpp"
@@ -83,6 +93,11 @@
 			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/NetworkInput.h",
 			"MU",
 			"B3LAUSLW6T/moc_NetworkInput.cpp"
+		],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/PlayerStateSlots.h",
+			"MU",
+			"B3LAUSLW6T/moc_PlayerStateSlots.cpp"
 		],
 		[
 			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoDecoder.h",
@@ -228,6 +243,10 @@
 	[
 		[ "/home/silas/CLionProjects/VanadiumCast/API/NetworkAPI.cpp", "MU" ],
 		[ "/home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.cpp", "MU" ],
+		[
+			"/home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.cpp",
+			"MU"
+		],
 		[
 			"/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.cpp",
 			"MU"

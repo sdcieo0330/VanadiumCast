@@ -19,10 +19,10 @@ void StreamInitThread::run() {
         QThread::msleep(100);
         controlConnection->write(Command::CONNECTDATA);
         qDebug() << "Sent data connection request";
-        if (controlConnection->waitForReadyRead(1000) && dataConnection->read(1) == Command::OK) {
+        if (controlConnection->waitForReadyRead(10000) && controlConnection->read(1) == Command::OK) {
             dataConnection = new QTcpSocket;
-            dataConnection->connectToHost(target->getAddress(), 55556);
-            transcoder = new VideoTranscoder(inputFile->getIODevice(), dataConnection, VideoTranscoder::STANDARD, this, this);
+            dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
+            transcoder = new VideoTranscoder(inputFile->getIODevice(), dataConnection, VideoTranscoder::STANDARD, this);
             transcoder->startTranscoding();
         } else {
             controlConnection->disconnectFromHost();

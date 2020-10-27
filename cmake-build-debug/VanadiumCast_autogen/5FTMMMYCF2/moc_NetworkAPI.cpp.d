@@ -4,6 +4,7 @@
   /home/silas/CLionProjects/VanadiumCast/API/SinkHandleWidget.h \
   /home/silas/CLionProjects/VanadiumCast/Commands.h \
   /home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.h \
+  /home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.h \
   /home/silas/CLionProjects/VanadiumCast/MediaProcessing/EncodingProfile.h \
   /home/silas/CLionProjects/VanadiumCast/MediaProcessing/Input.h \
   /home/silas/CLionProjects/VanadiumCast/MediaProcessing/InputFile.h \

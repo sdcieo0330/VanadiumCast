@@ -1,6 +1,7 @@
 /home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/GNPD5J52UC/moc_NetworkSinkHandler.cpp: /home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkHandler.h \
   /home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/moc_predefs.h \
   /home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.h \
+  /home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.h \
   /home/silas/CLionProjects/VanadiumCast/MediaProcessing/NetworkInput.h \
   /home/silas/CLionProjects/VanadiumCast/Networking/Device.h \
   /home/silas/CLionProjects/VanadiumCast/Networking/NetworkDevice.h \

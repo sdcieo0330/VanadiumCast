@@ -129,9 +129,22 @@ CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.cpp -o CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.s
 
+CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
+CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o: ../GUI/VideoGuiLauncher.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o"
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o -c /home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.cpp
+
+CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.cpp > CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.i
+
+CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.cpp -o CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.s
+
 CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o: ../MediaProcessing/Demuxer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/Demuxer.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.i: cmake_force
@@ -144,7 +157,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o: ../MediaProcessing/InputFile.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/InputFile.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.i: cmake_force
@@ -157,7 +170,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o: ../MediaProcessing/AudioDecoder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.i: cmake_force
@@ -170,7 +183,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o: ../MediaProcessing/AudioEncoder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioEncoder.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.i: cmake_force
@@ -183,7 +196,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.o: ../MediaProcessing/NetworkInput.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/NetworkInput.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.i: cmake_force
@@ -196,7 +209,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/NetworkInput.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.o: ../MediaProcessing/VideoDecoder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoDecoder.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.i: cmake_force
@@ -209,7 +222,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o: ../MediaProcessing/VideoEncoder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoEncoder.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.i: cmake_force
@@ -222,7 +235,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o: ../MediaProcessing/VideoTranscoder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o -c /home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoTranscoder.cpp
 
 CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.i: cmake_force
@@ -235,7 +248,7 @@ CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o: ../Networking/NetworkDevice.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/NetworkDevice.cpp
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.i: cmake_force
@@ -246,9 +259,22 @@ CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/silas/CLionProjects/VanadiumCast/Networking/NetworkDevice.cpp -o CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.s
 
+CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
+CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o: ../Networking/StreamInitThread.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o"
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp
+
+CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.i"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp > CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.i
+
+CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.s"
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp -o CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.s
+
 CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o: ../Networking/NetworkSinkHandler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkHandler.cpp
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.i: cmake_force
@@ -261,7 +287,7 @@ CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o: ../Networking/NetworkSinkTcpServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkTcpServer.cpp
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.i: cmake_force
@@ -274,7 +300,7 @@ CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o: ../Networking/NetworkDeviceScanner.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/NetworkDeviceScanner.cpp
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.i: cmake_force
@@ -287,7 +313,7 @@ CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o: ../Networking/NetworkDeviceDirectory.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/NetworkDeviceDirectory.cpp
 
 CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.i: cmake_force
@@ -300,7 +326,7 @@ CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.s: cmake_force
 
 CMakeFiles/VanadiumCast.dir/main.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/VanadiumCast.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/VanadiumCast.dir/main.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/main.cpp.o -c /home/silas/CLionProjects/VanadiumCast/main.cpp
 
 CMakeFiles/VanadiumCast.dir/main.cpp.i: cmake_force
@@ -311,22 +337,9 @@ CMakeFiles/VanadiumCast.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VanadiumCast.dir/main.cpp.s"
 	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/silas/CLionProjects/VanadiumCast/main.cpp -o CMakeFiles/VanadiumCast.dir/main.cpp.s
 
-CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
-CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o: ../Networking/StreamInitThread.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o"
-	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o -c /home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp
-
-CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp > CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.i
-
-CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/silas/CLionProjects/VanadiumCast/Networking/StreamInitThread.cpp -o CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.s
-
 CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o: CMakeFiles/VanadiumCast.dir/flags.make
 CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o: VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o"
 	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o -c /home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp
 
 CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.i: cmake_force
@@ -342,6 +355,7 @@ VanadiumCast_OBJECTS = \
 "CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/API/NetworkAPI.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.o" \
+"CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o" \
@@ -351,12 +365,12 @@ VanadiumCast_OBJECTS = \
 "CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o" \
+"CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/main.cpp.o" \
-"CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o" \
 "CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o"
 
 # External object files for target VanadiumCast
@@ -365,6 +379,7 @@ VanadiumCast_EXTERNAL_OBJECTS =
 VanadiumCast: CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/mocs_compilation.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/API/NetworkAPI.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.o
+VanadiumCast: CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/MediaProcessing/InputFile.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o
@@ -374,12 +389,12 @@ VanadiumCast: CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoDecoder.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoEncoder.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/MediaProcessing/VideoTranscoder.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/NetworkDevice.cpp.o
+VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkHandler.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/NetworkSinkTcpServer.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceScanner.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/NetworkDeviceDirectory.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/main.cpp.o
-VanadiumCast: CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/EWIEGA46WW/qrc_qml.cpp.o
 VanadiumCast: CMakeFiles/VanadiumCast.dir/build.make
 VanadiumCast: /usr/lib/libQt5Quick.so.5.15.1
@@ -391,7 +406,7 @@ VanadiumCast: /usr/lib/libQt5Network.so.5.15.1
 VanadiumCast: /usr/lib/libQt5Gui.so.5.15.1
 VanadiumCast: /usr/lib/libQt5Core.so.5.15.1
 VanadiumCast: CMakeFiles/VanadiumCast.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Linking CXX executable VanadiumCast"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable VanadiumCast"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/VanadiumCast.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "VanadiumCast_autogen"
   "CMakeFiles/VanadiumCast.dir/API/NetworkAPI.cpp.o"
   "CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.o"
+  "CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o"
   "CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o"
   "CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o"
   "CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o"

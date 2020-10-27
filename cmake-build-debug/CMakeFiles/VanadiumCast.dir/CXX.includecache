@@ -22,6 +22,14 @@ QtAVWidgets/QtAVWidgets
 QtAVWidgets/OpenGLWidgetRenderer.h
 -
 
+../GUI/VideoGuiLauncher.h
+QObject
+-
+QWidget
+-
+VideoGui.h
+../GUI/VideoGui.h
+
 ../MediaProcessing/NetworkInput.h
 Networking/NetworkDevice.h
 ../MediaProcessing/Networking/NetworkDevice.h
@@ -79,6 +87,8 @@ Commands.h
 /home/silas/CLionProjects/VanadiumCast/Networking/Commands.h
 QtNetwork
 -
+QApplication
+-
 
 /home/silas/CLionProjects/VanadiumCast/Networking/NetworkSinkHandler.h
 SinkHandler.h
@@ -89,8 +99,8 @@ NetworkDevice.h
 /home/silas/CLionProjects/VanadiumCast/Networking/NetworkDevice.h
 MediaProcessing/NetworkInput.h
 /home/silas/CLionProjects/VanadiumCast/Networking/MediaProcessing/NetworkInput.h
-GUI/VideoGui.h
-/home/silas/CLionProjects/VanadiumCast/Networking/GUI/VideoGui.h
+GUI/VideoGuiLauncher.h
+/home/silas/CLionProjects/VanadiumCast/Networking/GUI/VideoGuiLauncher.h
 QtCore
 -
 QtNetwork
@@ -3810,6 +3820,22 @@ QtCore/qdebug.h
 QtCore/qdatastream.h
 -
 
+/usr/include/qt/QtGui/qguiapplication.h
+QtGui/qtguiglobal.h
+-
+QtCore/qcoreapplication.h
+-
+QtGui/qwindowdefs.h
+-
+QtGui/qinputmethod.h
+-
+QtCore/qlocale.h
+-
+QtCore/qpoint.h
+-
+QtCore/qsize.h
+-
+
 /usr/include/qt/QtGui/qicon.h
 QtGui/qtguiglobal.h
 -
@@ -3840,6 +3866,12 @@ QtCore/qrect.h
 QtCore/qstring.h
 -
 QtCore/qstringlist.h
+-
+
+/usr/include/qt/QtGui/qinputmethod.h
+QtGui/qtguiglobal.h
+-
+QtCore/qobject.h
 -
 
 /usr/include/qt/QtGui/qkeysequence.h
@@ -5288,6 +5320,10 @@ QtNetwork/qtnetworkglobal.h
 
 /usr/include/qt/QtQml/qtqmlversion.h
 
+/usr/include/qt/QtWidgets/QApplication
+qapplication.h
+/usr/include/qt/QtWidgets/qapplication.h
+
 /usr/include/qt/QtWidgets/QGraphicsWidget
 qgraphicswidget.h
 /usr/include/qt/QtWidgets/qgraphicswidget.h
@@ -5299,6 +5335,30 @@ qopenglwidget.h
 /usr/include/qt/QtWidgets/QWidget
 qwidget.h
 /usr/include/qt/QtWidgets/qwidget.h
+
+/usr/include/qt/QtWidgets/qapplication.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtCore/qcoreapplication.h
+-
+QtGui/qwindowdefs.h
+-
+QtCore/qpoint.h
+-
+QtCore/qsize.h
+-
+QtGui/qcursor.h
+-
+QtWidgets/qdesktopwidget.h
+-
+QtGui/qguiapplication.h
+-
+
+/usr/include/qt/QtWidgets/qdesktopwidget.h
+QtWidgets/qtwidgetsglobal.h
+-
+QtWidgets/qwidget.h
+-
 
 /usr/include/qt/QtWidgets/qgraphicsitem.h
 QtWidgets/qtwidgetsglobal.h

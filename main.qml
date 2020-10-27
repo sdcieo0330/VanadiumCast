@@ -27,15 +27,16 @@ ApplicationWindow {
     }
 
     Popup {
+        id: newConnPopup
+
         width: 256
         height: 128
         x: parent.width - width
         y: (parent.height - height) / 2.0
-        id: newConnPopup
         visible: false
         modal: true
         focus: true
-        property var callback: function(){}
+        property var callback: function(answer){}
         closePolicy: Popup.NoAutoClose
 
         function setCallback(cb) {
@@ -65,6 +66,17 @@ ApplicationWindow {
             callback()
         }
 
+        Connections {
+            target: sinkHandler
+            function onIncomingConnectionRequest() {
+                console.log("QML: onIncomingConnectionRequest() triggered")
+                newConnPopup.setCallback(function(answer){
+                    sinkHandler.incomingConnectionRequestAnswer(answer)
+                })
+                newConnPopup.open()
+            }
+        }
+
         contentItem: Item {
             id: newConnPopupContent
             Item {
@@ -88,10 +100,7 @@ ApplicationWindow {
                 text: qsTr("Accept")
                 onClicked: {
                     newConnPopup.close()
-                    newConnPopup.setCallback(function () {
-                        pageDevices.getListModel().append({"name": "Random Device", "address": "0.0.0.0"})
-                        newConnPopup.setCallback(function(){})
-                    })
+                    newConnPopup.callback(true)
                 }
             }
             Button {
@@ -103,6 +112,7 @@ ApplicationWindow {
                 text: qsTr("Decline")
                 onClicked: {
                     newConnPopup.close()
+                    newConnPopup.callback(false)
                 }
             }
         }

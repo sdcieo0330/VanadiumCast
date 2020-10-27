@@ -84,55 +84,56 @@ if(ANDROID)
         Networking/NetworkSinkTcpServer.h
         Networking/NetworkDeviceScanner.h
         Networking/NetworkDeviceDirectory.h
-            Networking/StreamInitThread.cpp Networking/StreamInitThread.h)
+        Networking/StreamInitThread.cpp Networking/StreamInitThread.h)
 else()
-#    add_library(VanadiumCastLib SHARED
-#        API/NetworkAPI.cpp
-#        MediaProcessing/Demuxer.cpp
-#        MediaProcessing/InputFile.cpp
-#        MediaProcessing/AudioDecoder.cpp
-#        MediaProcessing/AudioEncoder.cpp
-#        MediaProcessing/NetworkInput.cpp
-#        MediaProcessing/VideoDecoder.cpp
-#        MediaProcessing/VideoEncoder.cpp
-#        Networking/NetworkDevice.cpp
-#        Networking/NetworkStreamer.cpp
-#        Networking/NetworkSinkHandler.cpp
-#        Networking/NetworkSinkTcpServer.cpp
-#        Networking/NetworkDeviceScanner.cpp
-#        Networking/NetworkDeviceDirectory.cpp
+    #    add_library(VanadiumCastLib SHARED
+    #        API/NetworkAPI.cpp
+    #        MediaProcessing/Demuxer.cpp
+    #        MediaProcessing/InputFile.cpp
+    #        MediaProcessing/AudioDecoder.cpp
+    #        MediaProcessing/AudioEncoder.cpp
+    #        MediaProcessing/NetworkInput.cpp
+    #        MediaProcessing/VideoDecoder.cpp
+    #        MediaProcessing/VideoEncoder.cpp
+    #        Networking/NetworkDevice.cpp
+    #        Networking/NetworkStreamer.cpp
+    #        Networking/NetworkSinkHandler.cpp
+    #        Networking/NetworkSinkTcpServer.cpp
+    #        Networking/NetworkDeviceScanner.cpp
+    #        Networking/NetworkDeviceDirectory.cpp
 
-#        Commands.h
-#        API/API.h
-#        API/NetworkAPI.h
-#        API/SinkHandleWidget.h
-#        MediaProcessing/Input.h
-#        MediaProcessing/Codec.h
-#        MediaProcessing/Demux.h
-#        MediaProcessing/Demuxer.h
-#        MediaProcessing/Encoder.h
-#        MediaProcessing/Decoder.h
-#        MediaProcessing/InputFile.h
-#        MediaProcessing/AudioDecoder.h
-#        MediaProcessing/AudioEncoder.h
-#        MediaProcessing/NetworkInput.h
-#        MediaProcessing/VideoDecoder.h
-#        MediaProcessing/VideoEncoder.h
-#        Networking/Device.h
-#        Networking/Streaming.h
-#        Networking/DeviceScan.h
-#        Networking/SinkHandler.h
-#        Networking/NetworkDevice.h
-#        Networking/DeviceDirectory.h
-#        Networking/NetworkStreamer.h
-#        Networking/NetworkSinkHandler.h
-#        Networking/NetworkSinkTcpServer.h
-#        Networking/NetworkDeviceScanner.h
-#        Networking/NetworkDeviceDirectory.h
-#        )
+    #        Commands.h
+    #        API/API.h
+    #        API/NetworkAPI.h
+    #        API/SinkHandleWidget.h
+    #        MediaProcessing/Input.h
+    #        MediaProcessing/Codec.h
+    #        MediaProcessing/Demux.h
+    #        MediaProcessing/Demuxer.h
+    #        MediaProcessing/Encoder.h
+    #        MediaProcessing/Decoder.h
+    #        MediaProcessing/InputFile.h
+    #        MediaProcessing/AudioDecoder.h
+    #        MediaProcessing/AudioEncoder.h
+    #        MediaProcessing/NetworkInput.h
+    #        MediaProcessing/VideoDecoder.h
+    #        MediaProcessing/VideoEncoder.h
+    #        Networking/Device.h
+    #        Networking/Streaming.h
+    #        Networking/DeviceScan.h
+    #        Networking/SinkHandler.h
+    #        Networking/NetworkDevice.h
+    #        Networking/DeviceDirectory.h
+    #        Networking/NetworkStreamer.h
+    #        Networking/NetworkSinkHandler.h
+    #        Networking/NetworkSinkTcpServer.h
+    #        Networking/NetworkDeviceScanner.h
+    #        Networking/NetworkDeviceDirectory.h
+    #        )
     add_executable(VanadiumCast
         API/NetworkAPI.cpp
         GUI/VideoGui.cpp
+        GUI/VideoGuiLauncher.cpp
         MediaProcessing/Demuxer.cpp
         MediaProcessing/InputFile.cpp
         MediaProcessing/AudioDecoder.cpp
@@ -142,7 +143,8 @@ else()
         MediaProcessing/VideoEncoder.cpp
         MediaProcessing/VideoTranscoder.cpp
         Networking/NetworkDevice.cpp
-            Networking/NetworkSinkHandler.cpp
+        Networking/StreamInitThread.cpp
+        Networking/NetworkSinkHandler.cpp
         Networking/NetworkSinkTcpServer.cpp
         Networking/NetworkDeviceScanner.cpp
         Networking/NetworkDeviceDirectory.cpp
@@ -152,6 +154,7 @@ else()
         API/NetworkAPI.h
         API/SinkHandleWidget.h
         GUI/VideoGui.h
+        GUI/VideoGuiLauncher.h
         MediaProcessing/Input.h
         MediaProcessing/Codec.h
         MediaProcessing/Demux.h
@@ -164,20 +167,23 @@ else()
         MediaProcessing/NetworkInput.h
         MediaProcessing/VideoDecoder.h
         MediaProcessing/VideoEncoder.h
+        MediaProcessing/EncodingProfile.h
         MediaProcessing/VideoTranscoder.h
+        MediaProcessing/PlayerStateSlots.h
         Networking/Device.h
         Networking/Streaming.h
         Networking/DeviceScan.h
         Networking/SinkHandler.h
         Networking/NetworkDevice.h
         Networking/DeviceDirectory.h
-            Networking/NetworkSinkHandler.h
+        Networking/StreamInitThread.h
+        Networking/NetworkSinkHandler.h
         Networking/NetworkSinkTcpServer.h
         Networking/NetworkDeviceScanner.h
         Networking/NetworkDeviceDirectory.h
         qml.qrc
         main.cpp
-            Networking/StreamInitThread.cpp Networking/StreamInitThread.h)
+        )
 endif()
 
 #target_compile_definitions(VanadiumCastLib

@@ -10,7 +10,7 @@
 #include "NetworkSinkTcpServer.h"
 #include "NetworkDevice.h"
 #include "MediaProcessing/NetworkInput.h"
-#include "GUI/VideoGui.h"
+#include "GUI/VideoGuiLauncher.h"
 #include <QtCore>
 #include <QtNetwork>
 
@@ -20,6 +20,10 @@ public:
     NetworkSinkHandler(QObject *parent = nullptr);
 
     void run() override;
+
+    Q_INVOKABLE void incomingConnectionRequestAnswer(bool answer = true) {
+        shouldConnect = (answer ? 1 : 2);
+    }
 
 public slots:
     void start() override {
@@ -48,6 +52,7 @@ public slots:
     void answerScanRequest();
 signals:
     void newConnection(NetworkDevice* device);
+    void incomingConnectionRequest();
 private:
     NetworkInput *networkInput;
     QUdpSocket* udpBroadcast;
@@ -57,9 +62,10 @@ private:
     QTcpSocket* dataConnection;
     QTcpServer* dataConnectionServer;
     qintptr controlConnectionHandle;
-    VideoGUI *videoGui;
+    VideoGuiLauncher *videoGuiLauncher;
     bool running = false;
     bool shouldReset = false;
+    int shouldConnect = 0;
 };
 
 #endif //_NETWORKSINKHANDLER_H

@@ -7,6 +7,7 @@
 #include "NetworkSinkTcpServer.h"
 #include "Commands.h"
 #include <QtNetwork>
+#include <QApplication>
 
 /**
  * NetworkSinkHandler implementation
@@ -27,39 +28,43 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
   * @return void
   */
 void NetworkSinkHandler::run() {
+    int argc = 0;
+    QApplication app(argc, new char*[0]);
     controlConnection = new QTcpSocket;
     controlConnection->setSocketDescriptor(controlConnectionHandle);
     controlConnection->write(Command::OK);
     if (controlConnection->waitForReadyRead()) {
         if (controlConnection->read(1) == Command::CONNECTDATA) {
             qDebug() << "Incoming data connect request";
-            dataConnectionServer->resumeAccepting();
-            while (dataConnectionServer->hasPendingConnections()) {
-                dataConnectionServer->nextPendingConnection()->deleteLater();
+            incomingConnectionRequest();
+            while (shouldConnect == 0) {
+                QThread::msleep(48);
             }
-            controlConnection->write(Command::OK);
-            controlConnection->flush();
-            qDebug() << "Answered request";
-            if (dataConnectionServer->waitForNewConnection(30000)) {
-                dataConnection = dataConnectionServer->nextPendingConnection();
-                dataConnectionServer->pauseAccepting();
-            } else {
+            if (shouldConnect == 1) {
+                dataConnectionServer->resumeAccepting();
+                while (dataConnectionServer->hasPendingConnections()) {
+                    dataConnectionServer->nextPendingConnection()->deleteLater();
+                }
+                controlConnection->write(Command::OK);
+                controlConnection->flush();
+                qDebug() << "Answered request";
+                if (dataConnectionServer->waitForNewConnection(30000)) {
+                    dataConnection = dataConnectionServer->nextPendingConnection();
+                    dataConnectionServer->pauseAccepting();
+                    videoGuiLauncher = new VideoGuiLauncher(dataConnection);
+                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
+                } else {
+                    controlConnection->close();
+                    delete controlConnection;
+                    return;
+                }
+            } else if (shouldConnect == 2) {
                 controlConnection->close();
                 delete controlConnection;
                 return;
             }
-        } else {
-            controlConnection->close();
-            delete controlConnection;
-            return;
         }
     }
-    NetworkDevice *self = new NetworkDevice(QHostAddress::Null, "self");
-    self->setControlConnection(controlConnection);
-    self->setDataConnection(dataConnection);
-    videoGui = new VideoGUI(self->getDataConnection());
-    videoGui->setFixedSize(480, 360);
-    videoGui->show();
 }
 
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {

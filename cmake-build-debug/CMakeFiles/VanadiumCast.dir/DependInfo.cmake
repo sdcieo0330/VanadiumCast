@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/silas/CLionProjects/VanadiumCast/API/NetworkAPI.cpp" "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir/API/NetworkAPI.cpp.o"
   "/home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.cpp" "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir/GUI/VideoGui.cpp.o"
+  "/home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.cpp" "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir/GUI/VideoGuiLauncher.cpp.o"
   "/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.cpp" "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioDecoder.cpp.o"
   "/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioEncoder.cpp" "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir/MediaProcessing/AudioEncoder.cpp.o"
   "/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Demuxer.cpp" "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/CMakeFiles/VanadiumCast.dir/MediaProcessing/Demuxer.cpp.o"

@@ -51,6 +51,10 @@ public:
     Q_INVOKABLE bool startSink();
     
     Q_INVOKABLE NetworkDeviceDirectory *getDeviceDirectory();
+
+    Q_INVOKABLE NetworkSinkHandler *getSinkHandler() {
+        return sinkHandler;
+    }
     
     /**
  * @param device

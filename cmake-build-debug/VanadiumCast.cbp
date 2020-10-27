@@ -163,6 +163,12 @@
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/GUI/VideoGui.h">
 			<Option target="VanadiumCast"/>
 		</Unit>
+		<Unit filename="/home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.cpp">
+			<Option target="VanadiumCast"/>
+		</Unit>
+		<Unit filename="/home/silas/CLionProjects/VanadiumCast/GUI/VideoGuiLauncher.h">
+			<Option target="VanadiumCast"/>
+		</Unit>
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/AudioDecoder.cpp">
 			<Option target="VanadiumCast"/>
 		</Unit>
@@ -193,6 +199,9 @@
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Encoder.h">
 			<Option target="VanadiumCast"/>
 		</Unit>
+		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/EncodingProfile.h">
+			<Option target="VanadiumCast"/>
+		</Unit>
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/Input.h">
 			<Option target="VanadiumCast"/>
 		</Unit>
@@ -206,6 +215,9 @@
 			<Option target="VanadiumCast"/>
 		</Unit>
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/NetworkInput.h">
+			<Option target="VanadiumCast"/>
+		</Unit>
+		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/PlayerStateSlots.h">
 			<Option target="VanadiumCast"/>
 		</Unit>
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/MediaProcessing/VideoDecoder.cpp">
