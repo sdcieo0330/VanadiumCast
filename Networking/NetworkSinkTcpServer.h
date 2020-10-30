@@ -8,6 +8,7 @@ class NetworkSinkTcpServer : public QTcpServer
 {
     Q_OBJECT
 public:
+    //TODO: Override pending connection handling
     NetworkSinkTcpServer(QObject *parent = nullptr);
     void incomingConnection(qintptr handle) override {
         newConnection(handle);

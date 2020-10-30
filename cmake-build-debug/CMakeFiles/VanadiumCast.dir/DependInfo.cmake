@@ -29,6 +29,7 @@ set(CMAKE_CXX_COMPILER_ID "Clang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
+  "QT_CONCURRENT_LIB"
   "QT_CORE_LIB"
   "QT_GUI_LIB"
   "QT_MULTIMEDIA_LIB"
@@ -59,6 +60,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/qt/QtGui"
   "/usr/include/qt/QtMultimedia"
   "/usr/include/qt/QtWidgets"
+  "/usr/include/qt/QtConcurrent"
   )
 
 # Targets to which this target links.

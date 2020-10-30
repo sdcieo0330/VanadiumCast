@@ -216,6 +216,24 @@ CMakeFiles/VanadiumCast.dir/API/NetworkAPI.cpp.o
  /usr/include/qt/QtAVWidgets/WidgetRenderer.h
  /usr/include/qt/QtAVWidgets/global.h
  /usr/include/qt/QtAVWidgets/version.h
+ /usr/include/qt/QtConcurrent/QtConcurrent
+ /usr/include/qt/QtConcurrent/QtConcurrentDepends
+ /usr/include/qt/QtConcurrent/qtconcurrent_global.h
+ /usr/include/qt/QtConcurrent/qtconcurrentcompilertest.h
+ /usr/include/qt/QtConcurrent/qtconcurrentexception.h
+ /usr/include/qt/QtConcurrent/qtconcurrentfilter.h
+ /usr/include/qt/QtConcurrent/qtconcurrentfilterkernel.h
+ /usr/include/qt/QtConcurrent/qtconcurrentfunctionwrappers.h
+ /usr/include/qt/QtConcurrent/qtconcurrentiteratekernel.h
+ /usr/include/qt/QtConcurrent/qtconcurrentmap.h
+ /usr/include/qt/QtConcurrent/qtconcurrentmapkernel.h
+ /usr/include/qt/QtConcurrent/qtconcurrentmedian.h
+ /usr/include/qt/QtConcurrent/qtconcurrentreducekernel.h
+ /usr/include/qt/QtConcurrent/qtconcurrentrun.h
+ /usr/include/qt/QtConcurrent/qtconcurrentrunbase.h
+ /usr/include/qt/QtConcurrent/qtconcurrentstoredfunctioncall.h
+ /usr/include/qt/QtConcurrent/qtconcurrentthreadengine.h
+ /usr/include/qt/QtConcurrent/qtconcurrentversion.h
  /usr/include/qt/QtCore/QAtomicInt
  /usr/include/qt/QtCore/QBasicTimer
  /usr/include/qt/QtCore/QByteArray

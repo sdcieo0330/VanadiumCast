@@ -5,7 +5,7 @@
 		<Option title="VanadiumCast"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="clang"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\share\;CMake Files\..\..\..\..\usr\share\cmake-3.18\;CMake Files\..\..\..\..\usr\share\cmake-3.18\Modules\;CMake Files\..\..\..\..\usr\lib64\;CMake Files\..\..\..\..\usr\lib64\cmake\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Core\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Quick\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5QmlModels\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Qml\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Network\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Gui\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Widgets\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Multimedia\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5QuickControls2\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\share\;CMake Files\..\..\..\..\usr\share\cmake-3.18\;CMake Files\..\..\..\..\usr\share\cmake-3.18\Modules\;CMake Files\..\..\..\..\usr\lib64\;CMake Files\..\..\..\..\usr\lib64\cmake\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Core\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Quick\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5QmlModels\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Qml\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Network\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Gui\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Widgets\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Multimedia\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5QuickControls2\;CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Concurrent\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/home/silas/CLionProjects/VanadiumCast/cmake-build-debug"/>
@@ -53,6 +53,7 @@
 					<Add option="-DQT_GUI_LIB"/>
 					<Add option="-DQT_MULTIMEDIA_LIB"/>
 					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_CONCURRENT_LIB"/>
 					<Add directory="/home/silas/CLionProjects/VanadiumCast/cmake-build-debug"/>
 					<Add directory="/home/silas/CLionProjects/VanadiumCast"/>
 					<Add directory="/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/include"/>
@@ -70,6 +71,7 @@
 					<Add directory="/usr/include/qt/QtGui"/>
 					<Add directory="/usr/include/qt/QtMultimedia"/>
 					<Add directory="/usr/include/qt/QtWidgets"/>
+					<Add directory="/usr/include/qt/QtConcurrent"/>
 					<Add directory="/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0"/>
 					<Add directory="/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0/backward"/>
@@ -100,6 +102,7 @@
 					<Add option="-DQT_GUI_LIB"/>
 					<Add option="-DQT_MULTIMEDIA_LIB"/>
 					<Add option="-DQT_WIDGETS_LIB"/>
+					<Add option="-DQT_CONCURRENT_LIB"/>
 					<Add directory="/home/silas/CLionProjects/VanadiumCast/cmake-build-debug"/>
 					<Add directory="/home/silas/CLionProjects/VanadiumCast"/>
 					<Add directory="/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/include"/>
@@ -117,6 +120,7 @@
 					<Add directory="/usr/include/qt/QtGui"/>
 					<Add directory="/usr/include/qt/QtMultimedia"/>
 					<Add directory="/usr/include/qt/QtWidgets"/>
+					<Add directory="/usr/include/qt/QtConcurrent"/>
 					<Add directory="/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0"/>
 					<Add directory="/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/10.2.0/../../../../include/c++/10.2.0/backward"/>
@@ -597,6 +601,12 @@
 		</Unit>
 		<Unit filename="/home/silas/CLionProjects/VanadiumCast/../../../../usr/lib64/cmake/Qt5QuickControls2/Qt5QuickControls2ConfigVersion.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\cmake\Qt5QuickControls2\"/>
+		</Unit>
+		<Unit filename="/home/silas/CLionProjects/VanadiumCast/../../../../usr/lib64/cmake/Qt5Concurrent/Qt5ConcurrentConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Concurrent\"/>
+		</Unit>
+		<Unit filename="/home/silas/CLionProjects/VanadiumCast/../../../../usr/lib64/cmake/Qt5Concurrent/Qt5ConcurrentConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\cmake\Qt5Concurrent\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

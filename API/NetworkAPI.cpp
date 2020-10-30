@@ -1,9 +1,10 @@
-﻿/**
+/**
  * Project VanadiumCast
  */
 
 
 #include "NetworkAPI.h"
+#include <QtConcurrent>
 #include <iostream>
 
 /**
@@ -104,11 +105,8 @@ bool NetworkAPI::setDevice(QString address) {
 /**
  * @return bool
  */
-bool NetworkAPI::startSource(QUrl inputFileName, QString address) {
-    qDebug() << "Start source entered";
-    if (inputFileName.isEmpty()) {
-        setInputFile();
-    }
+bool NetworkAPI::startSource(QUrl inputFile, QString address) {
+    qDebug() << "Start source entered:" << inputFile;
     setDevice(address);
     if (!target) {
         return false;
@@ -116,8 +114,13 @@ bool NetworkAPI::startSource(QUrl inputFileName, QString address) {
     qDebug() << "target != nullptr";
     qDebug() << target;
     qDebug() << "Current thread:" << QThread::currentThread();
-    streamInitThread = new StreamInitThread(target, inputFile);
-    streamInitThread->start();
+    QtConcurrent::run([&] {
+        if (inputFile.isEmpty()) {
+            setInputFile();
+        }
+        streamInitThread = new StreamInitThread(target, new InputFile(inputFile.toLocalFile()));
+        streamInitThread->start();
+    });
     return true;
 }
 

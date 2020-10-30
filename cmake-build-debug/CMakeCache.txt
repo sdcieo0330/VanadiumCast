@@ -216,6 +216,9 @@ QTAV_LIBRARY:FILEPATH=/usr/lib/libQtAV.so
 //The directory containing a CMake configuration file for QT.
 QT_DIR:PATH=/usr/lib64/cmake/Qt5
 
+//The directory containing a CMake configuration file for Qt5Concurrent.
+Qt5Concurrent_DIR:PATH=/usr/lib64/cmake/Qt5Concurrent
+
 //The directory containing a CMake configuration file for Qt5Core.
 Qt5Core_DIR:PATH=/usr/lib64/cmake/Qt5Core
 

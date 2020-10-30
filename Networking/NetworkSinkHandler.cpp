@@ -15,7 +15,7 @@
 
 NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
     tcpServer = new NetworkSinkTcpServer;
-    dataConnectionServer = new QTcpServer;
+    dataConnectionServer = new NetworkSinkTcpServer;
     dataConnectionServer->listen(QHostAddress::Any, 55556);
     tcpServer->listen(QHostAddress::Any, 55555);
     connect(tcpServer, SIGNAL(newConnection(qintptr)), this, SLOT(incomingTcpConnect(qintptr)));
@@ -28,8 +28,6 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent): QThread(parent) {
   * @return void
   */
 void NetworkSinkHandler::run() {
-    int argc = 0;
-    QApplication app(argc, new char*[0]);
     controlConnection = new QTcpSocket;
     controlConnection->setSocketDescriptor(controlConnectionHandle);
     controlConnection->write(Command::OK);
@@ -38,7 +36,8 @@ void NetworkSinkHandler::run() {
             qDebug() << "Incoming data connect request";
             incomingConnectionRequest();
             while (shouldConnect == 0) {
-                QThread::msleep(48);
+                QThread::msleep(15);
+                QCoreApplication::processEvents();
             }
             if (shouldConnect == 1) {
                 dataConnectionServer->resumeAccepting();
@@ -52,6 +51,8 @@ void NetworkSinkHandler::run() {
                     dataConnection = dataConnectionServer->nextPendingConnection();
                     dataConnectionServer->pauseAccepting();
                     videoGuiLauncher = new VideoGuiLauncher(dataConnection);
+                    dataConnection->moveToThread(QApplication::instance()->thread());
+                    videoGuiLauncher->moveToThread(QApplication::instance()->thread());
                     QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
                 } else {
                     controlConnection->close();

@@ -26,44 +26,34 @@ ApplicationWindow {
         }
     }
 
-    Popup {
+    Dialog {
         id: newConnPopup
 
         width: 256
         height: 128
-        x: parent.width - width
-        y: (parent.height - height) / 2.0
         visible: false
-        modal: true
-        focus: true
+        title: qsTr("Connection request")
         property var callback: function(answer){}
-        closePolicy: Popup.NoAutoClose
 
         function setCallback(cb) {
             callback = cb
         }
 
-        enter: Transition {
-            PropertyAnimation {
-                property: "x"
-                from: newConnPopup.parent.width
-                to: newConnPopup.parent.width - newConnPopup.width
-                duration: 512
-                easing.type: Easing.OutElastic
-            }
-        }
-        exit: Transition {
-            PropertyAnimation {
-                property: "x"
-                from: newConnPopup.parent.width - newConnPopup.width
-                to: newConnPopup.parent.width
-                duration: 512
-                easing.type: Easing.InBack
-            }
+        standardButtons: Dialog.Ok | Dialog.Cancel
+
+        Text {
+            id: newConnPopupMessage
+            anchors.centerIn: parent
+            font.pixelSize: Qt.application.font.pixelSize * 1.2
+            text: qsTr("Incoming Connection Request")
         }
 
-        onClosed: {
-            callback()
+        onAccepted: {
+            callback(true)
+        }
+
+        onRejected: {
+            callback(false)
         }
 
         Connections {
@@ -73,49 +63,68 @@ ApplicationWindow {
                 newConnPopup.setCallback(function(answer){
                     sinkHandler.incomingConnectionRequestAnswer(answer)
                 })
-                newConnPopup.open()
+                newConnPopup.visible = true
             }
         }
 
-        contentItem: Item {
-            id: newConnPopupContent
-            Item {
-                anchors.right: parent.right
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: newConnPopupAccept.top
-                Text {
-                    id: newConnPopupMessage
-                    anchors.centerIn: parent
-                    font.pixelSize: Qt.application.font.pixelSize * 1.2
-                    text: qsTr("Incoming Connection Request")
-                }
-            }
-            Button {
-                id: newConnPopupAccept
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 20
-                anchors.bottomMargin: 12
-                text: qsTr("Accept")
-                onClicked: {
-                    newConnPopup.close()
-                    newConnPopup.callback(true)
-                }
-            }
-            Button {
-                id: newConnPopupDecline
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                anchors.rightMargin: 20
-                anchors.bottomMargin: 12
-                text: qsTr("Decline")
-                onClicked: {
-                    newConnPopup.close()
-                    newConnPopup.callback(false)
-                }
-            }
-        }
+//        enter: Transition {
+//            PropertyAnimation {
+//                property: "x"
+//                from: newConnPopup.parent.width
+//                to: newConnPopup.parent.width - newConnPopup.width
+//                duration: 512
+//                easing.type: Easing.OutElastic
+//            }
+//        }
+//        exit: Transition {
+//            PropertyAnimation {
+//                property: "x"
+//                from: newConnPopup.parent.width - newConnPopup.width
+//                to: newConnPopup.parent.width
+//                duration: 512
+//                easing.type: Easing.InBack
+//            }
+//        }
+
+//        contentItem: Item {
+//            id: newConnPopupContent
+//            Item {
+//                anchors.right: parent.right
+//                anchors.left: parent.left
+//                anchors.top: parent.top
+//                anchors.bottom: newConnPopupAccept.top
+//                Text {
+//                    id: newConnPopupMessage
+//                    anchors.centerIn: parent
+//                    font.pixelSize: Qt.application.font.pixelSize * 1.2
+//                    text: qsTr("Incoming Connection Request")
+//                }
+//            }
+//            Button {
+//                id: newConnPopupAccept
+//                anchors.left: parent.left
+//                anchors.bottom: parent.bottom
+//                anchors.leftMargin: 20
+//                anchors.bottomMargin: 12
+//                text: qsTr("Accept")
+//                onClicked: {
+//                    newConnPopup.close()
+//                    newConnPopup.callback(true)
+//                }
+//            }
+//            Button {
+//                id: newConnPopupDecline
+//                anchors.right: parent.right
+//                anchors.bottom: parent.bottom
+//                anchors.rightMargin: 20
+//                anchors.bottomMargin: 12
+//                text: qsTr("Decline")
+//                onClicked: {
+//                    newConnPopup.close()
+//                    newConnPopup.callback(false)
+//                }
+//            }
+//        }
     }
 
     SwipeView {
@@ -151,7 +160,7 @@ ApplicationWindow {
                     pageStreaming.enabled = true
                     pageStreamingBtn.enabled = true
                     console.debug(fileName) // second data entry is the address label
-                    inputFileName = fileName
+                    pageMedia.inputFileName = fileName
                 }
             }
             Connections {
@@ -159,6 +168,7 @@ ApplicationWindow {
                 function onClicked() {
                     pageStreaming.enabled = true
                     pageStreamingBtn.enabled = true
+                    console.debug(pageMedia.inputFileName)
                     backendAPI.startSource(pageMedia.inputFileName, pageDevices.deviceAddress)
                 }
             }

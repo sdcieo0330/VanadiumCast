@@ -28,8 +28,8 @@ add_compile_options(-fstandalone-debug)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/cmake-3.18/Modules")
 
 find_package(QtAV REQUIRED)
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Widgets Network Multimedia Quick QuickControls2 REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets Network Multimedia Quick QuickControls2 REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Widgets Network Multimedia QuickControls2 Concurrent REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets Network Multimedia QuickControls2 Concurrent REQUIRED)
 
 if(MSVC)
     include_directories("C:\\Users\\Silas\\Documents\\ffmpeg-dev\\include")
@@ -195,6 +195,6 @@ endif()
 target_compile_definitions(VanadiumCast
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(VanadiumCast
-    PRIVATE QtAV QtAVWidgets Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Widgets)
+    PRIVATE QtAV QtAVWidgets Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
 #target_link_libraries(VanadiumCast PRIVATE VanadiumCastLib)
 target_link_libraries(VanadiumCast PUBLIC avformat avcodec avdevice avfilter)

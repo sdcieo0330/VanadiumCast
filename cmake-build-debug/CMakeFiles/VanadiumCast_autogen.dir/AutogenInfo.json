@@ -175,6 +175,7 @@
 	"MOC_COMPILATION_FILE" : "/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
+		"QT_CONCURRENT_LIB",
 		"QT_CORE_LIB",
 		"QT_GUI_LIB",
 		"QT_MULTIMEDIA_LIB",
@@ -210,6 +211,7 @@
 		"/usr/include/qt/QtGui",
 		"/usr/include/qt/QtMultimedia",
 		"/usr/include/qt/QtWidgets",
+		"/usr/include/qt/QtConcurrent",
 		"/usr/include/c++/10.2.0",
 		"/usr/include/c++/10.2.0/x86_64-pc-linux-gnu",
 		"/usr/include/c++/10.2.0/backward",

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/clang++
 CXX_FLAGS = -g   -fstandalone-debug -fPIC -std=gnu++2a
 
-CXX_DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QMLMODELS_LIB -DQT_QML_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_WIDGETS_LIB
+CXX_DEFINES = -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_MULTIMEDIA_LIB -DQT_NETWORK_LIB -DQT_QMLMODELS_LIB -DQT_QML_DEBUG -DQT_QML_LIB -DQT_QUICK_LIB -DQT_WIDGETS_LIB
 
-CXX_INCLUDES = -I/home/silas/CLionProjects/VanadiumCast/cmake-build-debug -I/home/silas/CLionProjects/VanadiumCast -I/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/include -I/usr/include/QtAV -I/usr/include/QtAV/.. -I/usr/include/QtAVWidgets -I/usr/include/QtAVWidgets/.. -isystem /usr/include/qt -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++ -isystem /usr/include/qt/QtQuick -isystem /usr/include/qt/QtQmlModels -isystem /usr/include/qt/QtQml -isystem /usr/include/qt/QtNetwork -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtMultimedia -isystem /usr/include/qt/QtWidgets 
+CXX_INCLUDES = -I/home/silas/CLionProjects/VanadiumCast/cmake-build-debug -I/home/silas/CLionProjects/VanadiumCast -I/home/silas/CLionProjects/VanadiumCast/cmake-build-debug/VanadiumCast_autogen/include -I/usr/include/QtAV -I/usr/include/QtAV/.. -I/usr/include/QtAVWidgets -I/usr/include/QtAVWidgets/.. -isystem /usr/include/qt -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++ -isystem /usr/include/qt/QtQuick -isystem /usr/include/qt/QtQmlModels -isystem /usr/include/qt/QtQml -isystem /usr/include/qt/QtNetwork -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtMultimedia -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtConcurrent 
 

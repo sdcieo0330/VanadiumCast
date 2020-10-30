@@ -25,7 +25,7 @@ Page {
     FileDialog {
         id: mediaSelectionDialog
         title: "Please choose a media file"
-        folder: shortcuts.home
+        folder: "file:///home"
         selectMultiple: false
         selectExisting: true
         selectFolder: false
@@ -56,6 +56,7 @@ Page {
             previewVideo.stop()
             previewVideo.source = fileName
             previewVideo.play()
+            startStreamBtn.enabled = true
         }
     }
 
@@ -270,5 +271,7 @@ Page {
         anchors.bottomMargin: 8
         id: startStreamBtn
         text: qsTr("Stream")
+        enabled: false
+        onClicked: previewVideo.stop()
     }
 }

@@ -18,6 +18,8 @@ public:
 public slots:
     virtual bool event(QEvent *event) {
         if (event->type() == QEvent::User) {
+            qDebug() << "User event triggered";
+            inputDevice->moveToThread(this->thread());
             videoGui = new VideoGUI(inputDevice);
             videoGui->setBaseSize(480, 360);
             videoGui->show();

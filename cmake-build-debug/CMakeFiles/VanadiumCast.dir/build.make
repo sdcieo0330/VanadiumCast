@@ -400,6 +400,7 @@ VanadiumCast: CMakeFiles/VanadiumCast.dir/build.make
 VanadiumCast: /usr/lib/libQt5Quick.so.5.15.1
 VanadiumCast: /usr/lib/libQt5Multimedia.so.5.15.1
 VanadiumCast: /usr/lib/libQt5Widgets.so.5.15.1
+VanadiumCast: /usr/lib/libQt5Concurrent.so.5.15.1
 VanadiumCast: /usr/lib/libQt5QmlModels.so.5.15.1
 VanadiumCast: /usr/lib/libQt5Qml.so.5.15.1
 VanadiumCast: /usr/lib/libQt5Network.so.5.15.1
