@@ -3,10 +3,10 @@
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
-      <file path="$PROJECT_DIR$/API" />
-      <file path="$PROJECT_DIR$/GUI" />
-      <file path="$PROJECT_DIR$/MediaProcessing" />
-      <file path="$PROJECT_DIR$/Networking" />
+      <file path="$PROJECT_DIR$/src/API" />
+      <file path="$PROJECT_DIR$/src/GUI" />
+      <file path="$PROJECT_DIR$/src/MediaProcessing" />
+      <file path="$PROJECT_DIR$/src/Networking" />
     </sourceRoots>
   </component>
 </project>

@@ -1,4 +1,4 @@
-QT += quick core gui widgets network avwidgets
+QT += quick core gui widgets network avwidgets concurrent
 
 windows: INCLUDEPATH += C:\\Users\\Silas\\Documents\\ffmpeg-dev\\include
 

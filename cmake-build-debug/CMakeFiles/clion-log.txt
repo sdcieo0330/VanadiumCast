@@ -1,9 +1,0 @@
-/home/silas/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.6397.106/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -G "CodeBlocks - Unix Makefiles" /home/silas/CLionProjects/VanadiumCast
-QtAV_FOUND                 = TRUE
-QTAV_INCLUDE_DIRS          = /usr/include/QtAV;/usr/include/QtAV/..
-QTAV_LIBRARIES             = /usr/lib/libQtAV.so
-QTAVWIDGETS_INCLUDE_DIRS   = /usr/include/QtAVWidgets;/usr/include/QtAVWidgets/..;/usr/include/QtAV;/usr/include/QtAV/..
-QTAVWIDGETS_LIBRARIES      = /usr/lib/libQtAVWidgets.so;/usr/lib/libQtAV.so
--- Configuring done
--- Generating done
--- Build files have been written to: /home/silas/CLionProjects/VanadiumCast/cmake-build-debug

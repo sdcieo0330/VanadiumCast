@@ -71,3 +71,23 @@ Thumbs.db
 *.dll
 *.exe
 
+cmake-build-debug/CMakeFiles/3.17.3/CompilerIdCXX/tmp/
+cmake-build-debug/CMakeFiles/CMakeTmp/
+cmake-build-debug/CMakeFiles/VanadiumCast.dir/GUI/
+cmake-build-debug/CMakeFiles/VanadiumCast.dir/MediaProcessing/
+cmake-build-debug/CMakeFiles/VanadiumCast.dir/Networking/StreamInitThread.cpp-6b29c906.o.tmp
+cmake-build-debug/CMakeFiles/VanadiumCast.dir/VanadiumCast_autogen/mocs_compilation.cpp-584b48b7.o.tmp
+cmake-build-debug/CMakeFiles/VanadiumCast.dir/main.cpp-4f65f5da.o.tmp
+cmake-build-debug/CMakeFiles/VanadiumCast.dir/main.cpp-50aee9f1.o.tmp
+cmake-build-debug/CMakeFiles/VanadiumCast_autogen.dir/AutoRcc_qml_PNK5WDWK6L_Info.json
+cmake-build-debug/CMakeFiles/VanadiumCast_autogen.dir/AutoRcc_qml_PNK5WDWK6L_Lock.lock
+cmake-build-debug/CMakeFiles/VanadiumCast_autogen.dir/AutoRcc_qml_PNK5WDWK6L_Used.txt
+cmake-build-debug/VanadiumCast_autogen/3WAZNGTWK3/moc_NetworkDevice.cpp.d
+cmake-build-debug/VanadiumCast_autogen/3WAZNGTWK3/moc_NetworkDeviceDirectory.cpp.d
+cmake-build-debug/VanadiumCast_autogen/3WAZNGTWK3/moc_NetworkSinkHandler.cpp.d
+cmake-build-debug/VanadiumCast_autogen/3WAZNGTWK3/moc_NetworkSinkTcpServer.cpp.d
+cmake-build-debug/VanadiumCast_autogen/GOYIAF22ZM/moc_NetworkAPI.cpp.d
+cmake-build-debug/VanadiumCast_autogen/RDKJSLABA2/moc_VideoGui.cpp.d
+cmake-build-debug/VanadiumCast_autogen/RDKJSLABA2/moc_VideoGuiLauncher.cpp.d
+cmake-build-debug/VanadiumCast_autogen/VVDUI6KXXW/moc_PlayerStateSlots.cpp.d
+cmake-build-debug/VanadiumCast_autogen/VVDUI6KXXW/moc_VideoTranscoder.cpp.d
