@@ -47,7 +47,7 @@ qint64 CachedStream::bytesAvailable() const {
 }
 
 qint64 CachedStream::bytesToWrite() const {
-    if (!writeCache.isEmpty()){
+    if (!writeCache.isEmpty()) {
         qint64 toWrite = (writeCache.size() - 1) * 1024;
         toWrite += writeCache.last().size();
         return toWrite;
@@ -57,7 +57,6 @@ qint64 CachedStream::bytesToWrite() const {
 }
 
 void CachedStream::readDataToCache() {
-    qDebug() << "Incoming data";
     auto data = underlyingDevice->readAll();
     size_t availableSpaceLastElement = 0;
     if (readCache.size() > 0) {
@@ -81,7 +80,7 @@ void CachedStream::answerDataRequest() {
                 if (maxSize >= 1024 && writeCache.first().size() == 1024) {
                     underlyingDevice->write(writeCache.takeFirst());
                     maxSize -= 1024;
-                } else if (writeCache.first().size() > maxSize){
+                } else if (writeCache.first().size() > maxSize) {
                     underlyingDevice->write(writeCache.first().left(maxSize));
                     writeCache.first().remove(0, maxSize);
                     maxSize = 0;
@@ -97,7 +96,12 @@ void CachedStream::answerDataRequest() {
 qint64 CachedStream::readData(char *data, qint64 maxSize) {
     QByteArray result;
     while (result.size() < maxSize && !readCache.isEmpty()) {
-        result.append(readCache.takeFirst());
+        if (maxSize - result.size() >= 1024) {
+            result.append(readCache.takeFirst());
+        } else {
+            result.append(readCache.first().left(maxSize));
+            readCache.first().remove(0, maxSize);
+        }
     }
     for (int i = 0; i < result.size(); ++i) {
         data[i] = result.at(i);
@@ -122,8 +126,8 @@ qint64 CachedStream::writeData(const char *data, qint64 size) {
     }
     if (availableSpaceLastElement > 0) {
         writeCache.last().append(inputData.left(availableSpaceLastElement));
+        bytesWritten += (inputData.size() >= availableSpaceLastElement ? availableSpaceLastElement : inputData.size());
         inputData.remove(0, availableSpaceLastElement);
-        bytesWritten += availableSpaceLastElement;
     }
     while (!writeCache.isFull() && !inputData.isEmpty()) {
         auto slice = inputData.left(1024);

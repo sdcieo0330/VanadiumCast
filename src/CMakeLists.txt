@@ -83,7 +83,7 @@ include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
             Networking/NetworkSinkTcpServer.h
             Networking/NetworkDeviceScanner.h
             Networking/NetworkDeviceDirectory.h
-            Networking/CachedStream.cpp Networking/CachedStream.h)
+            Networking/CachedStream.cpp Networking/CachedStream.h MediaProcessing/CachedLocalStream.cpp MediaProcessing/CachedLocalStream.h)
 add_executable(VanadiumCast
         ../res/qml.qrc
         main.cpp)

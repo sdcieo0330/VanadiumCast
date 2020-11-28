@@ -38,9 +38,9 @@ protected:
 
     qint64 writeData(const char *data, qint64 size) override;
 
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
-    qint64 bytesToWrite() const override;
+    [[nodiscard]] qint64 bytesToWrite() const override;
 
 private slots:
 

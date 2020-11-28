@@ -76,7 +76,12 @@ private slots:
         QCOMPARE(dataBuffer.readAll().constData(), QByteArray(cacheSize, 1).constData());
     }
 
-    void writeDataToMoreCacheEntries() {
+    void writeDataTwiceLessThanBlockSize() {
+        QCOMPARE(cachedStream->write(QByteArray(10, 1)), 10);
+        QCOMPARE(cachedStream->write(QByteArray(10, 1)), 10);
+    }
+
+    void writeDataToMultipleCacheEntries() {
         QByteArray request;
         request.setNum(1024 * 2 - 10);
         request.push_front(Command::REQUESTDATA);
