@@ -71,8 +71,8 @@ qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
     // If the last element in the output queue contains less than 1024 byte, append to it
     if (availableSpaceLastElement > 0) {
         outputQueue->last().append(inputData.left(availableSpaceLastElement));
+        bytesWritten += (inputData.size() >= availableSpaceLastElement ? availableSpaceLastElement : inputData.size());
         inputData.remove(0, availableSpaceLastElement);
-        bytesWritten += (inputData.size() > availableSpaceLastElement ? availableSpaceLastElement : inputData.size());
     }
 
     while (!outputQueue->isFull() && !inputData.isEmpty()) {
