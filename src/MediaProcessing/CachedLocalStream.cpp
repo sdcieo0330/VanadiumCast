@@ -11,13 +11,15 @@ CachedLocalStream::CachedLocalStream(int size, QObject *parent) : QObject(parent
     queueRXTX.clear();
     end1 = new End(this, End::Direction::TXTX_RXRX, this);
     end2 = new End(this, End::Direction::TXRX_RXTX, this);
+    end1->open(QIODevice::ReadWrite);
+    end2->open(QIODevice::ReadWrite);
 }
 
-const CachedLocalStream::End *CachedLocalStream::getEnd1() const {
+CachedLocalStream::End *CachedLocalStream::getEnd1() const {
     return end1;
 }
 
-const CachedLocalStream::End *CachedLocalStream::getEnd2() const {
+CachedLocalStream::End *CachedLocalStream::getEnd2() const {
     return end2;
 }
 
@@ -96,4 +98,9 @@ qint64 CachedLocalStream::End::bytesAvailable() const {
 
 qint64 CachedLocalStream::End::bytesToWrite() const {
     return 0;
+}
+
+bool CachedLocalStream::End::open(QIODevice::OpenMode mode) {
+    setOpenMode(mode);
+    return true;
 }

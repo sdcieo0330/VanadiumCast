@@ -30,6 +30,8 @@ public:
 
         explicit End(CachedLocalStream *localStream, Direction direction, QObject *parent = nullptr);
 
+        bool open(OpenMode mode) override;
+
     protected:
 
         qint64 readData(char *data, qint64 maxSize) override;
@@ -47,14 +49,14 @@ public:
         Direction direction;
     };
 
-    [[nodiscard]] const End *getEnd1() const;
-    [[nodiscard]] const End *getEnd2() const;
+    [[nodiscard]] End *getEnd1() const;
+    [[nodiscard]] End *getEnd2() const;
 
 private:
     qint64 size;
     QContiguousCache<QByteArray> queueTXRX, queueRXTX;
     QMutex RXTXMutex, TXRXMutex;
-    const End *end1, *end2;
+    End *end1, *end2;
 };
 
 

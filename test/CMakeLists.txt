@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
-add_executable(VanadiumCastTest Networking/CachedStreamTest.cpp)
+add_executable(VanadiumCastTest Networking/CachedStreamTest.h main.cpp Networking/CachedStreamTest.cpp MediaProcessing/CachedLocalStreamTest.cpp MediaProcessing/CachedLocalStreamTest.h)
 add_test(NAME VanadiumCastTest COMMAND VanadiumCastTest)
 
 target_link_libraries(VanadiumCastTest PRIVATE VanadiumCastLib Qt5::Gui Qt5::Test Qt5::Core Qt5::Widgets Qt5::Concurrent Qt5::Network)
