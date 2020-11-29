@@ -22,7 +22,7 @@ public:
      * @param requestThreshold if read buffer level is lower than requestThreshold, new data will be requested
      * @param parent parent object for Qt's parenting system
      */
-    CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QIODevice *controlSocket,
+    CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QTcpSocket *controlSocket,
                  qint64 requestThreshold = 1048576, QObject *parent = nullptr);
 
     bool open(OpenMode openMode) override;
@@ -50,7 +50,8 @@ private slots:
 
 private:
     QContiguousCache<QByteArray> writeCache, readCache;
-    QIODevice *underlyingDevice, *controlDevice;
+    QIODevice *underlyingDevice;
+    QTcpSocket *controlDevice;
     qint64 writeCacheSize, readCacheSize;
     qint64 bufferLowThreshold;
     Q_DISABLE_COPY(CachedStream)

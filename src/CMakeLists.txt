@@ -36,16 +36,11 @@ include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
             API/NetworkAPI.cpp
             GUI/VideoGui.cpp
             GUI/VideoGuiLauncher.cpp
-            MediaProcessing/Demuxer.cpp
             MediaProcessing/InputFile.cpp
-            MediaProcessing/AudioDecoder.cpp
-            MediaProcessing/AudioEncoder.cpp
             MediaProcessing/NetworkInput.cpp
-            MediaProcessing/VideoDecoder.cpp
-            MediaProcessing/VideoEncoder.cpp
             MediaProcessing/VideoTranscoder.cpp
             Networking/NetworkDevice.cpp
-            Networking/StreamInitThread.cpp
+            Networking/StreamThread.cpp
             Networking/NetworkSinkHandler.cpp
             Networking/NetworkSinkTcpServer.cpp
             Networking/NetworkDeviceScanner.cpp
@@ -58,17 +53,8 @@ include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
             GUI/VideoGui.h
             GUI/VideoGuiLauncher.h
             MediaProcessing/Input.h
-            MediaProcessing/Codec.h
-            MediaProcessing/Demux.h
-            MediaProcessing/Demuxer.h
-            MediaProcessing/Encoder.h
-            MediaProcessing/Decoder.h
             MediaProcessing/InputFile.h
-            MediaProcessing/AudioDecoder.h
-            MediaProcessing/AudioEncoder.h
             MediaProcessing/NetworkInput.h
-            MediaProcessing/VideoDecoder.h
-            MediaProcessing/VideoEncoder.h
             MediaProcessing/EncodingProfile.h
             MediaProcessing/VideoTranscoder.h
             MediaProcessing/PlayerStateSlots.h
@@ -78,7 +64,7 @@ include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
             Networking/SinkHandler.h
             Networking/NetworkDevice.h
             Networking/DeviceDirectory.h
-            Networking/StreamInitThread.h
+            Networking/StreamThread.h
             Networking/NetworkSinkHandler.h
             Networking/NetworkSinkTcpServer.h
             Networking/NetworkDeviceScanner.h

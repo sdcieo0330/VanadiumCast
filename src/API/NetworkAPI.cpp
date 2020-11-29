@@ -16,9 +16,9 @@
  * @return bool
  */
 bool NetworkAPI::init() {
-    deviceDirectory = new NetworkDeviceDirectory();
+    deviceDirectory = new NetworkDeviceDirectory;
     deviceScanner = new NetworkDeviceScanner(deviceDirectory);
-    sinkHandler = new NetworkSinkHandler(this);
+    sinkHandler = new NetworkSinkHandler;
     return false;
 }
 
@@ -120,7 +120,7 @@ bool NetworkAPI::startSource(QUrl inputFile, QString address) {
         if (inputFile.isEmpty()) {
             setInputFile();
         }
-        streamInitThread = new StreamInitThread(target, new InputFile(inputFile.toLocalFile()));
+        streamInitThread = new StreamThread(target, new InputFile(inputFile.toLocalFile()));
         streamInitThread->start();
     });
     return true;

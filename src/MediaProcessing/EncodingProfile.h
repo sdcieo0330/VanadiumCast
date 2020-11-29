@@ -7,12 +7,11 @@
 struct EncodingProfile
 {
 public:
-    QtAV::AudioFormat audioFormat;
     int height, width;
     int bytesPerColor;
     int framerate;
     int rate;
-    QString codecName;
+    QString videoCodecName, audioCodecName;
 };
 
 #endif // ENCODINGPROFILE_H

@@ -14,6 +14,7 @@
 #include "GUI/VideoGuiLauncher.h"
 #include <QtCore>
 #include <QtNetwork>
+#include <MediaProcessing/CachedLocalStream.h>
 
 class NetworkSinkHandler final : public QThread, public SinkHandler {
     Q_OBJECT
@@ -65,6 +66,7 @@ private:
     qintptr controlConnectionHandle{};
     VideoGuiLauncher *videoGuiLauncher{};
     CachedStream *cachedStream;
+    CachedLocalStream *cachedLocalStream;
     bool running = false;
     bool shouldReset = false;
     int shouldConnect = 0;

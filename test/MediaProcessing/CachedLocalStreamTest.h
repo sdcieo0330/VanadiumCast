@@ -14,11 +14,17 @@ Q_OBJECT
 private slots:
     void init();
 
-    void writeToEnd();
+    void pipeDataThroughStream();
 
     void writeToFullCache();
 
+    void writeTwiceLessThanBlockSize();
+
+    void writeToMultipleBlocks();
+
     void readFromEmptyCache();
+
+    void readMoreThanInCache();
 
     void cleanup();
 

@@ -11,24 +11,16 @@ class VideoGuiLauncher : public QObject
 public:
     explicit VideoGuiLauncher(QIODevice *inputDevice, QObject *parent = nullptr);
 
-    VideoGUI *getVideoGui() {
-        return videoGui;
+    QWindow *getVideoRenderer() {
+        return videoRenderer->qwindow();
     }
 
 public slots:
-    virtual bool event(QEvent *event) {
-        if (event->type() == QEvent::User) {
-            qDebug() << "User event triggered";
-            videoGui = new VideoGUI(inputDevice);
-            videoGui->setBaseSize(480, 360);
-            videoGui->show();
-            return true;
-        }
-        return false;
-    }
+    bool event(QEvent *event) override;
 
 private:
-    VideoGUI *videoGui;
+    QtAV::VideoRenderer *videoRenderer;
+    QtAV::AVPlayer *avPlayer;
     QIODevice *inputDevice;
 };
 

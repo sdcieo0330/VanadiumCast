@@ -7,6 +7,8 @@ include_directories(../src)
 
 find_package(Qt5 COMPONENTS Core Test Gui Widgets Concurrent Network REQUIRED)
 
+find_package(QtAV)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -20,4 +22,4 @@ enable_testing()
 add_executable(VanadiumCastTest Networking/CachedStreamTest.h main.cpp Networking/CachedStreamTest.cpp MediaProcessing/CachedLocalStreamTest.cpp MediaProcessing/CachedLocalStreamTest.h)
 add_test(NAME VanadiumCastTest COMMAND VanadiumCastTest)
 
-target_link_libraries(VanadiumCastTest PRIVATE VanadiumCastLib Qt5::Gui Qt5::Test Qt5::Core Qt5::Widgets Qt5::Concurrent Qt5::Network)
+target_link_libraries(VanadiumCastTest PRIVATE QtAV QtAVWidgets VanadiumCastLib Qt5::Gui Qt5::Test Qt5::Core Qt5::Widgets Qt5::Concurrent Qt5::Network)

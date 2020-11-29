@@ -9,7 +9,7 @@ void CachedLocalStreamTest::init() {
     readBuf = new char[readBufSize];
 }
 
-void CachedLocalStreamTest::writeToEnd() {
+void CachedLocalStreamTest::pipeDataThroughStream() {
     QCOMPARE(cachedLocalStream->getEnd1()->write(QByteArray(10, 1)), 10);
     QCOMPARE(cachedLocalStream->getEnd2()->readAll().constData(), QByteArray(10, 1).constData());
     QCOMPARE(cachedLocalStream->getEnd2()->write(QByteArray(10, 1)), 10);
@@ -33,4 +33,29 @@ void CachedLocalStreamTest::readFromEmptyCache() {
 void CachedLocalStreamTest::cleanup() {
     delete readBuf;
     delete cachedLocalStream;
+}
+
+void CachedLocalStreamTest::writeTwiceLessThanBlockSize() {
+    QCOMPARE(cachedLocalStream->getEnd1()->write(QByteArray(10, 1)), 10);
+    QCOMPARE(cachedLocalStream->getEnd1()->write(QByteArray(10, 1)), 10);
+    QCOMPARE(cachedLocalStream->getEnd2()->readAll().constData(), QByteArray(20, 1).constData());
+    QCOMPARE(cachedLocalStream->getEnd2()->write(QByteArray(10, 1)), 10);
+    QCOMPARE(cachedLocalStream->getEnd2()->write(QByteArray(10, 1)), 10);
+    QCOMPARE(cachedLocalStream->getEnd1()->readAll().constData(), QByteArray(20, 1).constData());
+}
+
+void CachedLocalStreamTest::writeToMultipleBlocks() {
+    QCOMPARE(cachedLocalStream->getEnd1()->write(QByteArray(2000, 1)), 2000);
+    QCOMPARE(cachedLocalStream->getEnd2()->readAll().constData(), QByteArray(2000, 1).constData());
+    QCOMPARE(cachedLocalStream->getEnd2()->write(QByteArray(2000, 1)), 2000);
+    QCOMPARE(cachedLocalStream->getEnd1()->readAll().constData(), QByteArray(2000, 1).constData());
+}
+
+void CachedLocalStreamTest::readMoreThanInCache() {
+    QCOMPARE(cachedLocalStream->getEnd1()->write(QByteArray(8, 1)), 8);
+    QCOMPARE(cachedLocalStream->getEnd2()->read(readBuf, 10), 8);
+    QCOMPARE(readBuf, QByteArray(8,1).constData());
+    QCOMPARE(cachedLocalStream->getEnd2()->write(QByteArray(8, 1)), 8);
+    QCOMPARE(cachedLocalStream->getEnd1()->read(readBuf, 10), 8);
+    QCOMPARE(readBuf, QByteArray(8,1).constData());
 }

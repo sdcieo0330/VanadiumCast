@@ -17,7 +17,7 @@ extern "C" {
 #include "Networking/NetworkDeviceScanner.h"
 #include "Networking/NetworkDeviceDirectory.h"
 #include "Networking/NetworkDevice.h"
-#include "Networking/StreamInitThread.h"
+#include "Networking/StreamThread.h"
 #include "MediaProcessing/Input.h"
 #include "MediaProcessing/InputFile.h"
 #include "MediaProcessing/NetworkInput.h"
@@ -104,7 +104,7 @@ private:
     QUrl inputFileName;
     InputFile *inputFile = nullptr;
     VideoTranscoder *transcoder = nullptr;
-    StreamInitThread *streamInitThread = nullptr;
+    StreamThread *streamInitThread = nullptr;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;

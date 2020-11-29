@@ -7,6 +7,7 @@
 void CachedStreamTest::cleanup() {
     delete cachedStream;
     delete dataReadyReadSpy;
+    delete readBuf;
 }
 
 void CachedStreamTest::writeDataToMultipleCacheEntries() {

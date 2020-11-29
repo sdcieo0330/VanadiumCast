@@ -4,7 +4,7 @@
 
 #include "CachedStream.h"
 
-CachedStream::CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QIODevice *controlSocket,
+CachedStream::CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QTcpSocket *controlSocket,
                            qint64 requestThreshold,
                            QObject *parent)
         : QIODevice(parent),
@@ -17,14 +17,14 @@ CachedStream::CachedStream(int writeCacheSize, int readCacheSize, QIODevice *und
     readCache.setCapacity(readCacheSize / 1024);
     writeCache.clear();
     readCache.clear();
-    bool connected = connect(underlyingDevice, &QIODevice::readyRead, this, &CachedStream::readDataToCache);
-    bool connected1 = connect(controlDevice, &QIODevice::readyRead, this, &CachedStream::answerDataRequest);
+    connect(underlyingDevice, &QIODevice::readyRead, this, &CachedStream::readDataToCache);
+    connect(controlDevice, &QIODevice::readyRead, this, &CachedStream::answerDataRequest);
 }
 
 bool CachedStream::open(QIODevice::OpenMode mode) {
     bool underlyingOk;
     if (underlyingDevice->isOpen()) {
-        underlyingOk = (underlyingDevice->openMode() != mode);
+        underlyingOk = (underlyingDevice->openMode() == mode);
     } else {
         underlyingOk = underlyingDevice->open(mode);
     }
@@ -73,10 +73,11 @@ void CachedStream::readDataToCache() {
 }
 
 void CachedStream::answerDataRequest() {
+    qDebug() << "Answered data request";
     if (controlDevice->read(1).left(1) == Command::REQUESTDATA) {
         qint64 maxSize = controlDevice->readAll().toUInt();
         if (!writeCache.isEmpty()) {
-            while (maxSize > 0 && !writeCache.isEmpty()) {
+            while (maxSize > 0 && !writeCache.isEmpty() && !writeCache.first().isNull()) {
                 if (maxSize >= 1024 && writeCache.first().size() == 1024) {
                     underlyingDevice->write(writeCache.takeFirst());
                     maxSize -= 1024;
@@ -94,6 +95,7 @@ void CachedStream::answerDataRequest() {
 }
 
 qint64 CachedStream::readData(char *data, qint64 maxSize) {
+    qDebug() << "Read data";
     QByteArray result;
     while (result.size() < maxSize && !readCache.isEmpty()) {
         if (maxSize - result.size() >= 1024) {
@@ -112,6 +114,7 @@ qint64 CachedStream::readData(char *data, qint64 maxSize) {
         QByteArray requestSize;
         requestSize.setNum(writeCacheSize - bytesToWrite());
         controlDevice->write(requestSize);
+        controlDevice->flush();
     }
 
     return result.size();

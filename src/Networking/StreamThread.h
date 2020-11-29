@@ -2,8 +2,8 @@
 // Created by silas on 10/23/20.
 //
 
-#ifndef VANADIUMCAST_STREAMINITTHREAD_H
-#define VANADIUMCAST_STREAMINITTHREAD_H
+#ifndef VANADIUMCAST_STREAMTHREAD_H
+#define VANADIUMCAST_STREAMTHREAD_H
 
 #include <QtCore>
 #include <QtNetwork>
@@ -12,9 +12,9 @@
 #include "MediaProcessing/VideoTranscoder.h"
 #include "CachedStream.h"
 
-class StreamInitThread : public QThread {
+class StreamThread : public QThread {
 public:
-    StreamInitThread(NetworkDevice* target, InputFile* inputFile);
+    StreamThread(NetworkDevice* target, InputFile* inputFile);
     void run() override;
 
 private:
@@ -22,7 +22,8 @@ private:
     NetworkDevice *target;
     VideoTranscoder *transcoder;
     QTcpSocket *controlConnection, *dataConnection;
+    CachedStream *cachedOutput;
 };
 
 
-#endif //VANADIUMCAST_STREAMINITTHREAD_H
+#endif //VANADIUMCAST_STREAMTHREAD_H

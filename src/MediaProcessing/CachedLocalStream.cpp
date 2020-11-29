@@ -23,8 +23,8 @@ CachedLocalStream::End *CachedLocalStream::getEnd2() const {
     return end2;
 }
 
-CachedLocalStream::End::End(CachedLocalStream *localStream, CachedLocalStream::End::Direction direction, QObject *parent) : QIODevice(
-        parent), localStream(localStream), direction(direction) {
+CachedLocalStream::End::End(CachedLocalStream *localStream, CachedLocalStream::End::Direction direction, QObject *parent) :
+        QIODevice(parent), localStream(localStream), direction(direction) {
     switch (direction) {
         case Direction::TXTX_RXRX:
             outputMutex = &localStream->TXRXMutex;
