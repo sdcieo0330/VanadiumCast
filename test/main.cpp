@@ -31,17 +31,17 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    QFile inputFile("/home/silas/test.mp4");
-    inputFile.open(QIODevice::ReadWrite);
-    QtAV::VideoRenderer *renderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWindow);
-    QtAV::AVPlayer avPlayer;
-    avPlayer.setRenderer(renderer);
-//    avPlayer.setFile("/home/silas/test.mp4");
-    avPlayer.setIODevice(&inputFile);
-    avPlayer.setBufferMode(QtAV::BufferBytes);
-    avPlayer.setBufferValue(1000000);
-    avPlayer.setSpeed(1);
-    renderer->qwindow()->showMaximized();
-    avPlayer.play();
-    return app.exec();
+//    QFile inputFile("/home/silas/test.mp4");
+//    inputFile.open(QIODevice::ReadWrite);
+//    QtAV::VideoRenderer *renderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWindow);
+//    QtAV::AVPlayer avPlayer;
+//    avPlayer.setRenderer(renderer);
+////    avPlayer.setFile("/home/silas/test.mp4");
+//    avPlayer.setIODevice(&inputFile);
+//    avPlayer.setBufferMode(QtAV::BufferBytes);
+//    avPlayer.setBufferValue(1000000);
+//    avPlayer.setSpeed(1);
+//    renderer->qwindow()->showMaximized();
+//    avPlayer.play();
+//    return app.exec();
 }

@@ -32,6 +32,5 @@ private:
     CachedStream *cachedStream = nullptr;
     QBuffer dataBuffer, controlBuffer;
     QByteArray data, control;
-    QSignalSpy *dataReadyReadSpy;
-    static constexpr auto cacheSize = 10240;
+    static constexpr quint64 cacheSize = 10240;
 };

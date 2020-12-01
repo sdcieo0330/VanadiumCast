@@ -6,6 +6,7 @@
 #include <QtNetwork/QtNetwork>
 #include <QtCore/QIODevice>
 #include "Commands.h"
+#include <atomic>
 
 #ifndef VANADIUMCAST_CACHEDIODEVICE_H
 #define VANADIUMCAST_CACHEDIODEVICE_H
@@ -22,7 +23,7 @@ public:
      * @param requestThreshold if read buffer level is lower than requestThreshold, new data will be requested
      * @param parent parent object for Qt's parenting system
      */
-    CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QTcpSocket *controlSocket,
+    CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QIODevice *controlSocket,
                  qint64 requestThreshold = 1048576, QObject *parent = nullptr);
 
     bool open(OpenMode openMode) override;
@@ -51,9 +52,12 @@ private slots:
 private:
     QContiguousCache<QByteArray> writeCache, readCache;
     QIODevice *underlyingDevice;
-    QTcpSocket *controlDevice;
+    QIODevice *controlDevice;
     qint64 writeCacheSize, readCacheSize;
     qint64 bufferLowThreshold;
+    QMutex pendingRequestsMutex;
+    quint64 requestIndex = 0;
+    QMap<quint64, quint64> pendingRequests;
     Q_DISABLE_COPY(CachedStream)
 };
 

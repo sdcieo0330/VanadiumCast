@@ -3,8 +3,9 @@
 //
 
 #include "CachedStream.h"
+#include "util.h"
 
-CachedStream::CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QTcpSocket *controlSocket,
+CachedStream::CachedStream(int writeCacheSize, int readCacheSize, QIODevice *underlyingSocket, QIODevice *controlSocket,
                            qint64 requestThreshold,
                            QObject *parent)
         : QIODevice(parent),
@@ -28,6 +29,11 @@ bool CachedStream::open(QIODevice::OpenMode mode) {
     } else {
         underlyingOk = underlyingDevice->open(mode);
     }
+    if (controlDevice->isOpen()) {
+        underlyingOk = underlyingOk && (controlDevice->openMode() == mode);
+    } else {
+        underlyingOk = underlyingOk && controlDevice->open(mode);
+    }
     if (underlyingOk) {
         setOpenMode(mode);
         return true;
@@ -36,14 +42,18 @@ bool CachedStream::open(QIODevice::OpenMode mode) {
 }
 
 void CachedStream::close() {
-    disconnect(underlyingDevice, &QTcpSocket::readyRead, this, &CachedStream::readDataToCache);
-    disconnect(controlDevice, &QTcpSocket::readyRead, this, &CachedStream::answerDataRequest);
+    disconnect(underlyingDevice, &QIODevice::readyRead, this, &CachedStream::readDataToCache);
+    disconnect(controlDevice, &QIODevice::readyRead, this, &CachedStream::answerDataRequest);
 }
 
 qint64 CachedStream::bytesAvailable() const {
-    qint64 availableBytes = (readCache.size() - 1) * 1024;
-    availableBytes += readCache.last().size();
-    return availableBytes;
+    if (readCache.isEmpty()) {
+        return 0;
+    } else {
+        qint64 availableBytes = (readCache.size() - 1) * 1024;
+        availableBytes += readCache.last().size();
+        return availableBytes;
+    }
 }
 
 qint64 CachedStream::bytesToWrite() const {
@@ -57,39 +67,60 @@ qint64 CachedStream::bytesToWrite() const {
 }
 
 void CachedStream::readDataToCache() {
+    qDebug() << "Read data to cache";
     auto data = underlyingDevice->readAll();
-    size_t availableSpaceLastElement = 0;
-    if (readCache.size() > 0) {
-        availableSpaceLastElement = 1024 - readCache.last().size();
-    }
-    if (availableSpaceLastElement > 0) {
-        readCache.last().append(data.left(availableSpaceLastElement));
-        data.remove(0, availableSpaceLastElement);
-    }
-    while (data.size() > 0) {
-        readCache.append(data.left(1024));
-        data.remove(0, 1024);
+    if (!data.isEmpty()) {
+        quint64 id = util::bytesToNum(data.left(8));
+        data.remove(0, 8);
+        quint64 size = util::bytesToNum(data.left(8));
+        data.remove(0, 8);
+        if (size > 0) {
+            size_t availableSpaceLastElement = 0;
+            if (readCache.size() > 0) {
+                availableSpaceLastElement = 1024 - readCache.last().size();
+            }
+            QMutexLocker lock(&pendingRequestsMutex);
+            if (availableSpaceLastElement > 0) {
+                readCache.last().append(data.left(availableSpaceLastElement));
+                data.remove(0, availableSpaceLastElement);
+            }
+            while (data.size() > 0 && !readCache.isFull()) {
+                readCache.append(data.left(1024));
+                data.remove(0, 1024);
+            }
+        }
+        QMutexLocker lock(&pendingRequestsMutex);
+        pendingRequests.remove(id);
     }
 }
 
 void CachedStream::answerDataRequest() {
     qDebug() << "Answered data request";
     if (controlDevice->read(1).left(1) == Command::REQUESTDATA) {
-        qint64 maxSize = controlDevice->readAll().toUInt();
+        QByteArray id = controlDevice->read(8);
+        quint64 maxSize = util::bytesToNum(controlDevice->readAll());
+        QByteArray buf;
+        quint64 bytesWritten = 0;
         if (!writeCache.isEmpty()) {
-            while (maxSize > 0 && !writeCache.isEmpty() && !writeCache.first().isNull()) {
+            while (bytesWritten < maxSize && !writeCache.isEmpty() && !writeCache.first().isNull()) {
                 if (maxSize >= 1024 && writeCache.first().size() == 1024) {
-                    underlyingDevice->write(writeCache.takeFirst());
-                    maxSize -= 1024;
+                    buf.append(writeCache.takeFirst());
+                    bytesWritten += 1024;
                 } else if (writeCache.first().size() > maxSize) {
-                    underlyingDevice->write(writeCache.first().left(maxSize));
+                    buf.append(writeCache.first().left(maxSize));
                     writeCache.first().remove(0, maxSize);
-                    maxSize = 0;
+                    bytesWritten = maxSize;
                 } else if (writeCache.first().size() <= maxSize) {
-                    underlyingDevice->write(writeCache.first());
-                    maxSize -= writeCache.takeFirst().size();
+                    buf.append(writeCache.first());
+                    bytesWritten += writeCache.takeFirst().size();
                 }
             }
+            underlyingDevice->write(id);
+            underlyingDevice->write(util::numToBytes(bytesWritten));
+            underlyingDevice->write(buf);
+        } else {
+            underlyingDevice->write(id);
+            underlyingDevice->write(util::numToBytes(0));
         }
     }
 }
@@ -110,11 +141,24 @@ qint64 CachedStream::readData(char *data, qint64 maxSize) {
     }
 
     if (readCache.size() <= bufferLowThreshold / 1024) {
-        controlDevice->write(Command::REQUESTDATA);
-        QByteArray requestSize;
-        requestSize.setNum(writeCacheSize - bytesToWrite());
-        controlDevice->write(requestSize);
-        controlDevice->flush();
+        quint64 requestSize = 0;
+        if (readCache.isEmpty()) {
+            requestSize = readCacheSize;
+        } else {
+            requestSize = readCacheSize - (readCache.size() - 1) * 1024 - readCache.last().size();
+        }
+        quint64 pendingRequestsSize = 0;
+        for (auto item = pendingRequests.keyValueBegin(); item != pendingRequests.keyValueEnd(); ++item) {
+            pendingRequestsSize += item->second;
+        }
+        requestSize -= pendingRequestsSize;
+        if (requestSize > 0) {
+            controlDevice->write(Command::REQUESTDATA);
+            controlDevice->write(util::numToBytes(requestIndex));
+            controlDevice->write(util::numToBytes(requestSize));
+            QMutexLocker lock(&pendingRequestsMutex);
+            pendingRequests.insert(requestIndex++, requestSize);
+        }
     }
 
     return result.size();
@@ -123,7 +167,7 @@ qint64 CachedStream::readData(char *data, qint64 maxSize) {
 qint64 CachedStream::writeData(const char *data, qint64 size) {
     QByteArray inputData(data, size);
     qint64 bytesWritten = 0;
-    size_t availableSpaceLastElement = 0;
+    qint64 availableSpaceLastElement = 0;
     if (writeCache.size() > 0) {
         availableSpaceLastElement = 1024 - writeCache.last().size();
     }
