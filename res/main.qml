@@ -5,10 +5,14 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
-    width: 512
-    height: 420
+    width: 772
+    height: 492
     visible: true
     title: qsTr("VanadiumCast")
+
+    onClosing: {
+        Qt.callLater(Qt.quit)
+    }
 
     SoundEffect {
         id: incomingPing

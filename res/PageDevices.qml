@@ -1,12 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.12
 import QtQuick.Controls.Universal 2.12
+import QtQuick.Controls.Material 2.12
 import "qrc:/gui/model"
 
 Page {
-    width: 600
-    height: 400
+    width: 772
+    height: 450
 
     property alias deviceLV: devicesListView
 
@@ -58,10 +58,7 @@ Page {
 
     Rectangle {
         id: deviceViewRect
-        anchors.top: parent.top
-        anchors.bottom: triggerIncomingConn.top
-        anchors.right: parent.right
-        anchors.left: parent.left
+        anchors.fill: parent
         anchors.margins: 8
         border.width: 1
         radius: 2
@@ -70,9 +67,8 @@ Page {
         ListView {
             id: devicesListView
             currentIndex: -1
-            width: parent.width - 20
-            height: parent.height - triggerIncomingConn.height - 20
-            anchors.centerIn: parent
+            anchors.fill: parent
+            anchors.margins: 8
             model: DeviceListModel {
                 id: devicesListModel
             }
@@ -143,17 +139,6 @@ Page {
                 }
             }
             focus: true
-        }
-    }
-
-    Button {
-        id: triggerIncomingConn
-        anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr("Trigger incoming connection popup")
-        onClicked: {
-            incomingPing.play()
-            newConnPopup.open()
         }
     }
 }

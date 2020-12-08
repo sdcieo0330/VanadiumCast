@@ -23,6 +23,26 @@ CachedLocalStream::End *CachedLocalStream::getEnd2() const {
     return end2;
 }
 
+qint64 CachedLocalStream::get12SpaceLeft() {
+    qint64 spaceLeft = (queueTXRX.size() - 1) * 1024;
+    return spaceLeft + queueTXRX.last().size();
+}
+
+qint64 CachedLocalStream::get21SpaceLeft() {
+    qint64 spaceLeft = (queueRXTX.size() - 1) * 1024;
+    return spaceLeft + queueRXTX.last().size();
+}
+
+CachedLocalStream::End *CachedLocalStream::otherEnd(CachedLocalStream::End *end) {
+    if (end == end1) {
+        return end2;
+    } else if (end == end2) {
+        return end1;
+    } else {
+        return nullptr;
+    }
+}
+
 CachedLocalStream::End::End(CachedLocalStream *localStream, CachedLocalStream::End::Direction direction, QObject *parent) :
         QIODevice(parent), localStream(localStream), direction(direction) {
     switch (direction) {
@@ -71,7 +91,7 @@ qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
 
     QMutexLocker lock(outputMutex);
     // If the last element in the output queue contains less than 1024 byte, append to it
-    if (availableSpaceLastElement > 0) {
+    if (!outputQueue->isEmpty() && availableSpaceLastElement > 0) {
         outputQueue->last().append(inputData.left(availableSpaceLastElement));
         bytesWritten += (inputData.size() >= availableSpaceLastElement ? availableSpaceLastElement : inputData.size());
         inputData.remove(0, availableSpaceLastElement);
@@ -82,6 +102,10 @@ qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
         outputQueue->append(slice);
         bytesWritten += slice.size();
         inputData.remove(0, 1024);
+    }
+
+    if (bytesWritten > 0) {
+        dynamic_cast<CachedLocalStream*>(parent())->otherEnd(this)->readyRead();
     }
 
     return bytesWritten;

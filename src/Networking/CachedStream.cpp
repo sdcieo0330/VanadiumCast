@@ -67,7 +67,6 @@ qint64 CachedStream::bytesToWrite() const {
 }
 
 void CachedStream::readDataToCache() {
-    qDebug() << "Read data to cache";
     auto data = underlyingDevice->readAll();
     if (!data.isEmpty()) {
         quint64 id = util::bytesToNum(data.left(8));
@@ -75,6 +74,7 @@ void CachedStream::readDataToCache() {
         quint64 size = util::bytesToNum(data.left(8));
         data.remove(0, 8);
         if (size > 0) {
+            qDebug() << "Read data to cache";
             size_t availableSpaceLastElement = 0;
             if (readCache.size() > 0) {
                 availableSpaceLastElement = 1024 - readCache.last().size();
@@ -126,7 +126,6 @@ void CachedStream::answerDataRequest() {
 }
 
 qint64 CachedStream::readData(char *data, qint64 maxSize) {
-    qDebug() << "Read data";
     QByteArray result;
     while (result.size() < maxSize && !readCache.isEmpty()) {
         if (maxSize - result.size() >= 1024) {
@@ -148,14 +147,18 @@ qint64 CachedStream::readData(char *data, qint64 maxSize) {
             requestSize = readCacheSize - (readCache.size() - 1) * 1024 - readCache.last().size();
         }
         quint64 pendingRequestsSize = 0;
+
         for (auto item = pendingRequests.keyValueBegin(); item != pendingRequests.keyValueEnd(); ++item) {
             pendingRequestsSize += item->second;
         }
         requestSize -= pendingRequestsSize;
         if (requestSize > 0) {
-            controlDevice->write(Command::REQUESTDATA);
-            controlDevice->write(util::numToBytes(requestIndex));
-            controlDevice->write(util::numToBytes(requestSize));
+            qDebug() << "Requesting data";
+            QByteArray request;
+            request.append(Command::REQUESTDATA);
+            request.append(util::numToBytes(1));
+            request.append(util::numToBytes(requestSize));
+            controlDevice->write(request);
             QMutexLocker lock(&pendingRequestsMutex);
             pendingRequests.insert(requestIndex++, requestSize);
         }
@@ -183,4 +186,9 @@ qint64 CachedStream::writeData(const char *data, qint64 size) {
         inputData.remove(0, 1024);
     }
     return bytesWritten;
+}
+
+void CachedStream::resetRequests() {
+    QMutexLocker lock(&pendingRequestsMutex);
+    pendingRequests.clear();
 }

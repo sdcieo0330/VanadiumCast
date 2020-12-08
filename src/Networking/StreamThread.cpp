@@ -4,6 +4,7 @@
 
 #include "StreamThread.h"
 #include "Commands.h"
+#include <QtConcurrent>
 
 StreamThread::StreamThread(NetworkDevice *target, InputFile *inputFile) : target(target), inputFile(inputFile) {
 
@@ -23,11 +24,15 @@ void StreamThread::run() {
             dataConnection = new QTcpSocket;
             dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
             dataConnection->waitForConnected(500);
-            cachedOutput = new CachedStream(10 * 1024 * 1024, 10 * 1024 * 1024, dataConnection, controlConnection, 5 * 1024 * 1024);
-            cachedOutput->open(QIODevice::ReadWrite);
-            qDebug() << "cachedOutput mode:" << cachedOutput->openMode();
-            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput, VideoTranscoder::STANDARD);
-            transcoder->startTranscoding();
+            cachedOutput = new CachedLocalStream(100 * 1024);
+            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::LOW);
+            auto *readTimer = new QTimer;
+            readTimer->setInterval(1);
+            connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
+            readTimer->start();
+            QtConcurrent::run([&]() {
+                transcoder->startTranscoding();
+            });
             exec();
         } else {
             controlConnection->disconnectFromHost();
@@ -40,5 +45,14 @@ void StreamThread::run() {
         controlConnection->waitForDisconnected();
         delete controlConnection;
         this->deleteLater();
+    }
+}
+
+void StreamThread::writeToOutput() {
+    qDebug() << "writeToOutput()";
+    QByteArray buf = cachedOutput->getEnd1()->readAll();
+    if (!buf.isEmpty()) {
+        qDebug() << "Writing data...";
+        dataConnection->write(buf);
     }
 }

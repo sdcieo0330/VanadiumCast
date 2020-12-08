@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     });
+    QObject::connect(&engine, &QQmlApplicationEngine::quit, app, &QApplication::quit);
     engine.load(url);
     api.start();
 //    QTimer timer;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
 //    QObject::connect(&timer, &QTimer::timeout, &sinkHandler, &NetworkSinkHandler::stopDiscoverable);
 //    timer.start(10000);
 
-    QObject::connect(app, &QGuiApplication::aboutToQuit, &api, &NetworkAPI::stop);
+    QObject::connect(app, &QApplication::aboutToQuit, &api, &NetworkAPI::stop);
 
     return app->exec();
 }

@@ -34,6 +34,8 @@ public:
         return true;
     }
 
+    void resetRequests();
+
 protected:
     qint64 readData(char *data, qint64 maxSize) override;
 

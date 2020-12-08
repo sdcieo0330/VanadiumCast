@@ -48,29 +48,20 @@ void NetworkSinkHandler::run() {
                     cachedLocalStream = new CachedLocalStream(10 * 1024 * 1024);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
                     videoGuiLauncher->moveToThread(QApplication::instance()->thread());
-                    cachedStream = new CachedStream(10 * 1024 * 1024,
-                                                    10 * 1024 * 1024,
-                                                    dataConnection,
-                                                    controlConnection,
-                                                    6 * 1024 * 1024);
                     qDebug() << "dataConnection:" << dataConnection->openMode();
-                    if (cachedStream->open(QIODevice::ReadOnly | QIODevice::WriteOnly)) {
-                        QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
-                        QtConcurrent::run([&](){
-                            this->exec();
-                            qDebug() << "Event queue cancelled";
-                        });
-                        QByteArray buf;
-                        while (running) {
-                            buf = cachedStream->readAll();
-                            if (buf.size() > 0) {
-                                qDebug() << "Data, yay";
-                                while (buf.size() > 0) {
-                                    buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
-                                    QThread::usleep(100);
-                                }
-                            } else {
-                                QThread::msleep(1);
+                    qDebug() << "controlConnection:" << controlConnection->openMode();
+                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
+                    msleep(100);
+                    QByteArray buf;
+                    while (running) {
+                        if (dataConnection->waitForReadyRead(1)) {
+                            buf = dataConnection->readAll();
+                            qDebug() << "data incoming:" << buf.size() << "bytes";
+//                            while (!buf.isEmpty()) {
+//                                buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
+//                            }
+                            if (!buf.isEmpty()) {
+                                output.write(buf);
                             }
                         }
                     }
@@ -97,7 +88,15 @@ void NetworkSinkHandler::answerScanRequest() {
     QNetworkDatagram dg = udpBroadcast->receiveDatagram();
     if (dg.data() == Command::SCAN) {
         udpSocket->writeDatagram(Command::NAME, dg.senderAddress(), 55553);
-        udpSocket->writeDatagram(QByteArray::fromStdString("Test device lol"), dg.senderAddress(), 55553);
+        udpSocket->writeDatagram(QByteArray::fromStdString("Test device"), dg.senderAddress(), 55553);
         udpSocket->flush();
     }
+}
+
+void NetworkSinkHandler::enqueueDataFromStream() {
+//    if (cachedLocalStream->get12SpaceLeft() >= 1024) {
+    output.write(dataConnection->readAll());
+//        cachedLocalStream->getEnd1()->write(dataConnection->read(1024));
+//        controlConnection->write(Command::OK);
+//    }
 }

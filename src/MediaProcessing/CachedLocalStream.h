@@ -52,6 +52,11 @@ public:
     [[nodiscard]] End *getEnd1() const;
     [[nodiscard]] End *getEnd2() const;
 
+    [[nodiscard]] End *otherEnd(End *end);
+
+    qint64 get12SpaceLeft();
+    qint64 get21SpaceLeft();
+
 private:
     qint64 size;
     QContiguousCache<QByteArray> queueTXRX, queueRXTX;

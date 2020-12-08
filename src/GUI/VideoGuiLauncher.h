@@ -20,6 +20,7 @@ public slots:
 
 private:
     QtAV::VideoRenderer *videoRenderer;
+    VideoGUI *videoGui;
     QtAV::AVPlayer *avPlayer;
     QIODevice *inputDevice;
 };

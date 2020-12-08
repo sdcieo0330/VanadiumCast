@@ -2,6 +2,9 @@ import QtQuick 2.0
 import QtQuick.Controls 2.12
 
 Page {
+    width: 772
+    height: 460
+
     header: Label {
         font.pixelSize: Qt.application.font.pixelSize * 2
         text: qsTr("Streaming Control Panel")

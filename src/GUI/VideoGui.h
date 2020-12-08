@@ -14,10 +14,12 @@ public:
 
     ~VideoGUI() override = default;
 
+    void showEvent(QShowEvent *event) override;
+
 private:
     QIODevice *inputDevice;
     QtAV::AVPlayer *avPlayer;
-    QtAV::GLWidgetRenderer2 *openglWidget;
+    QtAV::VideoRenderer *openglWidget;
 };
 
 #endif // VIDEOGUI_H

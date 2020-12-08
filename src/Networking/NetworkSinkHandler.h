@@ -32,6 +32,7 @@ public slots:
         running = true;
         controlConnectionServer->pauseAccepting();
         QThread::start();
+        output.open(QIODevice::ReadWrite | QIODevice::Truncate);
     }
 
     void stop() override {
@@ -40,6 +41,8 @@ public slots:
         while (this->isRunning()) {
             QThread::msleep(10);
         }
+        output.flush();
+        output.close();
     }
 
     void makeDiscoverable() {
@@ -52,10 +55,13 @@ public slots:
 
     void incomingTcpConnect(qintptr handle);
     void answerScanRequest();
+
+    void enqueueDataFromStream();
 signals:
     void newConnection(NetworkDevice* device);
     void incomingConnectionRequest();
 private:
+    QTimer *readTimer = nullptr;
     NetworkInput *networkInput{};
     QUdpSocket* udpBroadcast;
     QUdpSocket* udpSocket;
@@ -67,6 +73,7 @@ private:
     VideoGuiLauncher *videoGuiLauncher{};
     CachedStream *cachedStream;
     CachedLocalStream *cachedLocalStream;
+    QFile output {"/home/silas/output.mkv"};
     bool running = false;
     bool shouldReset = false;
     int shouldConnect = 0;

@@ -37,6 +37,7 @@ bool NetworkAPI::start() {
 bool NetworkAPI::stop() {
     deviceScanner->stop();
     sinkHandler->stopDiscoverable();
+    sinkHandler->quit();
     sinkHandler->stop();
     if (transcoder != nullptr) {
         transcoder->stopTranscoding();

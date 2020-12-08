@@ -11,14 +11,15 @@ bool VideoGuiLauncher::event(QEvent *event) {
     if (event->type() == QEvent::User) {
         qDebug() << "User event triggered";
         inputDevice->open(QIODevice::ReadWrite);
-        videoRenderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWindow);
-        avPlayer = new QtAV::AVPlayer;
-        avPlayer->setRenderer(videoRenderer);
-        avPlayer->setIODevice(inputDevice);
-        avPlayer->setAsyncLoad(true);
-        avPlayer->setAutoLoad(true);
-        avPlayer->play();
-        videoRenderer->qwindow()->showMaximized();
+        videoGui = new VideoGUI(inputDevice);
+//        avPlayer = new QtAV::AVPlayer;
+//        avPlayer->setRenderer(videoRenderer);
+//        avPlayer->setIODevice(inputDevice);
+//        avPlayer->setAsyncLoad(true);
+//        avPlayer->setAutoLoad(true);
+//        avPlayer->play();
+        videoGui->setBaseSize(480, 320);
+        videoGui->show();
         return true;
     }
     return false;

@@ -54,36 +54,36 @@ private:
         if (!encodingProfilesInitialized) {
             // Low profile
             LOW.audioCodecName = "aac";
-            LOW.videoCodecName = "libx264";
-            LOW.height = 1280;
-            LOW.width = 720;
+            LOW.videoCodecName = "h264_qsv";
+            LOW.width = 1280;
+            LOW.height = 720;
             LOW.rate = 1000000;
             LOW.framerate = 30;
             LOW.bytesPerColor = 1;
 
             // Standard profile
             STANDARD.audioCodecName = "aac";
-            STANDARD.videoCodecName = "libx264";
-            STANDARD.height = 1920;
-            STANDARD.width = 1080;
+            STANDARD.videoCodecName = "h264_qsv";
+            STANDARD.width = 1920;
+            STANDARD.height = 1080;
             STANDARD.rate = 5000000;
             STANDARD.framerate = 30;
             STANDARD.bytesPerColor = 1;
 
             // High profile
             HIGH.audioCodecName = "aac";
-            HIGH.videoCodecName = "libx265";
-            HIGH.height = 1920;
-            HIGH.width = 1080;
+            HIGH.videoCodecName = "h264_qsv";
+            HIGH.width = 1920;
+            HIGH.height = 1080;
             HIGH.rate = 10000000;
             HIGH.framerate = 60;
             HIGH.bytesPerColor = 1;
 
             // Ultra profile
             ULTRA.audioCodecName = "aac";
-            ULTRA.videoCodecName = "libx265";
-            ULTRA.height = 2560;
-            ULTRA.width = 1440;
+            ULTRA.videoCodecName = "h264_qsv";
+            ULTRA.width = 2560;
+            ULTRA.height = 1440;
             ULTRA.rate = 15000000;
             ULTRA.framerate = 60;
             ULTRA.bytesPerColor = 2;

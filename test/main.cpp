@@ -13,7 +13,7 @@
 }
 
 int main(int argc, char *argv[]) {
-    size_t testCount = 16;
+    size_t testCount = 1;
 
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_Use96Dpi);

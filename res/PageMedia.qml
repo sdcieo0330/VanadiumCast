@@ -11,8 +11,8 @@ Page {
     }
 
     id: pageMediaClass
-    width: 600
-    height: 400
+    width: 772
+    height: 460
 
     signal selectedMedia(url fileName)
 
@@ -63,8 +63,8 @@ Page {
     Button {
         anchors.right: parent.right
         anchors.rightMargin: 20
-        anchors.top: parent.top
-        anchors.topMargin: 12
+        anchors.verticalCenter: mediaPathInput.verticalCenter
+        height: mediaPathInput.heigth
         id: selectMediaBtn
         text: "Browse"
         onClicked: {
