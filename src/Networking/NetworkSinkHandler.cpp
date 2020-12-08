@@ -46,22 +46,23 @@ void NetworkSinkHandler::run() {
                 if (dataConnectionServer->waitForNewConnection(30000)) {
                     dataConnection = dataConnectionServer->nextPendingConnection();
                     cachedLocalStream = new CachedLocalStream(10 * 1024 * 1024);
-                    videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
-                    videoGuiLauncher->moveToThread(QApplication::instance()->thread());
+//                    videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
+//                    videoGuiLauncher->moveToThread(QApplication::instance()->thread());
                     qDebug() << "dataConnection:" << dataConnection->openMode();
                     qDebug() << "controlConnection:" << controlConnection->openMode();
-                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
+//                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
                     msleep(100);
-                    QByteArray buf;
                     while (running) {
                         if (dataConnection->waitForReadyRead(1)) {
-                            buf = dataConnection->readAll();
+                            QByteArray buf = dataConnection->readAll();
                             qDebug() << "data incoming:" << buf.size() << "bytes";
 //                            while (!buf.isEmpty()) {
 //                                buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
 //                            }
                             if (!buf.isEmpty()) {
+                                output.open(QIODevice::ReadWrite | QIODevice::Append);
                                 output.write(buf);
+                                output.close();
                             }
                         }
                     }

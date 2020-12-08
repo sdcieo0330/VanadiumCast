@@ -13,7 +13,7 @@ class CachedLocalStream : public QObject {
 Q_OBJECT
 public:
     /**
-     * @param size size in kilobytes
+     * @param size cacheSize in kilobytes
      * @param parent parent for Qt's meta object system
      */
     explicit CachedLocalStream(int size, QObject *parent = nullptr);
@@ -24,6 +24,7 @@ public:
             TXTX_RXRX,
             TXRX_RXTX
         };
+
         [[nodiscard]] bool isSequential() const override {
             return true;
         }
@@ -43,23 +44,21 @@ public:
         [[nodiscard]] qint64 bytesToWrite() const override;
 
     private:
-        QContiguousCache<QByteArray> *outputQueue, *inputQueue;
+        QQueue<QByteArray *> *outputQueue, *inputQueue;
         QMutex *outputMutex, *inputMutex;
         CachedLocalStream *localStream;
         Direction direction;
     };
 
     [[nodiscard]] End *getEnd1() const;
+
     [[nodiscard]] End *getEnd2() const;
 
     [[nodiscard]] End *otherEnd(End *end);
 
-    qint64 get12SpaceLeft();
-    qint64 get21SpaceLeft();
-
 private:
-    qint64 size;
-    QContiguousCache<QByteArray> queueTXRX, queueRXTX;
+    qint64 cacheSize{};
+    QQueue<QByteArray *> queueTXRX, queueRXTX;
     QMutex RXTXMutex, TXRXMutex;
     End *end1, *end2;
 };

@@ -3,8 +3,8 @@
  */
 
 
-#ifndef _NETWORKSINKHANDLER_H
-#define _NETWORKSINKHANDLER_H
+#ifndef NETWORKSINKHANDLER_H
+#define NETWORKSINKHANDLER_H
 
 #include "SinkHandler.h"
 #include "NetworkSinkTcpServer.h"
@@ -17,9 +17,9 @@
 #include <MediaProcessing/CachedLocalStream.h>
 
 class NetworkSinkHandler final : public QThread, public SinkHandler {
-    Q_OBJECT
-public: 
-    NetworkSinkHandler(QObject *parent = nullptr);
+Q_OBJECT
+public:
+    explicit NetworkSinkHandler(QObject *parent = nullptr);
 
     void run() override;
 
@@ -28,11 +28,14 @@ public:
     }
 
 public slots:
+
     void start() override {
         running = true;
         controlConnectionServer->pauseAccepting();
         QThread::start();
         output.open(QIODevice::ReadWrite | QIODevice::Truncate);
+        output.write(QByteArray(0, 0u));
+        output.close();
     }
 
     void stop() override {
@@ -41,8 +44,8 @@ public slots:
         while (this->isRunning()) {
             QThread::msleep(10);
         }
-        output.flush();
-        output.close();
+//        output.flush();
+//        output.close();
     }
 
     void makeDiscoverable() {
@@ -54,29 +57,31 @@ public slots:
     }
 
     void incomingTcpConnect(qintptr handle);
+
     void answerScanRequest();
 
     void enqueueDataFromStream();
+
 signals:
-    void newConnection(NetworkDevice* device);
+
+    void newConnection(NetworkDevice *device);
+
     void incomingConnectionRequest();
+
 private:
-    QTimer *readTimer = nullptr;
-    NetworkInput *networkInput{};
-    QUdpSocket* udpBroadcast;
-    QUdpSocket* udpSocket;
-    NetworkSinkTcpServer* controlConnectionServer;
-    QTcpSocket* controlConnection{};
-    QTcpSocket* dataConnection{};
-    QTcpServer* dataConnectionServer;
+    QUdpSocket *udpBroadcast;
+    QUdpSocket *udpSocket;
+    NetworkSinkTcpServer *controlConnectionServer;
+    QTcpSocket *controlConnection{};
+    QTcpSocket *dataConnection{};
+    QTcpServer *dataConnectionServer;
     qintptr controlConnectionHandle{};
     VideoGuiLauncher *videoGuiLauncher{};
-    CachedStream *cachedStream;
     CachedLocalStream *cachedLocalStream;
-    QFile output {"/home/silas/output.mkv"};
+    QFile output{"/home/silas/output.mkv"};
     bool running = false;
     bool shouldReset = false;
     int shouldConnect = 0;
 };
 
-#endif //_NETWORKSINKHANDLER_H
+#endif //NETWORKSINKHANDLER_H

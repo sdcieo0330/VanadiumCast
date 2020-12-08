@@ -24,10 +24,10 @@ void StreamThread::run() {
             dataConnection = new QTcpSocket;
             dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
             dataConnection->waitForConnected(500);
-            cachedOutput = new CachedLocalStream(100 * 1024);
-            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::LOW);
+            cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
+            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::ULTRA);
             auto *readTimer = new QTimer;
-            readTimer->setInterval(1);
+            readTimer->setInterval(4);
             connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
             readTimer->start();
             QtConcurrent::run([&]() {
@@ -49,10 +49,11 @@ void StreamThread::run() {
 }
 
 void StreamThread::writeToOutput() {
-    qDebug() << "writeToOutput()";
+//    qDebug() << "writeToOutput()";
     QByteArray buf = cachedOutput->getEnd1()->readAll();
     if (!buf.isEmpty()) {
-        qDebug() << "Writing data...";
+//        qDebug() << "Writing data...";
         dataConnection->write(buf);
+        dataConnection->flush();
     }
 }

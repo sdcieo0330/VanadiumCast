@@ -3,10 +3,9 @@
 //
 
 #include "CachedLocalStream.h"
+#include <QQueue>
 
-CachedLocalStream::CachedLocalStream(int size, QObject *parent) : QObject(parent), size(size) {
-    queueTXRX.setCapacity(size / 1024);
-    queueRXTX.setCapacity(size / 1024);
+CachedLocalStream::CachedLocalStream(int size, QObject *parent) : QObject(parent), cacheSize(size) {
     queueTXRX.clear();
     queueRXTX.clear();
     end1 = new End(this, End::Direction::TXTX_RXRX, this);
@@ -21,16 +20,6 @@ CachedLocalStream::End *CachedLocalStream::getEnd1() const {
 
 CachedLocalStream::End *CachedLocalStream::getEnd2() const {
     return end2;
-}
-
-qint64 CachedLocalStream::get12SpaceLeft() {
-    qint64 spaceLeft = (queueTXRX.size() - 1) * 1024;
-    return spaceLeft + queueTXRX.last().size();
-}
-
-qint64 CachedLocalStream::get21SpaceLeft() {
-    qint64 spaceLeft = (queueRXTX.size() - 1) * 1024;
-    return spaceLeft + queueRXTX.last().size();
 }
 
 CachedLocalStream::End *CachedLocalStream::otherEnd(CachedLocalStream::End *end) {
@@ -66,10 +55,12 @@ qint64 CachedLocalStream::End::readData(char *data, qint64 maxSize) {
     QMutexLocker lock(inputMutex);
     while (result.size() < maxSize && !inputQueue->isEmpty()) {
         if (maxSize - result.size() >= 1024) {
-            result.append(inputQueue->takeFirst());
+            QByteArray *tmp = inputQueue->takeFirst();
+            result.append(*tmp);
+            delete tmp;
         } else {
-            result.append(inputQueue->first().left(maxSize));
-            inputQueue->first().remove(0, maxSize);
+            result.append(inputQueue->first()->left(maxSize));
+            inputQueue->first()->remove(0, maxSize);
         }
     }
 
@@ -86,26 +77,26 @@ qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
     size_t availableSpaceLastElement = 0;
 
     if (!outputQueue->isEmpty()) {
-        availableSpaceLastElement = 1024 - outputQueue->last().size();
+        availableSpaceLastElement = 1024 - outputQueue->last()->size();
     }
 
     QMutexLocker lock(outputMutex);
     // If the last element in the output queue contains less than 1024 byte, append to it
     if (!outputQueue->isEmpty() && availableSpaceLastElement > 0) {
-        outputQueue->last().append(inputData.left(availableSpaceLastElement));
+        outputQueue->last()->append(inputData.left(availableSpaceLastElement));
         bytesWritten += (inputData.size() >= availableSpaceLastElement ? availableSpaceLastElement : inputData.size());
         inputData.remove(0, availableSpaceLastElement);
     }
 
-    while (!outputQueue->isFull() && !inputData.isEmpty()) {
+    while (!inputData.isEmpty() && outputQueue->size() < reinterpret_cast<CachedLocalStream *>(parent())->cacheSize / 1024) {
         auto slice = inputData.left(1024);
-        outputQueue->append(slice);
+        outputQueue->append(new QByteArray(slice));
         bytesWritten += slice.size();
         inputData.remove(0, 1024);
     }
 
     if (bytesWritten > 0) {
-        dynamic_cast<CachedLocalStream*>(parent())->otherEnd(this)->readyRead();
+        dynamic_cast<CachedLocalStream *>(parent())->otherEnd(this)->readyRead();
     }
 
     return bytesWritten;
@@ -115,7 +106,7 @@ qint64 CachedLocalStream::End::bytesAvailable() const {
     qint64 available = 0;
     QMutexLocker lock(inputMutex);
     for (int i = 0; i < inputQueue->size(); ++i) {
-        available += inputQueue->at(i).size();
+        available += inputQueue->at(i)->size();
     }
     return available;
 }
