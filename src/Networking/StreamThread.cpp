@@ -25,34 +25,31 @@ void StreamThread::run() {
             dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
             dataConnection->waitForConnected(500);
             cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
-            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::ULTRA);
+            QFile tmpout("/home/silas/transcoded.mkv");
+            tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
+            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::HIGH);
             auto *readTimer = new QTimer;
-            readTimer->setInterval(4);
+            readTimer->setInterval(32);
             connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
             readTimer->start();
             QtConcurrent::run([&]() {
                 transcoder->startTranscoding();
             });
             exec();
-        } else {
-            controlConnection->disconnectFromHost();
-            controlConnection->waitForDisconnected();
-            delete controlConnection;
-            this->deleteLater();
+//            delete readTimer;
         }
-    } else {
-        controlConnection->disconnectFromHost();
-        controlConnection->waitForDisconnected();
-        delete controlConnection;
-        this->deleteLater();
     }
+    controlConnection->disconnectFromHost();
+    controlConnection->waitForDisconnected();
+    delete controlConnection;
+    this->deleteLater();
 }
 
 void StreamThread::writeToOutput() {
-//    qDebug() << "writeToOutput()";
+    qDebug() << "writeToOutput()";
     QByteArray buf = cachedOutput->getEnd1()->readAll();
     if (!buf.isEmpty()) {
-//        qDebug() << "Writing data...";
+        qDebug() << "Writing data...";
         dataConnection->write(buf);
         dataConnection->flush();
     }

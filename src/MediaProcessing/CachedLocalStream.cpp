@@ -95,10 +95,6 @@ qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
         inputData.remove(0, 1024);
     }
 
-    if (bytesWritten > 0) {
-        dynamic_cast<CachedLocalStream *>(parent())->otherEnd(this)->readyRead();
-    }
-
     return bytesWritten;
 }
 

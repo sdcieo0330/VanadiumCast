@@ -34,8 +34,6 @@ public slots:
         controlConnectionServer->pauseAccepting();
         QThread::start();
         output.open(QIODevice::ReadWrite | QIODevice::Truncate);
-        output.write(QByteArray(0, 0u));
-        output.close();
     }
 
     void stop() override {
@@ -44,8 +42,8 @@ public slots:
         while (this->isRunning()) {
             QThread::msleep(10);
         }
-//        output.flush();
-//        output.close();
+        output.flush();
+        output.close();
     }
 
     void makeDiscoverable() {

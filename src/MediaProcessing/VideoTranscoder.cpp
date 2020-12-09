@@ -9,7 +9,6 @@ VideoTranscoder::VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice
     initializeProfiles();
     inputDevice->open(QIODevice::ReadWrite);
     avPlayer.setIODevice(inputDevice);
-    avPlayer.setAutoLoad();
     if (avPlayer.audioStreamCount() > 0) {
         avPlayer.audio()->setBackends(QStringList() << QString::fromLatin1("null"));
     } else {
@@ -17,28 +16,39 @@ VideoTranscoder::VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice
     }
     avPlayer.setVideoDecoderPriority(QStringList() << "QSV" << "VAAPI" << "CUDA" << "FFmpeg");
     initTranscoder(profile);
-    avTranscoder.setMediaSource(&avPlayer);
-    avTranscoder.setOutputMedia(outputDevice);
 }
 
 void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
-    QMediaPlayer player;
-    player.setMedia(QMediaContent(QUrl::fromLocalFile(reinterpret_cast<QFile *>(inputDevice)->fileName())));
+//    QVariantHash muxopt, avfopt;
+//    avfopt[QString::fromLatin1("segment_time")] = 4;
+//    avfopt[QString::fromLatin1("segment_list_size")] = 0;
+//    avfopt[QString::fromLatin1("segment_list")] = "/tmp/index.m3u8";
+//    avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
+//    muxopt[QString::fromLatin1("avformat")] = avfopt;
+
+//    QMediaPlayer player;
+//    player.setMedia(QMediaContent(QUrl::fromLocalFile(reinterpret_cast<QFile *>(inputDevice)->fileName())));
+
+    avTranscoder.setMediaSource(&avPlayer);
+    avTranscoder.setOutputMedia(outputDevice);
+//    avTranscoder.setOutputOptions(muxopt);
+
     avTranscoder.setOutputFormat("mpegts");
     if (!avTranscoder.createVideoEncoder()) {
-        qFatal("Cannot initialize encoder");
+        qFatal("Failed to create video encoder");
     }
-    QVariantHash muxopt, avfopt;
-    avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
-    muxopt[QString::fromLatin1("avformat")] = avfopt;
-    avTranscoder.setOutputOptions(muxopt);
-    avTranscoder.videoEncoder()->setProperty("hwdevice", "/dev/dri/renderD128");
-    avTranscoder.videoEncoder()->setHeight(profile.height);
-    avTranscoder.videoEncoder()->setWidth(profile.width);
-//    avTranscoder.videoEncoder()->setFrameRate(std::min(profile.framerate, player.metaData(QMediaMetaData::VideoFrameRate).toInt()));
-    avTranscoder.videoEncoder()->setBitRate(profile.rate);
-    avTranscoder.videoEncoder()->setCodecName(profile.videoCodecName);
-    if (avPlayer.audioStreamCount() > 0) {
+    QtAV::VideoEncoder *videoEncoder = avTranscoder.videoEncoder();
+//    QVariantHash muxopt, avfopt;
+//    avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
+//    muxopt[QString::fromLatin1("avformat")] = avfopt;
+//    avTranscoder.setOutputOptions(muxopt);
+    videoEncoder->setCodecName(profile.videoCodecName);
+    videoEncoder->setBitRate(profile.rate);
+    videoEncoder->setProperty("hwdevice", "/dev/dri/renderD128");
+    videoEncoder->setHeight(profile.height);
+    videoEncoder->setWidth(profile.width);
+//    videoEncoder->setFrameRate(std::min(profile.framerate, player.metaData(QMediaMetaData::VideoFrameRate).toInt()));
+    if (avPlayer.currentAudioStream() >= 0) {
         if (avTranscoder.createAudioEncoder()) {
             avTranscoder.audioEncoder()->setCodecName(profile.audioCodecName);
             avTranscoder.audioEncoder()->setBitRate(256000);
@@ -58,8 +68,8 @@ void VideoTranscoder::startTranscoding() {
 }
 
 void VideoTranscoder::stopTranscoding() {
-    avTranscoder.stop();
     avPlayer.stop();
+    avTranscoder.stop();
     avPlayer.deleteLater();
     avTranscoder.deleteLater();
 }

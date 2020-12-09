@@ -45,24 +45,24 @@ void NetworkSinkHandler::run() {
                 qDebug() << "Answered request";
                 if (dataConnectionServer->waitForNewConnection(30000)) {
                     dataConnection = dataConnectionServer->nextPendingConnection();
-                    cachedLocalStream = new CachedLocalStream(10 * 1024 * 1024);
-//                    videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
-//                    videoGuiLauncher->moveToThread(QApplication::instance()->thread());
+                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024);
+                    videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
+                    videoGuiLauncher->moveToThread(QApplication::instance()->thread());
                     qDebug() << "dataConnection:" << dataConnection->openMode();
                     qDebug() << "controlConnection:" << controlConnection->openMode();
-//                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
+                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
                     msleep(100);
                     while (running) {
-                        if (dataConnection->waitForReadyRead(1)) {
+                        size_t bytesRead = 0;
+                        if (dataConnection->waitForReadyRead(32)) {
                             QByteArray buf = dataConnection->readAll();
-                            qDebug() << "data incoming:" << buf.size() << "bytes";
-//                            while (!buf.isEmpty()) {
-//                                buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
-//                            }
                             if (!buf.isEmpty()) {
-                                output.open(QIODevice::ReadWrite | QIODevice::Append);
+                                bytesRead += buf.size();
+                                qDebug() << "data total:" << bytesRead << "bytes";
                                 output.write(buf);
-                                output.close();
+                                while (!buf.isEmpty()) {
+                                    buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
+                                }
                             }
                         }
                     }
