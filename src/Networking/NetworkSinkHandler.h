@@ -30,20 +30,24 @@ public:
 public slots:
 
     void start() override {
-        running = true;
-        controlConnectionServer->pauseAccepting();
-        QThread::start();
-        output.open(QIODevice::ReadWrite | QIODevice::Truncate);
+        if (!running) {
+            running = true;
+            controlConnectionServer->pauseAccepting();
+            QThread::start();
+            output.open(QIODevice::ReadWrite | QIODevice::Truncate);
+        }
     }
 
     void stop() override {
-        controlConnectionServer->resumeAccepting();
-        running = false;
-        while (this->isRunning()) {
-            QThread::msleep(10);
+        if (running) {
+            controlConnectionServer->resumeAccepting();
+            running = false;
+            while (this->isRunning()) {
+                QThread::msleep(10);
+            }
+            output.flush();
+            output.close();
         }
-        output.flush();
-        output.close();
     }
 
     void makeDiscoverable() {

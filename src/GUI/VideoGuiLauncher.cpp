@@ -18,6 +18,7 @@ bool VideoGuiLauncher::event(QEvent *event) {
         avPlayer = new QtAV::AVPlayer;
         avPlayer->setRenderer(videoRenderer);
         avPlayer->setIODevice(inputDevice);
+        avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "VAAPI" << "CUDA" << "FFmpeg");
         avPlayer->setAutoLoad();
         QtConcurrent::run([&]() {
             QThread::sleep(1);
