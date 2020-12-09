@@ -7,23 +7,23 @@ This application uses
 - QtAV plugin by wang-bin: https://github.com/wang-bin/QtAV
 
 ### Install build-tools
-Arch Linux:
+#### Arch Linux
 ```
 pacman -S cmake base-devel
 ```
 
-Debian:
+#### Debian
 ```
 apt install cmake build-essentials
 ```
 
 ### Install Qt5 and QtAV
-Arch Linux:
+#### Arch Linux
 ```
 pacman -S qt5-base qt5-quickcontrols2 qtav
 ```
 
-Debian:
+#### Debian
 ```
 apt install qt5-default
 ```
