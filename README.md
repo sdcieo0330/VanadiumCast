@@ -29,6 +29,7 @@ apt install qt5-default
 ```
 
 To build and install QtAV follow the steps on https://github.com/wang-bin/QtAV/wiki/Build-QtAV.
+
 Please build QtAV with cmake instead of qmake. Because the cmake build is using ``ninja``, you have to ensure it is installed:
 ```
 apt install ninja
