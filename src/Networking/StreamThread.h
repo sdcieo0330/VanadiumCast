@@ -14,18 +14,29 @@
 
 class StreamThread : public QThread {
 public:
-    StreamThread(NetworkDevice* target, InputFile* inputFile);
+    StreamThread(NetworkDevice *target, InputFile *inputFile);
+
     void run() override;
 
 public slots:
+
+    void start();
+
+    void stop();
+
     void writeToOutput();
 
+    void handleControl();
+
 private:
+    bool running = false;
+    QTimer *readTimer;
     InputFile *inputFile;
     NetworkDevice *target;
     VideoTranscoder *transcoder;
     QTcpSocket *controlConnection, *dataConnection;
     CachedLocalStream *cachedOutput;
+    QByteArray prevCommand;
 };
 
 

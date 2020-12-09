@@ -3,6 +3,7 @@
  */
 
 
+#include "GUI/WindowCloseEventFilter.h"
 #include "NetworkSinkHandler.h"
 #include "NetworkSinkTcpServer.h"
 #include "Commands.h"
@@ -44,10 +45,12 @@ void NetworkSinkHandler::run() {
                 controlConnection->flush();
                 qDebug() << "Answered request";
                 if (dataConnectionServer->waitForNewConnection(30000)) {
+//                    connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
                     dataConnection = dataConnectionServer->nextPendingConnection();
                     cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
                     videoGuiLauncher->moveToThread(QApplication::instance()->thread());
+                    connect(videoGuiLauncher->getCloseEventFilter(), &WindowCloseEventFilter::closing, this, &NetworkSinkHandler::stop);
                     qDebug() << "dataConnection:" << dataConnection->openMode();
                     qDebug() << "controlConnection:" << controlConnection->openMode();
                     QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
@@ -63,18 +66,35 @@ void NetworkSinkHandler::run() {
                                 }
                             }
                         }
+                        if (controlConnection->waitForReadyRead(1)) {
+                            handleControl();
+                        }
                     }
-                } else {
-                    controlConnection->close();
-                    delete controlConnection;
+
+                    videoGuiLauncher->deleteLater();
+
+//                    disconnect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl);
+
+                    if (!quitFromNetworkRequest) {
+                        controlConnection->write(Command::CLOSEDATA);
+                        if (controlConnection->waitForReadyRead(5000) && controlConnection->readAll() == Command::OK) {
+                            dataConnection->disconnectFromHost();
+                        } else {
+                            dataConnection->close();
+                        }
+                        controlConnection->disconnectFromHost();
+                        delete controlConnection;
+                    } else {
+                        dataConnection->disconnectFromHost();
+                    }
+                    delete dataConnection;
                 }
                 delete dataConnectionServer;
-            } else if (shouldConnect == 2) {
-                controlConnection->close();
-                delete controlConnection;
             }
         }
     }
+    output.flush();
+    output.close();
 }
 
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
@@ -98,4 +118,53 @@ void NetworkSinkHandler::enqueueDataFromStream() {
 //        cachedLocalStream->getEnd1()->write(dataConnection->read(1024));
 //        controlConnection->write(Command::OK);
 //    }
+}
+
+void NetworkSinkHandler::handleControl() {
+    QByteArray buf = controlConnection->readAll();
+    qDebug() << "NetworkSinkHandler::handleControl():" << buf;
+    QByteArray command = buf.left(1);
+    if (command == Command::CLOSEDATA) {
+        qDebug() << "Terminating Sink";
+        quitFromNetworkRequest = true;
+        running = false;
+        connect(this, &QThread::finished, [&]() {
+            controlConnection->write(Command::OK);
+            controlConnection->disconnectFromHost();
+            delete controlConnection;
+        });
+    }
+}
+
+void NetworkSinkHandler::makeDiscoverable() {
+    connect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
+}
+
+void NetworkSinkHandler::stopDiscoverable() {
+    disconnect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
+}
+
+void NetworkSinkHandler::windowDestroyed(QObject *object) {
+    Q_UNUSED(object)
+    stop();
+}
+
+void NetworkSinkHandler::stop() {
+    if (running) {
+        running = false;
+        while (this->isRunning()) {
+            QThread::msleep(10);
+        }
+        controlConnectionServer->resumeAccepting();
+        qDebug() << "Stopped SinkHandler-thread";
+    }
+}
+
+void NetworkSinkHandler::start() {
+    if (!running) {
+        running = true;
+        controlConnectionServer->pauseAccepting();
+        QThread::start();
+        output.open(QIODevice::ReadWrite | QIODevice::Truncate);
+    }
 }

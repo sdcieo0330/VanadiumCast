@@ -104,7 +104,7 @@ private:
     QUrl inputFileName;
     InputFile *inputFile = nullptr;
     VideoTranscoder *transcoder = nullptr;
-    StreamThread *streamInitThread = nullptr;
+    StreamThread *streamThread = nullptr;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;

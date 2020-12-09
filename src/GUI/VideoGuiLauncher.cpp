@@ -4,7 +4,7 @@
 #include <QtConcurrent>
 
 VideoGuiLauncher::VideoGuiLauncher(QIODevice *inputDevice, QObject *parent) : QObject(parent), inputDevice(inputDevice) {
-
+    closeEventFilter = new WindowCloseEventFilter(this);
 }
 
 bool VideoGuiLauncher::event(QEvent *event) {
@@ -13,6 +13,8 @@ bool VideoGuiLauncher::event(QEvent *event) {
 //        inputDevice->open(QIODevice::ReadWrite);
 //        videoGui = new VideoGUI(inputDevice);
         videoRenderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWindow);
+        closeEventFilter->moveToThread(videoRenderer->qwindow()->thread());
+        videoRenderer->qwindow()->installEventFilter(closeEventFilter);
         videoRenderer->qwindow()->setBaseSize(QSize(1280, 720));
         videoRenderer->qwindow()->show();
         avPlayer = new QtAV::AVPlayer;
@@ -30,4 +32,11 @@ bool VideoGuiLauncher::event(QEvent *event) {
         return true;
     }
     return false;
+}
+
+VideoGuiLauncher::~VideoGuiLauncher() {
+    avPlayer->stop();
+    videoRenderer->qwindow()->close();
+    delete avPlayer;
+    delete videoRenderer;
 }

@@ -29,40 +29,23 @@ public:
 
 public slots:
 
-    void start() override {
-        if (!running) {
-            running = true;
-            controlConnectionServer->pauseAccepting();
-            QThread::start();
-            output.open(QIODevice::ReadWrite | QIODevice::Truncate);
-        }
-    }
+    void start() override;
 
-    void stop() override {
-        if (running) {
-            controlConnectionServer->resumeAccepting();
-            running = false;
-            while (this->isRunning()) {
-                QThread::msleep(10);
-            }
-            output.flush();
-            output.close();
-        }
-    }
+    void stop() override;
 
-    void makeDiscoverable() {
-        connect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
-    }
+    void windowDestroyed(QObject *object);
 
-    void stopDiscoverable() {
-        disconnect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
-    }
+    void makeDiscoverable();
+
+    void stopDiscoverable();
 
     void incomingTcpConnect(qintptr handle);
 
     void answerScanRequest();
 
     void enqueueDataFromStream();
+
+    void handleControl();
 
 signals:
 
@@ -82,8 +65,9 @@ private:
     CachedLocalStream *cachedLocalStream;
     QFile output{"/home/silas/output.mkv"};
     bool running = false;
-    bool shouldReset = false;
+    bool quitFromNetworkRequest = false;
     int shouldConnect = 0;
+    QByteArray prevCommand = nullptr;
 };
 
 #endif //NETWORKSINKHANDLER_H

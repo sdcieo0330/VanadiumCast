@@ -36,12 +36,11 @@ bool NetworkAPI::start() {
  */
 bool NetworkAPI::stop() {
     deviceScanner->stop();
-    sinkHandler->stopDiscoverable();
-    sinkHandler->quit();
-    sinkHandler->stop();
-    if (transcoder != nullptr) {
-        transcoder->stopTranscoding();
+    if (streamThread != nullptr) {
+        streamThread->stop();
     }
+    sinkHandler->stopDiscoverable();
+    sinkHandler->stop();
     return true;
 }
 
@@ -121,8 +120,8 @@ bool NetworkAPI::startSource(QUrl inputFile, QString address) {
         if (inputFile.isEmpty()) {
             setInputFile();
         }
-        streamInitThread = new StreamThread(target, new InputFile(inputFile.toLocalFile()));
-        streamInitThread->start();
+        streamThread = new StreamThread(target, new InputFile(inputFile.toLocalFile()));
+        streamThread->start();
     });
     return true;
 }

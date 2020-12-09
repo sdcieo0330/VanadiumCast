@@ -14,31 +14,29 @@ Q_OBJECT
 public:
     explicit VideoTranscoder(QIODevice *inputDevice, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent = nullptr);
 
-    ~VideoTranscoder() override;
-
     void startTranscoding();
 
     void stopTranscoding();
 
     void connectPlayerSignals(PlayerStateControl *stateController) {
-        connect(&avPlayer, &QtAV::AVPlayer::positionChanged, stateController, &PlayerStateControl::positionChanged);
-        connect(stateController, &PlayerStateControl::setPaused, &avPlayer, &QtAV::AVPlayer::pause);
-        connect(stateController, SIGNAL(seek(qint64)), &avPlayer, SLOT(seek(qint64)));
+        connect(avPlayer, &QtAV::AVPlayer::positionChanged, stateController, &PlayerStateControl::positionChanged);
+        connect(stateController, &PlayerStateControl::setPaused, avPlayer, &QtAV::AVPlayer::pause);
+        connect(stateController, SIGNAL(seek(qint64)), avPlayer, SLOT(seek(qint64)));
     };
 
     static EncodingProfile LOW, STANDARD, HIGH, ULTRA;
 
     qint64 getPlaybackPosition() {
-        return avPlayer.position();
+        return avPlayer->position();
     }
 
     void togglePlayPause() {
-        avPlayer.pause(!avPlayer.isPaused());
+        avPlayer->pause(!avPlayer->isPaused());
     }
 
     bool seek(qint64 secPos) {
-        if (secPos <= avPlayer.duration()) {
-            avPlayer.seek(secPos);
+        if (secPos <= avPlayer->duration()) {
+            avPlayer->seek(secPos);
             return true;
         }
         return false;
@@ -91,8 +89,8 @@ private:
         }
     }
 
-    QtAV::AVTranscoder avTranscoder;
-    QtAV::AVPlayer avPlayer;
+    QtAV::AVTranscoder *avTranscoder;
+    QtAV::AVPlayer *avPlayer;
     QIODevice *inputDevice, *outputDevice;
 };
 
