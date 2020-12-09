@@ -36,3 +36,5 @@ mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --target VanadiumCast -j4
 ```
+
+The executable is now in the subdirectory ``src`` of the build directory
