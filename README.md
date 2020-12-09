@@ -28,6 +28,9 @@ Debian:
 apt install qt5-default
 ```
 
+To build and install QtAV follow the steps on https://github.com/wang-bin/QtAV/wiki/Build-QtAV.
+Please build QtAV with cmake instead of qmake.
+
 ## Building VanadiumCast
 ```
 git clone https://github.com/sdcieo0330/VanadiumCast.git
