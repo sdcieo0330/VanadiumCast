@@ -53,12 +53,10 @@ void NetworkSinkHandler::run() {
                     QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
                     msleep(100);
                     while (running) {
-                        size_t bytesRead = 0;
-                        if (dataConnection->waitForReadyRead(32)) {
+                        if (dataConnection->waitForReadyRead(8)) {
                             QByteArray buf = dataConnection->readAll();
                             if (!buf.isEmpty()) {
-                                bytesRead += buf.size();
-                                qDebug() << "data total:" << bytesRead << "bytes";
+//                                qDebug() << "data total:" << buf.size() << "bytes";
                                 output.write(buf);
                                 while (!buf.isEmpty()) {
                                     buf.remove(0, cachedLocalStream->getEnd1()->write(buf));

@@ -26,8 +26,8 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
 //    avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
 //    muxopt[QString::fromLatin1("avformat")] = avfopt;
 
-//    QMediaPlayer player;
-//    player.setMedia(QMediaContent(QUrl::fromLocalFile(reinterpret_cast<QFile *>(inputDevice)->fileName())));
+    QMediaPlayer player;
+    player.setMedia(QMediaContent(QUrl::fromLocalFile(reinterpret_cast<QFile *>(inputDevice)->fileName())));
 
     avTranscoder.setMediaSource(&avPlayer);
     avTranscoder.setOutputMedia(outputDevice);
@@ -42,6 +42,7 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
 //    avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
 //    muxopt[QString::fromLatin1("avformat")] = avfopt;
 //    avTranscoder.setOutputOptions(muxopt);
+//    avPlayer.setFrameRate(player.metaData(QMediaMetaData::VideoFrameRate).toInt() * 1.5);
     videoEncoder->setCodecName(profile.videoCodecName);
     videoEncoder->setBitRate(profile.rate);
     videoEncoder->setProperty("hwdevice", "/dev/dri/renderD128");

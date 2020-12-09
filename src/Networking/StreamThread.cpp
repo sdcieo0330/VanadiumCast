@@ -29,8 +29,8 @@ void StreamThread::run() {
             tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
             transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::HIGH);
             auto *readTimer = new QTimer;
-            readTimer->setInterval(32);
-            connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
+            readTimer->setInterval(2);
+            connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection
             readTimer->start();
             QtConcurrent::run([&]() {
                 transcoder->startTranscoding();
@@ -46,10 +46,10 @@ void StreamThread::run() {
 }
 
 void StreamThread::writeToOutput() {
-    qDebug() << "writeToOutput()";
+//    qDebug() << "writeToOutput()";
     QByteArray buf = cachedOutput->getEnd1()->readAll();
     if (!buf.isEmpty()) {
-        qDebug() << "Writing data...";
+//        qDebug() << "Writing data...";
         dataConnection->write(buf);
         dataConnection->flush();
     }

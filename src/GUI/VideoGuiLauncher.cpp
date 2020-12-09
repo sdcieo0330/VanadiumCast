@@ -20,8 +20,9 @@ bool VideoGuiLauncher::event(QEvent *event) {
         avPlayer->setIODevice(inputDevice);
         avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "VAAPI" << "CUDA" << "FFmpeg");
         avPlayer->setAutoLoad();
+        avPlayer->setAsyncLoad();
         QtConcurrent::run([&]() {
-            QThread::sleep(1);
+            QThread::sleep(2);
             avPlayer->play();
         });
 //        videoGui->setBaseSize(480, 320);
