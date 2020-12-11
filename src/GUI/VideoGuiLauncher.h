@@ -17,6 +17,8 @@ public:
         return videoRenderer;
     }
 
+    void closeAndDelete();
+
     WindowCloseEventFilter *getCloseEventFilter() {
         return closeEventFilter;
     }
@@ -31,6 +33,7 @@ private:
     VideoGUI *videoGui;
     QtAV::AVPlayer *avPlayer;
     QIODevice *inputDevice;
+    bool shouldDelete = false;
 };
 
 #endif // VIDEOGUILAUNCHER_H

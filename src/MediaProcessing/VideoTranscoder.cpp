@@ -81,7 +81,6 @@ void VideoTranscoder::stopTranscoding() {
     avTranscoder->stop();
     delete avTranscoder;
     delete avPlayer;
-    deleteLater();
 }
 
 EncodingProfile VideoTranscoder::LOW{};

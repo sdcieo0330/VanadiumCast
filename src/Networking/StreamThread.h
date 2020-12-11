@@ -13,10 +13,17 @@
 #include "MediaProcessing/CachedLocalStream.h"
 
 class StreamThread : public QThread {
+Q_OBJECT
 public:
     StreamThread(NetworkDevice *target, InputFile *inputFile);
 
+    ~StreamThread();
+
     void run() override;
+
+signals:
+
+    void stopped();
 
 public slots:
 

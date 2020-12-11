@@ -108,22 +108,26 @@ bool NetworkAPI::setDevice(QString address) {
  * @return bool
  */
 bool NetworkAPI::startSource(QUrl inputFile, QString address) {
-    qDebug() << "Start source entered:" << inputFile;
-    setDevice(address);
-    if (!target) {
-        return false;
-    }
-    qDebug() << "target != nullptr";
-    qDebug() << target;
-    qDebug() << "Current thread:" << QThread::currentThread();
-    QtConcurrent::run([&] {
-        if (inputFile.isEmpty()) {
-            setInputFile();
+    if (streamThread == nullptr) {
+        qDebug() << "Start source entered:" << inputFile;
+        setDevice(address);
+        if (!target) {
+            return false;
         }
-        streamThread = new StreamThread(target, new InputFile(inputFile.toLocalFile()));
-        streamThread->start();
-    });
-    return true;
+        qDebug() << "target != nullptr";
+        qDebug() << target;
+        qDebug() << "Current thread:" << QThread::currentThread();
+        QtConcurrent::run([&]() {
+            if (inputFile.isEmpty()) {
+                setInputFile();
+            }
+            streamThread = new StreamThread(target, new InputFile(inputFile.toLocalFile()));
+            connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::deleteStreamThread, Qt::QueuedConnection);
+            streamThread->start();
+        });
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -209,4 +213,10 @@ bool NetworkAPI::connectWidgetToSinkHandler(SinkHandleWidget *widget) {
 
 void NetworkAPI::newSinkConnection(NetworkDevice *device) {
     sinkInput = new NetworkInput(device);
+}
+
+void NetworkAPI::deleteStreamThread() {
+    QThread::msleep(100);
+    delete streamThread;
+    streamThread = nullptr;
 }

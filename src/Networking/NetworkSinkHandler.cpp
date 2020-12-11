@@ -45,7 +45,7 @@ void NetworkSinkHandler::run() {
                 controlConnection->flush();
                 qDebug() << "Answered request";
                 if (dataConnectionServer->waitForNewConnection(30000)) {
-//                    connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
+                    connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
                     dataConnection = dataConnectionServer->nextPendingConnection();
                     cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
@@ -71,9 +71,9 @@ void NetworkSinkHandler::run() {
                         }
                     }
 
-                    videoGuiLauncher->deleteLater();
+                    videoGuiLauncher->closeAndDelete();
 
-//                    disconnect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl);
+                    disconnect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl);
 
                     if (!quitFromNetworkRequest) {
                         controlConnection->write(Command::CLOSEDATA);
@@ -95,6 +95,7 @@ void NetworkSinkHandler::run() {
     }
     output.flush();
     output.close();
+    shouldConnect = 0;
 }
 
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
@@ -110,14 +111,6 @@ void NetworkSinkHandler::answerScanRequest() {
         udpSocket->writeDatagram(QByteArray::fromStdString("Test device"), dg.senderAddress(), 55553);
         udpSocket->flush();
     }
-}
-
-void NetworkSinkHandler::enqueueDataFromStream() {
-//    if (cachedLocalStream->get12SpaceLeft() >= 1024) {
-    output.write(dataConnection->readAll());
-//        cachedLocalStream->getEnd1()->write(dataConnection->read(1024));
-//        controlConnection->write(Command::OK);
-//    }
 }
 
 void NetworkSinkHandler::handleControl() {
@@ -142,11 +135,6 @@ void NetworkSinkHandler::makeDiscoverable() {
 
 void NetworkSinkHandler::stopDiscoverable() {
     disconnect(udpBroadcast, SIGNAL(readyRead()), this, SLOT(answerScanRequest()));
-}
-
-void NetworkSinkHandler::windowDestroyed(QObject *object) {
-    Q_UNUSED(object)
-    stop();
 }
 
 void NetworkSinkHandler::stop() {

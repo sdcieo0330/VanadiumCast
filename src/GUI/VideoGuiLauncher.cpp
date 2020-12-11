@@ -12,22 +12,28 @@ bool VideoGuiLauncher::event(QEvent *event) {
         qDebug() << "User event triggered";
 //        inputDevice->open(QIODevice::ReadWrite);
 //        videoGui = new VideoGUI(inputDevice);
-        videoRenderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWindow);
-        closeEventFilter->moveToThread(videoRenderer->qwindow()->thread());
-        videoRenderer->qwindow()->installEventFilter(closeEventFilter);
-        videoRenderer->qwindow()->setBaseSize(QSize(1280, 720));
-        videoRenderer->qwindow()->show();
-        avPlayer = new QtAV::AVPlayer;
-        avPlayer->setRenderer(videoRenderer);
-        avPlayer->setIODevice(inputDevice);
-        avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "VAAPI" << "CUDA" << "FFmpeg");
-        videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
-        avPlayer->setAutoLoad();
-        avPlayer->setAsyncLoad();
-        QtConcurrent::run([&]() {
-            QThread::sleep(2);
-            avPlayer->play();
-        });
+        if (!shouldDelete) {
+            videoRenderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWindow);
+            closeEventFilter->moveToThread(videoRenderer->qwindow()->thread());
+            videoRenderer->qwindow()->installEventFilter(closeEventFilter);
+            videoRenderer->qwindow()->setBaseSize(QSize(1280, 720));
+            videoRenderer->qwindow()->show();
+            avPlayer = new QtAV::AVPlayer;
+            avPlayer->setRenderer(videoRenderer);
+            avPlayer->setIODevice(inputDevice);
+            avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "VAAPI" << "CUDA" << "FFmpeg");
+            videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
+            avPlayer->setAutoLoad();
+            avPlayer->setAsyncLoad();
+            QtConcurrent::run([&]() {
+                QThread::sleep(2);
+                avPlayer->play();
+            });
+        } else {
+            avPlayer->stop();
+            videoRenderer->qwindow()->close();
+            delete videoRenderer;
+        }
 //        videoGui->setBaseSize(480, 320);
 //        videoGui->show();
         return true;
@@ -36,8 +42,11 @@ bool VideoGuiLauncher::event(QEvent *event) {
 }
 
 VideoGuiLauncher::~VideoGuiLauncher() {
-    avPlayer->stop();
-    videoRenderer->qwindow()->close();
     delete avPlayer;
-    delete videoRenderer;
+}
+
+void VideoGuiLauncher::closeAndDelete() {
+    shouldDelete = true;
+    QCoreApplication::postEvent(this, new QEvent(QEvent::User));
+    deleteLater();
 }

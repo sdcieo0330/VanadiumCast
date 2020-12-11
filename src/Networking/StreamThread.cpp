@@ -20,7 +20,7 @@ void StreamThread::run() {
         controlConnection->write(Command::CONNECTDATA);
         qDebug() << "Sent data connection request";
         if (controlConnection->waitForReadyRead(10000) && controlConnection->read(1) == Command::OK) {
-            connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+            connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
             dataConnection = new QTcpSocket;
             dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
             dataConnection->waitForConnected(500);
@@ -36,24 +36,32 @@ void StreamThread::run() {
                 transcoder->startTranscoding();
             });
             exec();
+            readTimer->stop();
+            transcoder->stopTranscoding();
+            disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+            if (running) {
+                dataConnection->disconnectFromHost();
+                running = false;
+            } else {
+                controlConnection->write(Command::CLOSEDATA);
+                if (controlConnection->waitForReadyRead(2000) && controlConnection->readAll() == Command::OK) {
+                    dataConnection->disconnectFromHost();
+                }
+            }
+            delete dataConnection;
+            delete readTimer;
+            delete transcoder;
+            delete cachedOutput;
         }
+        inputFile->close();
     }
     qDebug() << "Stopping StreamThread";
-    readTimer->stop();
-    transcoder->stopTranscoding();
-    disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
-    if (running) {
-        dataConnection->disconnectFromHost();
-    } else {
-        controlConnection->write(Command::CLOSEDATA);
-        if (controlConnection->waitForReadyRead(2000) && controlConnection->readAll() == Command::OK) {
-            dataConnection->disconnectFromHost();
-        }
-    }
-    delete dataConnection;
-    delete readTimer;
-    delete transcoder;
-    delete cachedOutput;
+
+    controlConnection->write(Command::OK);
+    controlConnection->disconnectFromHost();
+    delete controlConnection;
+
+    stopped();
 }
 
 void StreamThread::writeToOutput() {
@@ -72,12 +80,9 @@ void StreamThread::handleControl() {
     if (!buf.isEmpty()) {
         QByteArray command = buf.left(1);
         if (command == Command::CLOSEDATA) {
+            qDebug() << "CLOSEDATA command";
             quit();
-            running = false;
-            controlConnection->write(Command::OK);
-            controlConnection->disconnectFromHost();
-            delete controlConnection;
-            deleteLater();
+            qDebug() << "Send quit() to event loop";
         }
     }
 }
@@ -96,8 +101,12 @@ void StreamThread::stop() {
         while (isRunning()) {
             QThread::msleep(10);
         }
-        controlConnection->disconnectFromHost();
-        delete controlConnection;
         deleteLater();
+    }
+}
+
+StreamThread::~StreamThread() noexcept {
+    if (running) {
+        stop();
     }
 }

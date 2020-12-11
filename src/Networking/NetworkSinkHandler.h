@@ -33,8 +33,6 @@ public slots:
 
     void stop() override;
 
-    void windowDestroyed(QObject *object);
-
     void makeDiscoverable();
 
     void stopDiscoverable();
@@ -42,8 +40,6 @@ public slots:
     void incomingTcpConnect(qintptr handle);
 
     void answerScanRequest();
-
-    void enqueueDataFromStream();
 
     void handleControl();
 

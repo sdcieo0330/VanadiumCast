@@ -29,14 +29,16 @@ extern "C" {
 
 
 class NetworkAPI final : public QObject, public API<NetworkDevice> {
-    Q_OBJECT
+Q_OBJECT
 public slots:
-    
+
     bool init();
 
     bool start();
-    
+
     bool stop();
+
+    void deleteStreamThread();
 
 public:
     /**
