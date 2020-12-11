@@ -8,7 +8,6 @@ class NetworkSinkTcpServer : public QTcpServer
 {
     Q_OBJECT
 public:
-    // TODO: Override pending connection handling
     /**
      *
      * @param triggerHandleEvents Defaults to false.
@@ -17,14 +16,22 @@ public:
      * @param parent Parent for Qt's parenting system
      */
     explicit NetworkSinkTcpServer(bool triggerHandleEvents = false, QObject *parent = nullptr);
+
     void incomingConnection(qintptr handle) override;
+
     QTcpSocket *nextPendingConnection() override;
+
+public slots:
+
+    void resume();
+
 signals:
+
     void newConnection(qintptr handle);
 
 private:
     bool triggerHandleEvents;
-    QQueue<QTcpSocket*> incomingConnectionQueue;
+    QQueue<QTcpSocket *> incomingConnectionQueue;
 };
 
 #endif // NETWORKSINKTCPSERVER_H

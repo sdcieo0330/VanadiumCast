@@ -49,6 +49,8 @@ signals:
 
     void incomingConnectionRequest();
 
+    void resumeAccepting();
+
 private:
     QUdpSocket *udpBroadcast;
     QUdpSocket *udpSocket;

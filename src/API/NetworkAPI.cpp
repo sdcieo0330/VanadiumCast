@@ -216,7 +216,7 @@ void NetworkAPI::newSinkConnection(NetworkDevice *device) {
 }
 
 void NetworkAPI::deleteStreamThread() {
-    QThread::msleep(100);
+    QThread::msleep(5);
     delete streamThread;
     streamThread = nullptr;
 }

@@ -19,45 +19,50 @@ void StreamThread::run() {
         QThread::msleep(100);
         controlConnection->write(Command::CONNECTDATA);
         qDebug() << "Sent data connection request";
-        if (controlConnection->waitForReadyRead(10000) && controlConnection->read(1) == Command::OK) {
-            connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
-            dataConnection = new QTcpSocket;
-            dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
-            dataConnection->waitForConnected(500);
-            cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
+        if (controlConnection->waitForReadyRead(20000)) {
+            QByteArray buf = controlConnection->read(1);
+            if (buf == Command::OK) {
+                connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
+                dataConnection = new QTcpSocket;
+                dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
+                dataConnection->waitForConnected(500);
+                cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
 //            QFile tmpout("/home/silas/transcoded.mkv");
 //            tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
-            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::STANDARD);
-            readTimer = new QTimer;
-            readTimer->setInterval(2);
-            connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
-            readTimer->start();
-            QtConcurrent::run([&]() {
-                transcoder->startTranscoding();
-            });
-            exec();
-            readTimer->stop();
-            transcoder->stopTranscoding();
-            disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
-            if (running) {
-                dataConnection->disconnectFromHost();
-                running = false;
-            } else {
-                controlConnection->write(Command::CLOSEDATA);
-                if (controlConnection->waitForReadyRead(2000) && controlConnection->readAll() == Command::OK) {
+                transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::STANDARD);
+                readTimer = new QTimer;
+                readTimer->setInterval(2);
+                connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
+                readTimer->start();
+                QtConcurrent::run([&]() {
+                    transcoder->startTranscoding();
+                });
+                exec();
+                readTimer->stop();
+                transcoder->stopTranscoding();
+                disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+                if (running) {
                     dataConnection->disconnectFromHost();
+                    controlConnection->write(Command::OK);
+                    running = false;
+                } else {
+                    controlConnection->write(Command::CLOSEDATA);
+                    if (controlConnection->waitForReadyRead(2000) && controlConnection->readAll() == Command::OK) {
+                        dataConnection->disconnectFromHost();
+                    }
                 }
+                delete dataConnection;
+                delete readTimer;
+                delete transcoder;
+                delete cachedOutput;
+            } else if (buf == Command::CANCEL) {
+                qDebug() << "Streaming request rejected";
             }
-            delete dataConnection;
-            delete readTimer;
-            delete transcoder;
-            delete cachedOutput;
         }
         inputFile->close();
     }
     qDebug() << "Stopping StreamThread";
 
-    controlConnection->write(Command::OK);
     controlConnection->disconnectFromHost();
     delete controlConnection;
 

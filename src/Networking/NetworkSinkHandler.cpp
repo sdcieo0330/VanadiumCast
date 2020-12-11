@@ -18,6 +18,7 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent) : QThread(parent) {
     controlConnectionServer = new NetworkSinkTcpServer(true);
     controlConnectionServer->listen(QHostAddress::Any, 55555);
     connect(controlConnectionServer, SIGNAL(newConnection(qintptr)), this, SLOT(incomingTcpConnect(qintptr)));
+    connect(this, &NetworkSinkHandler::resumeAccepting, controlConnectionServer, &NetworkSinkTcpServer::resume, Qt::QueuedConnection);
     udpSocket = new QUdpSocket;
     udpBroadcast = new QUdpSocket;
     udpBroadcast->bind(55554, QUdpSocket::ShareAddress);
@@ -82,20 +83,25 @@ void NetworkSinkHandler::run() {
                         } else {
                             dataConnection->close();
                         }
-                        controlConnection->disconnectFromHost();
-                        delete controlConnection;
                     } else {
                         dataConnection->disconnectFromHost();
                     }
                     delete dataConnection;
                 }
                 delete dataConnectionServer;
+            } else if (shouldConnect == 2) {
+                controlConnection->write(Command::CANCEL);
+                controlConnection->flush();
             }
         }
     }
+    controlConnection->disconnectFromHost();
+    delete controlConnection;
     output.flush();
     output.close();
     shouldConnect = 0;
+    running = false;
+    resumeAccepting();
 }
 
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
@@ -143,7 +149,7 @@ void NetworkSinkHandler::stop() {
         while (this->isRunning()) {
             QThread::msleep(10);
         }
-        controlConnectionServer->resumeAccepting();
+//        controlConnectionServer->resumeAccepting();
         qDebug() << "Stopped SinkHandler-thread";
     }
 }

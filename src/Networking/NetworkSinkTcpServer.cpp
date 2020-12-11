@@ -22,3 +22,7 @@ QTcpSocket *NetworkSinkTcpServer::nextPendingConnection() {
         return incomingConnectionQueue.dequeue();
     }
 }
+
+void NetworkSinkTcpServer::resume() {
+    resumeAccepting();
+}
