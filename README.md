@@ -30,7 +30,7 @@ apt install qt5-default
 
 To build and install QtAV on debian follow the steps on https://github.com/wang-bin/QtAV/wiki/Build-QtAV.
 
-Please build QtAV with cmake instead of qmake. Because the cmake build is using ``ninja``, you have to ensure it is installed:
+Please build QtAV with cmake instead of qmake. Because of the cmake build method using ``ninja``, you have to ensure it's available:
 ```
 apt install ninja
 ```
