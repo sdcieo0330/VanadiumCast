@@ -20,6 +20,7 @@ signals:
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
+    bool isFullscreen = false;
 };
 
 

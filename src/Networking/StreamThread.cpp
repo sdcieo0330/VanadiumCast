@@ -27,7 +27,7 @@ void StreamThread::run() {
             cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
 //            QFile tmpout("/home/silas/transcoded.mkv");
 //            tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
-            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::HIGH);
+            transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::STANDARD);
             readTimer = new QTimer;
             readTimer->setInterval(2);
             connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
@@ -73,9 +73,11 @@ void StreamThread::handleControl() {
         QByteArray command = buf.left(1);
         if (command == Command::CLOSEDATA) {
             quit();
+            running = false;
             controlConnection->write(Command::OK);
             controlConnection->disconnectFromHost();
             delete controlConnection;
+            deleteLater();
         }
     }
 }
@@ -96,5 +98,6 @@ void StreamThread::stop() {
         }
         controlConnection->disconnectFromHost();
         delete controlConnection;
+        deleteLater();
     }
 }

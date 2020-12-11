@@ -21,6 +21,7 @@ bool VideoGuiLauncher::event(QEvent *event) {
         avPlayer->setRenderer(videoRenderer);
         avPlayer->setIODevice(inputDevice);
         avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "VAAPI" << "CUDA" << "FFmpeg");
+        videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
         avPlayer->setAutoLoad();
         avPlayer->setAsyncLoad();
         QtConcurrent::run([&]() {

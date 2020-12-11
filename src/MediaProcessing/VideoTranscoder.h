@@ -73,7 +73,7 @@ private:
             HIGH.videoCodecName = "h264_qsv";
             HIGH.width = 1920;
             HIGH.height = 1080;
-            HIGH.rate = 10000000;
+            HIGH.rate = 8000000;
             HIGH.framerate = 60;
             HIGH.bytesPerColor = 1;
 

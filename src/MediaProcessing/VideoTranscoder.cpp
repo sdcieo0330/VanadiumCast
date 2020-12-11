@@ -50,6 +50,13 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     videoEncoder->setProperty("hwdevice", "/dev/dri/renderD128");
     videoEncoder->setHeight(profile.height);
     videoEncoder->setWidth(profile.width);
+    videoEncoder->setPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
+    QVariantHash venc_opt, opt;
+    venc_opt["color_primaries"] = "bt2020";
+    venc_opt["color_trc"] = "smpte2084";
+    venc_opt["colorspace"] = "bt2020_ncl";
+    opt["avcodec"] = venc_opt;
+    avTranscoder->setOutputOptions(opt);
 //    videoEncoder->setFrameRate(std::min(profile.framerate, player.metaData(QMediaMetaData::VideoFrameRate).toInt()));
     if (avPlayer->currentAudioStream() >= 0) {
         if (avTranscoder->createAudioEncoder()) {
