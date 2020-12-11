@@ -84,6 +84,7 @@ void NetworkSinkHandler::run() {
                             dataConnection->close();
                         }
                     } else {
+                        controlConnection->write(Command::OK);
                         dataConnection->disconnectFromHost();
                     }
                     delete dataConnection;
@@ -128,9 +129,7 @@ void NetworkSinkHandler::handleControl() {
         quitFromNetworkRequest = true;
         running = false;
         connect(this, &QThread::finished, [&]() {
-            controlConnection->write(Command::OK);
-            controlConnection->disconnectFromHost();
-            delete controlConnection;
+
         });
     }
 }
