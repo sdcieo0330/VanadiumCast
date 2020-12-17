@@ -26,3 +26,4 @@ Ein Video- oder Audiocodec alleine reicht nicht aus, um eine Video mit Ton und e
 
 # Umsetzung
 ## Bibliotheken und Frameworks
+Ursprünglich habe ich mich direkt mit FFmpeg und den Libav-Bibliotheken auseinandergesetzt, um den Transcoder umzusetzen
