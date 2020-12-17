@@ -23,3 +23,6 @@ Aktuellere Codecs wie AAC und Opus unterscheiden sich von MP3 im Kompressionsalg
 
 ### Containerformate
 Ein Video- oder Audiocodec alleine reicht nicht aus, um eine Video mit Ton und eventuellen Untertiteln etc. abzuspeichern, daher gibt es Containerformate, durch die mehrere Video-/Audiospuren teilweise mit Untertiteln in einer Datei vereint werden. Die Auswahl des Containerformat nachezu keinen Unterschied bei der Dateigröße, sondern nur in den Möglichkeiten, welche Art von Daten enthalten sein können. Bekannte Beispiele sind das von Apple entwickelte und weit verbreitete MP4 oder das offene Matroska-Format, ersteres unterstützt nur Video- und Audiospuren, letzteres alle möglichen Spuren inklusive 3D-Inhalte und Menüs wie auf DVDs.
+
+# Umsetzung
+## Bibliotheken und Frameworks
