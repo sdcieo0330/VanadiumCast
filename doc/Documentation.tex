@@ -3,7 +3,7 @@
 \usepackage{fontspec}
 \usepackage{lmodern}
 \usepackage{amsmath}
-\usepackage[a4paper, left=1.5cm, right=1.5cm, bottom=2.5cm, top=2.5cm]{geometry}
+\usepackage[a4paper, left=3cm, right=3cm, bottom=2.5cm, top=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{svg}
@@ -12,14 +12,14 @@
 \usepackage{array}
 \usepackage{tabularx}
 
+
 % clickable table of contents
 \usepackage{hyperref}
 \hypersetup{
 colorlinks,
 citecolor=black,
 filecolor=black,
-linkcolor=black,
-urlcolor=black
+linkcolor=black
 }
 
 % Vertically center title
@@ -39,13 +39,30 @@ urlcolor=black
 \fancyfoot[C]{}
 \fancyfoot[R]{\thepage}
 
+\defaultfontfeatures{Ligatures=TeX}
+
+%set line spacing
+\usepackage{setspace}
+
 % Custom font for SVGs
 \newfontfamily\svgfont{Roboto}
 
+\setsansfont{Roboto}
+\newfontfamily\titlefont{Roboto}
 
 \title{Dokumentation VanadiumCast}
 \author{Silas Della Contrada}
 \date{12/18/2020}
+
+\setmainfont[Mapping=tex-text,AutoFakeSlant=0.2]{Roboto Slab}
+
+\usepackage{titlesec}
+
+\newfontfamily\headingfont[]{Roboto}
+\titleformat*{\section}{\LARGE\bfseries\headingfont}
+\titleformat*{\subsection}{\Large\bfseries\headingfont}
+\titleformat*{\subsubsection}{\large\bfseries\headingfont}
+\renewcommand{\maketitlehooka}{\headingfont}
 
 
 \begin{document}
@@ -57,11 +74,12 @@ urlcolor=black
     \tableofcontents
 
     \newpage
+    \linespread{1.25}
 
 
     \section{Vorwort}\label{sec:vorwort}
 
-    Google Chromecast ist weit verbreitet, allerdings ist es kein
+    Google Chromecast ist weit verbreitet, allerdings ist es nicht
     Open-Source und man ist gezwungen ein Google Chromecast oder ein Android
     TV als Ziel und entweder Chrome oder ein Android-Gerät als Quelle zu
     benutzen. Außerdem gibt es keine Möglichkeit den Desktop zu übertragen,
@@ -82,10 +100,10 @@ urlcolor=black
 
     \begin{quote}
     {[}
-        ExW{]} \emph{Example website}: https://example.com/examplesite.html
+        ExW{]} \textit{Example website}: https://example.com/examplesite.html
         {[}2020-12-18{]}
 
-        {[}ExB{]} Max Mustermann (2020), \emph{Example book}, Beispielverlag,
+        {[}ExB{]} Max Mustermann (2020), \textit{Example book}, Beispielverlag,
         ISBN: 1234567890
     \end{quote}
 
@@ -97,15 +115,15 @@ urlcolor=black
     Mit VanadiumCast kann man Videos und (in Zukunft) seinen Desktop an ein
     beliebiges Gerät übertragen, auf dem das Programm installiert ist. Es
     ist ähnlich einfach zu bedienen wie Chromecast, sodass es auch für
-    technisch unbedarfte Personen nutzbar ist. Lediglich die Installation
+    technisch unbedarfte Personen gut nutzbar ist. Lediglich die Installation
     der Endgeräte ist deutlich schwieriger, da diese aber nur einmalig
     erfolgen muss, gibt es dort keine Probleme.
 
     Zudem ist geplant, dass VanadiumCast auf allen Desktop- und Mobilgeräten
-    installiert und benutzt werden kann, sodass auch Handy\textrightarrow Handy oder
-    Desktop\textrightarrow Handy Übertragungen möglich sind. Als Zielgerät eignet sich
-    aktuell nur Laptops / PCs / Mini-PCs / SBCs mit Intel-CPUs mit iGPUs ab
-    der 3. Generation oder Nvidia-GPUs ab der GTX 8xx, als Quellgerät die
+    installiert und benutzt werden kann, sodass auch Handy -> Handy oder
+    Desktop -> Handy Übertragungen möglich sind. Als Zielgerät eignet sich
+    aktuell nur Laptops / PCs / Mini-PCs / Einplatinencomputer mit Intel-CPUs ab
+    der 3. Generation mit iGPUs oder Nvidia-GPUs ab der GTX 8xx, als Quellgerät die
     gleichen Gerätetypen, jedoch werden hier Intel-CPUs ab der 4. Generation
     vorausgesetzt, da auf der Quelle mehr Leistung benötigt wird als auf dem
     Ziel. Es ist aber geplant beide Seiten zu optimieren und zu erweitern,
@@ -131,7 +149,7 @@ urlcolor=black
     dafür entwickeln könnte. Also habe ich mich im Internet über mögliche
     C++-Bibliotheken informiert und es wurde schnell klar, dass die sehr
     einfache Idee recht schwierig umzusetzen ist. Da ich zu diesem Zeitpunkt
-    aber an keinen anderen Projekte gearbeitet habe, nahm ich die
+    aber an keinem anderen Projekt gearbeitet hatte, nahm ich die
     Herausforderung an. Das gesamte Projekt ist ein
     ``learning-by-doing''-Projekt, das heißt, dass ich mich dann über Dinge
     informiere, wenn ich sie konkret benötige. Zum Beispiel habe ich mich
@@ -139,7 +157,6 @@ urlcolor=black
     verstehen, wie man ein Video in C++ transkodieren kann.
 
     \newpage
-
 
     \section{Eine kurze Einführung in AV-Verarbeitung}\label{sec:eine-kurze-einführung-in-av-verarbeitung}
 
@@ -187,7 +204,7 @@ urlcolor=black
     Ton und eventuellen Untertiteln etc. abzuspeichern, daher gibt es
     Containerformate, durch die mehrere Video-/Audiospuren teilweise mit
     Untertiteln in einer Datei vereint werden. Die Auswahl des
-    Containerformat nachezu keinen Unterschied bei der Dateigröße, sondern
+    Containerformat hat nahezu keinen Einfluss auf die Dateigröße, sondern
     nur in den Möglichkeiten, welche Art von Daten enthalten sein können.
     Bekannte Beispiele sind das von Apple entwickelte und weit verbreitete
     MP4 oder das offene Matroska-Format, ersteres unterstützt nur Video- und
@@ -514,6 +531,25 @@ urlcolor=black
     welcher gleich darauf gestartet wird.
     Dieser Vorgang muss durch ein Event ausgelöst werden, da Oberflächenelemente nur im GUI-Thread\footnotemark[1] erstellt, verändert und gelöscht werden können und
     Events nur im GUI-Thread an Event-Handler\footnote[2]{Methode, die ein oder mehrere Events bearbeitet} ausgeliefert werden.
+
+    \newpage
+
+
+    \section{Anhang}
+
+    \subsection{Flussdiagramm}\label{subsec:flussdiagramm}
+    \textbf{Bitte heranzoomen, es ist ein SVG}
+    \begin{figure}[!ht]
+        \centering
+        \def\svgwidth{\textwidth}
+        \input{Flowchart.pdf_tex}
+        \caption*{Abb.\ref{subsec:flussdiagramm}.1: Flussdiagramm}
+        \label{fig:figureFlowChart}
+    \end{figure}
+
+    \newpage
+
+    \subsection{Quellenverzeichnis}
 
 
 \end{document}
