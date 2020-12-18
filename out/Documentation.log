@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  18 DEC 2020 23:14
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  18 DEC 2020 23:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -458,7 +458,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip54
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 24.
+Package hyperref Info: Option `colorlinks' set `true' on input line 23.
 
 (/usr/share/texmf-dist/tex/latex/titling/titling.sty
 Package: titling 2009/09/04 v2.1d maketitle typesetting
@@ -593,32 +593,32 @@ Package: titlesec 2019/10/16 v2.13 Sectioning titles
 \titlewidthfirst=\dimen183
 )
 (/home/silas/CLionProjects/VanadiumCast/out/Documentation.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 69.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 68.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 6
-9.
+8.
 
 (/usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 69.
-LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 68.
+LaTeX Font Info:    ... okay on input line 68.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -659,7 +659,7 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box55
-Package hyperref Info: Link coloring ON on input line 69.
+Package hyperref Info: Link coloring ON on input line 68.
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
 
@@ -671,43 +671,43 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count296
 )
-LaTeX Info: Redefining \ref on input line 69.
-LaTeX Info: Redefining \pageref on input line 69.
-LaTeX Info: Redefining \nameref on input line 69.
+LaTeX Info: Redefining \ref on input line 68.
+LaTeX Info: Redefining \pageref on input line 68.
+LaTeX Info: Redefining \nameref on input line 68.
 
 (/home/silas/CLionProjects/VanadiumCast/out/Documentation.out)
 (/home/silas/CLionProjects/VanadiumCast/out/Documentation.out)
 \@outlinefile=\write3
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 7
-2.
+1.
 
 (/usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 7
-2.
+1.
 
 (/usr/share/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-72.
+71.
 
 (/usr/share/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-72.
+71.
 
 (/usr/share/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 72.
+(Font)              <12> on input line 71.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 72.
+(Font)              <8> on input line 71.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 72.
+(Font)              <6> on input line 71.
 
 (/usr/share/texmf-dist/tex/generic/stringenc/se-ascii-print.def
 File: se-ascii-print.def 2019/11/29 v1.12 stringenc: Printable ASCII characters
@@ -727,33 +727,33 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    Font shape `TU/RobotoSlab(0)/m/sl' in size <10> not availab
 le
 (Font)              Font shape `TU/RobotoSlab(0)/m/it' tried instead on input l
-ine 77.
+ine 76.
  [1]
-Overfull \hbox (10.80768pt too wide) in paragraph at lines 83--89
+Overfull \hbox (10.80768pt too wide) in paragraph at lines 82--88
 \TU/RobotoSlab(0)/m/n/10 Google Chromecast ist weit verbreitet, allerdings ist 
 es nicht Open-Source und man ist gezwun-
  []
 
 
-Overfull \hbox (18.17615pt too wide) in paragraph at lines 92--94
+Overfull \hbox (18.17615pt too wide) in paragraph at lines 91--93
 \TU/RobotoSlab(0)/m/n/10 Verweise zu Quellen und weiterführender Literatur sind
  mit einer dreistelligen Buchstabenkom-
  []
 
 [2] [3]
-Overfull \hbox (5.04813pt too wide) in paragraph at lines 169--179
+Overfull \hbox (5.04813pt too wide) in paragraph at lines 170--180
 \TU/RobotoSlab(0)/m/n/10 von Videos entlasten, sodass weniger Energie verbrauch
 t wird. Erst dadurch wird es möglich,
  []
 
 
-Overfull \hbox (10.26405pt too wide) in paragraph at lines 203--213
+Overfull \hbox (10.26405pt too wide) in paragraph at lines 204--214
 \TU/RobotoSlab(0)/m/n/10 tainerformat hat nahezu keinen Einfluss auf die Dateig
 röße, sondern nur in den Möglichkeiten,
  []
 
 
-Overfull \hbox (6.14621pt too wide) in paragraph at lines 203--213
+Overfull \hbox (6.14621pt too wide) in paragraph at lines 204--214
 \TU/RobotoSlab(0)/m/n/10 nur Video- und Audiospuren, letzteres alle möglichen S
 puren inklusive 3D-Inhalte und Menüs
  []
@@ -765,19 +765,19 @@ We now make it that large for the rest of the document.
 This may cause the page layout to be inconsistent, however.
 
 [4]
-Overfull \hbox (1.49777pt too wide) in paragraph at lines 278--286
+Overfull \hbox (1.49777pt too wide) in paragraph at lines 279--287
 [] []\TU/RobotoSlab(0)/b/n/10 Event-Prinzip[] \TU/RobotoSlab(0)/m/n/10 Auch Eve
 nts werden von der Event-Loop bearbeitet, daher hat sie auch ihren
  []
 
 
-Overfull \hbox (6.58145pt too wide) in paragraph at lines 288--296
+Overfull \hbox (6.58145pt too wide) in paragraph at lines 289--297
 \TU/RobotoSlab(0)/m/n/10 erstellen, da es vordefinierte Elemente, wie Knöpfe od
 er Text-Eingaben, gibt, die nur miteinan-
  []
 
 [5]
-Overfull \hbox (19.71391pt too wide) in paragraph at lines 299--306
+Overfull \hbox (19.71391pt too wide) in paragraph at lines 300--307
 \TU/RobotoSlab(0)/m/n/10 liotheken basiert, aber nur die A/V-Wiedergabe und nic
 ht Transkodieren oder Hardwarebeschle-
  []
@@ -786,7 +786,7 @@ ht Transkodieren oder Hardwarebeschle-
 File: Progress.pdf Graphic file (type pdf)
 <use Progress.pdf>
 
-Overfull \hbox (3.9381pt too wide) in paragraph at lines 334--340
+Overfull \hbox (3.9381pt too wide) in paragraph at lines 335--341
 \TU/RobotoSlab(0)/m/n/10 auf den vorhergehenden basieren. Wenn sich die Anforde
 rungen ändern, z.B. die Möglichkeit
  []
@@ -811,24 +811,22 @@ File: Components.pdf Graphic file (type pdf)
 File: Components.pdf Graphic file (type pdf)
 <use Components.pdf, page 9>
 )
-Missing character: There is no → in font Roboto Slab Regular/OT:script=latn;lan
-guage=dflt;mapping=tex-text;!
 File: Devices.png Graphic file (type bmp)
 <Devices.png>
 
-Overfull \hbox (29.50102pt too wide) in paragraph at lines 407--411
+Overfull \hbox (29.50102pt too wide) in paragraph at lines 409--413
 [] []\TU/RobotoSlab(0)/b/n/10 Quellenauswahl[] \TU/RobotoSlab(0)/m/n/10 Zu sehe
 n ist die Quellenauswahl in der aktuellen Fassung mit der Dateiauswahl.
  []
 
 
-Overfull \hbox (7.42827pt too wide) in paragraph at lines 407--411
+Overfull \hbox (7.42827pt too wide) in paragraph at lines 409--413
 \TU/RobotoSlab(0)/m/n/10 Es sind zum einen das Textfeld mit der direkten Eingab
 emöglichkeit einer URL (lokale Dateien
  []
 
 
-Overfull \hbox (50.76437pt too wide) in paragraph at lines 407--411
+Overfull \hbox (50.76437pt too wide) in paragraph at lines 409--413
 \TU/RobotoSlab(0)/m/n/10 starten mit \TU/lmtt/m/n/10 file://\TU/RobotoSlab(0)/m
 /n/10 ) Zudem gibt es einen Knopf zum Öffnen eines komfortableren Dateiauswahld
 ialogs.
@@ -840,54 +838,54 @@ File: Media.png Graphic file (type bmp)
 File: Streaming.png Graphic file (type bmp)
 <Streaming.png>
  [10]
-Overfull \hbox (2.24191pt too wide) in paragraph at lines 448--449
+Overfull \hbox (2.24191pt too wide) in paragraph at lines 450--451
 []\TU/RobotoSlab(0)/m/n/10 In jedem eingehenden Paket stehen der Name des antwo
 rtenden Geräts und die Sender-
  []
 
 
-Overfull \hbox (46.14458pt too wide) in paragraph at lines 449--450
+Overfull \hbox (46.14458pt too wide) in paragraph at lines 451--452
 []\TU/RobotoSlab(0)/m/n/10 Jedes so gefundene Gerät wird mit der Funktion \TU/l
 mtt/m/n/10 addDevice() \TU/RobotoSlab(0)/m/n/10 der Klasse \TU/lmtt/m/n/10 Netw
 orkDeviceDirectory
  []
 
 
-Overfull \hbox (51.63611pt too wide) in paragraph at lines 450--451
+Overfull \hbox (51.63611pt too wide) in paragraph at lines 452--453
 []\TU/RobotoSlab(0)/m/n/10 Am Ende jedes Scan-Vorgangs wird die Funktion \TU/lm
 tt/m/n/10 syncLists() \TU/RobotoSlab(0)/m/n/10 der Klasse \TU/lmtt/m/n/10 Netwo
 rkDeviceDirectory
  []
 
 
-Overfull \hbox (42.1361pt too wide) in paragraph at lines 454--461
+Overfull \hbox (42.1361pt too wide) in paragraph at lines 456--463
 [] []\TU/RobotoSlab(0)/b/n/10 DeviceDirectory[] \TU/RobotoSlab(0)/m/n/10 Die Kl
 asse \TU/lmtt/m/n/10 NetworkDeviceDirectory \TU/RobotoSlab(0)/m/n/10 verwaltet 
 Instanzen der Klasse \TU/lmtt/m/n/10 NetworkDevice\TU/RobotoSlab(0)/m/n/10 ,
  []
 
 
-Overfull \hbox (3.55862pt too wide) in paragraph at lines 469--473
+Overfull \hbox (3.55862pt too wide) in paragraph at lines 471--475
 [] []\TU/RobotoSlab(0)/b/n/10 VideoTranscoder[] \TU/RobotoSlab(0)/m/n/10 Die Kl
 asse \TU/lmtt/m/n/10 VideoTranscoder \TU/RobotoSlab(0)/m/n/10 enthält den für d
 ie Transkodierung zuständi-
  []
 
 
-Overfull \hbox (33.2624pt too wide) in paragraph at lines 498--504
+Overfull \hbox (33.2624pt too wide) in paragraph at lines 502--508
 [] []\TU/RobotoSlab(0)/b/n/10 StreamThread[] \TU/RobotoSlab(0)/m/n/10 Die Klass
 e \TU/lmtt/m/n/10 StreamThread \TU/RobotoSlab(0)/m/n/10 ist dafür zuständig, Tr
 anskoder und Netzwerkverbindung
  []
 
 
-Overfull \hbox (15.5199pt too wide) in paragraph at lines 498--504
+Overfull \hbox (15.5199pt too wide) in paragraph at lines 502--508
 \TU/RobotoSlab(0)/m/n/10 zu initialisieren und anschließend die Daten vom \TU/l
 mtt/m/n/10 VideoTranscoder \TU/RobotoSlab(0)/m/n/10 auf die Netzwerkverbindung
  []
 
 [11]
-Overfull \hbox (14.62633pt too wide) in paragraph at lines 520--528
+Overfull \hbox (14.62633pt too wide) in paragraph at lines 524--532
 [] []\TU/RobotoSlab(0)/b/n/10 NetworkSinkTcpServer[] \TU/RobotoSlab(0)/m/n/10 D
 er \TU/lmtt/m/n/10 NetworkSinkTcpServer \TU/RobotoSlab(0)/m/n/10 ist eine von \
 TU/lmtt/m/n/10 QTcpServer \TU/RobotoSlab(0)/m/n/10 abgeleitete Klasse,
@@ -896,26 +894,26 @@ TU/lmtt/m/n/10 QTcpServer \TU/RobotoSlab(0)/m/n/10 abgeleitete Klasse,
 [12] (./Flowchart.pdf_tex
 File: Flowchart.pdf Graphic file (type pdf)
 <use Flowchart.pdf, page 1>
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 549.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 549.
+) [13]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 559.
+ [14]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 559.
 
 (/home/silas/CLionProjects/VanadiumCast/out/Documentation.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 549.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 549.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 559.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 559.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 785FFF242B9EF5F05EACE15C2EF523F6;2064.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 549.
+(rerunfilecheck)             Checksum: 3484E42950C983CB7F2AB576E4BCC638;2132.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 559.
  ) 
 Here is how much of TeX's memory you used:
  16531 strings out of 479284
  306782 string characters out of 5886219
- 740851 words of memory out of 5000000
+ 743839 words of memory out of 5000000
  33900 multiletter control sequences out of 15000+600000
  557803 words of font info for 83 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  44i,15n,82p,297b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /home/silas/CLionProjects/VanadiumCast/out/Documentation.pdf 
-(14 pages).
+(15 pages).

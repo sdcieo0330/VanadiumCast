@@ -158,6 +158,7 @@ linkcolor=black
 
     \newpage
 
+
     \section{Eine kurze Einführung in AV-Verarbeitung}\label{sec:eine-kurze-einführung-in-av-verarbeitung}
 
     \subsection{Videocodecs}\label{subsec:videocodecs}
@@ -361,6 +362,7 @@ linkcolor=black
 
     \newpage
 
+
     \section{Architektur}\label{sec:architektur}
 
     \subsection{Komponenten}\label{subsec:komponenten}
@@ -385,7 +387,7 @@ linkcolor=black
 
     \paragraph{Aufbau}
     Die Oberfläche der Anwendung ist in QML geschrieben, daher ist sie vom Backend
-    (Backend $\hat=$ alles bis auf die Oberfläche und deren direkt Funktionalität wie "Knopfdruck\textrightarrow Dateiauswahldialog")
+    (Backend $\hat=$ alles bis auf die Oberfläche und deren direkte Funktionalität wie "Knopfdruck -> Dateiauswahldialog")
     getrennt und kann auch nur über ein API-Objekt auf die Funktionen des Backends zugreifen.
     Sie ist nach dem KISS-Prinzip gestaltet (Keep It Simple, Stupid).
     Der Quellcode der Oberfläche ist in \texttt{src/res/gui} zu finden.
@@ -480,6 +482,8 @@ linkcolor=black
             | >{\centering\arraybackslash}X
             | >{\centering\arraybackslash}X
             | >{\centering\arraybackslash}X}
+                Profilname & LOW      & STANDARD  & HIGH      & ULTRA     \\
+                \hline
                 Auflösung  & 1280x720 & 1920x1080 & 1920x1080 & 2560x1440 \\
                 \hline
                 FPS        & 30       & 30        & 60        & 60        \\
