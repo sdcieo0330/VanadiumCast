@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  18 DEC 2020 18:53
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  18 DEC 2020 20:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -668,23 +668,23 @@ File: Media.png Graphic file (type bmp)
 File: Streaming.png Graphic file (type bmp)
 <Streaming.png>
  [10]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 481.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 520.
  [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 481.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 520.
 
 (/home/silas/CLionProjects/VanadiumCast/out/Documentation.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 481.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 481.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 520.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 520.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: EF0088155E1EFCFD5023E8299FCBDB4D;1884.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 481.
+(rerunfilecheck)             Checksum: 3F222C8D0DE3C64758A7BC08989C4626;1959.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 520.
  ) 
 Here is how much of TeX's memory you used:
- 16117 strings out of 479284
- 299394 string characters out of 5886219
- 733760 words of memory out of 5000000
- 33515 multiletter control sequences out of 15000+600000
- 557675 words of font info for 67 fonts, out of 8000000 for 9000
+ 16128 strings out of 479284
+ 299684 string characters out of 5886219
+ 733834 words of memory out of 5000000
+ 33520 multiletter control sequences out of 15000+600000
+ 557699 words of font info for 70 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  44i,15n,81p,297b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 

@@ -479,6 +479,42 @@ urlcolor=black
     \end{figure}
 
     \paragraph{StreamThread}
+    Die Klasse \texttt{StreamThread} ist dafür zuständig, Transkoder und Netzwerkverbindung zu initialisieren und
+    anschließend die Daten vom \texttt{VideoTranscoder} auf die Netzwerkverbindung zu schreiben.
+    Dazu werden alle 2 ms alle Daten vom \texttt{VideoTranscoder} gelesen und auf die Netzwerkverbindung geschrieben.
+    Außerdem steuert diese die Wiedergabe und sendet die entsprechenden Befehle auch an das Ziel,
+    da z.B. erst die Wiedergabe auf dem Ziel pausiert werden muss, weil es sonst zu Fehlern kommt.
+    Zudem wird die Klasse der Oberfläche die aktuelle Wiedergabeposition melden und diese auch von der Oberfläche steuern lassen.
+
+    \subsubsection{Sink (C++)}\label{subsubsec:sink-(c++)}
+
+    \paragraph{SinkHandler}
+    Alles, bis auf die Darstellung an sich, ist in der Klasse \texttt{NetworkSinkHandler} implementiert,
+    sowohl das Beantworten der Scan-Anfragen mit dem Namen, als auch das Steuern der Wiedergabe und das Senden/Empfangen von Befehlen.
+    Beim Eingang einer Verbindungsanfrage wird zunächst die Oberfläche angewiesen, einen Dialog anzuzeigen, um den Benutzer zu fragen,
+    ob die Verbindung angenommen oder abgelehnt werden soll.
+    Währenddessen wartet der \texttt{NetworkSinkHandler} auf die Antwort, wenn diese negativ ausfällt, wird die Verbindung sauber geschlossen,
+    wenn diese positiv ausfällt, dann werden Kontroll- und Datenverbindung aufgebaut, das \texttt{readyRead()}-Signal der Kontrollverbindung mit
+    dem Slot \texttt{handleControl()} zum Bearbeiten von Kontrollbefehlen wie Pause, Weiter oder Stopp verbunden, der \texttt{VideoGuiLauncher} instanziiert und gestartet.
+    Nach dem Absetzen des zeitverzögerten Startbefehls an den AVPlayer, tritt der \texttt{NetworkSinkHandler} in eine Schleife ein,
+    die erst beim Beenden des Streams wieder verlassen wird, in welcher auf neue Daten auf der Netzwerkverbindung gewartet wird
+    und diese Daten dann zum AVPlayer weitergeleitet werden.
+
+    \paragraph{NetworkSinkTcpServer}
+    Der \texttt{NetworkSinkTcpServer} ist eine von \texttt{QTcpServer} abgeleitete Klasse, die benötigt wird,
+    da die Netzwerkverbindungen auf der Zielseite anders entgegengenommen werden müssen als \texttt{QTcpServer} ermöglicht.
+    Dies liegt daran, dass nur der Thread\footnote{\label{footnoteThread}Ein Thread ist vereinfacht eine parallel zur aufrufenden Funktion laufende Funktion},
+    in dem die Netzwerkverbindung erstellt wurde, diese auch nutzen kann.
+    Da sich aber der \texttt{QTcpServer} für die Kontrollverbindungen nicht im selben Thread befindet wie der,
+    in dem die \texttt{run()}-Methode des \texttt{NetworkSinkHandler} läuft,
+    darf die Verbindung erst in der \texttt{run()}-Methode erstellt werden,
+    auch wenn sie vorher entgegengenommen wurde.
+
+    \paragraph{VideoGuiLauncher}
+    Diese Klasse erstellt beim Empfang des Events vom Typ \texttt{QEvent::User}, welches für eigene Zwecke benutzt werden kann, das Ausgabefenster und den AVPlayer,
+    welcher gleich darauf gestartet wird.
+    Dieser Vorgang muss durch ein Event ausgelöst werden, da Oberflächenelemente nur im GUI-Thread\footnotemark[1] erstellt, verändert und gelöscht werden können und
+    Events nur im GUI-Thread an Event-Handler\footnote[2]{Methode, die ein oder mehrere Events bearbeitet} ausgeliefert werden.
 
 
 \end{document}
