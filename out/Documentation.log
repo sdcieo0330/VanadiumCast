@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  18 DEC 2020 20:09
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  18 DEC 2020 20:26
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -640,7 +640,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [4] [5] [6]
 File: Progress.pdf Graphic file (type pdf)
 <use Progress.pdf>
- [7] (./Components.pdf_tex
+ [7] [8] (./Components.pdf_tex
 File: Components.pdf Graphic file (type pdf)
 <use Components.pdf, page 1>
 File: Components.pdf Graphic file (type pdf)
@@ -659,7 +659,7 @@ File: Components.pdf Graphic file (type pdf)
 <use Components.pdf, page 8>
 File: Components.pdf Graphic file (type pdf)
 <use Components.pdf, page 9>
-) [8]
+)
 File: Devices.png Graphic file (type bmp)
 <Devices.png>
 File: Media.png Graphic file (type bmp)
@@ -667,26 +667,26 @@ File: Media.png Graphic file (type bmp)
  [9]
 File: Streaming.png Graphic file (type bmp)
 <Streaming.png>
- [10]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 520.
- [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 520.
+ [10] [11]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 519.
+ [12]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 519.
 
 (/home/silas/CLionProjects/VanadiumCast/out/Documentation.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 520.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 520.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 519.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 519.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
 (rerunfilecheck)             Checksum: 3F222C8D0DE3C64758A7BC08989C4626;1959.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 520.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 519.
  ) 
 Here is how much of TeX's memory you used:
  16128 strings out of 479284
  299684 string characters out of 5886219
- 733834 words of memory out of 5000000
+ 735834 words of memory out of 5000000
  33520 multiletter control sequences out of 15000+600000
  557699 words of font info for 70 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  44i,15n,81p,297b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /home/silas/CLionProjects/VanadiumCast/out/Documentation.pdf 
-(12 pages).
+(13 pages).
