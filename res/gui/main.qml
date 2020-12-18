@@ -16,7 +16,7 @@ ApplicationWindow {
 
     SoundEffect {
         id: incomingPing
-        source: Qt.resolvedUrl("/res/wav/incoming.wav")
+        source: Qt.resolvedUrl("/res/gui/sound/incoming.wav")
     }
 
     MessageDialog {

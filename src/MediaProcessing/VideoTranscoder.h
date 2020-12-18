@@ -79,7 +79,7 @@ private:
 
             // Ultra profile
             ULTRA.audioCodecName = "aac";
-            ULTRA.videoCodecName = "h264_qsv";
+            ULTRA.videoCodecName = "hevc_qsv";
             ULTRA.width = 2560;
             ULTRA.height = 1440;
             ULTRA.rate = 15000000;

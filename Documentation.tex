@@ -3,19 +3,72 @@
 \usepackage{fontspec}
 \usepackage{lmodern}
 \usepackage{amsmath}
-\usepackage[margin=1.5cm]{geometry}
+\usepackage[a4paper, left=1.5cm, right=1.5cm, bottom=2.5cm, top=2.5cm]{geometry}
 \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{svg}
+\usepackage{lipsum}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{tabularx}
+
+% clickable table of contents
+\usepackage{hyperref}
+\hypersetup{
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black
+}
+
+% Vertically center title
+\usepackage{titling}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+% Change table of contents title
+\renewcommand*\contentsname{Inhaltsverzeichnis}
+
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\pagestyle{fancy}
+
+\fancyhead[L]{VanadiumCast}
+\fancyfoot[L]{Silas Della Contrada \textcopyright\space2020}
+\fancyfoot[C]{}
+\fancyfoot[R]{\thepage}
+
+% Custom font for SVGs
+\newfontfamily\svgfont{Roboto}
+
+
+\title{Dokumentation VanadiumCast}
+\author{Silas Della Contrada}
+\date{12/18/2020}
 
 
 \begin{document}
-    \title{Dokumentation VanadiumCast}
-    \author{Silas Della Contrada}
-    \date{12/18/2020}
 
-    \maketitle
+    \begin{titlingpage}
+        \maketitle
+    \end{titlingpage}
+
+    \tableofcontents
+
+    \newpage
 
 
-    \section{Hinweis zur Formatierung}\label{sec:hinweis-zur-formatierung}
+    \section{Vorwort}\label{sec:vorwort}
+
+    Google Chromecast ist weit verbreitet, allerdings ist es kein
+    Open-Source und man ist gezwungen ein Google Chromecast oder ein Android
+    TV als Ziel und entweder Chrome oder ein Android-Gerät als Quelle zu
+    benutzen. Außerdem gibt es keine Möglichkeit den Desktop zu übertragen,
+    wodurch eine potenziell gute Lösung eine große Nutzergruppe nicht
+    anspricht. In diese Lücke fügt sich nun VanadiumCast ein.
+
+    \subsection{Hinweis zur Formatierung}\label{sec:hinweis-zur-formatierung}
 
     Verweise zu Quellen und weiterführender Literatur sind mit einer
     dreistelligen Buchstabenkombination in eckigen Klammern dargestellt:
@@ -35,16 +88,6 @@
         {[}ExB{]} Max Mustermann (2020), \emph{Example book}, Beispielverlag,
         ISBN: 1234567890
     \end{quote}
-
-
-    \section{Vorwort}\label{sec:vorwort}
-
-    Google Chromecast ist weit verbreitet, allerdings ist es kein
-    Open-Source und man ist gezwungen ein Google Chromecast oder ein Android
-    TV als Ziel und entweder Chrome oder ein Android-Gerät als Quelle zu
-    benutzen. Außerdem gibt es keine Möglichkeit den Desktop zu übertragen,
-    wodurch eine potenziell gute Lösung eine große Nutzergruppe nicht
-    anspricht. In diese Lücke fügt sich nun VanadiumCast ein.
 
     \newpage
 
@@ -175,8 +218,6 @@
     Probleme mit der Audio-Übertragung, aber ich denke, dass auch die mit
     etwas Zeit lösbar sind.
 
-    \newpage
-
     \subsubsection{Qt}\label{subsubsec:qt}
 
     Qt ist ein Anwendungsframework für C++ und Python, welches nahezu alle
@@ -236,9 +277,6 @@
     Zwischen QML und C++, wie auch zwischen einzelnen Elementen in QML, erfolgt die Kommunikation meist per Signal-Slot-Prinzip.
     Die Events werden bei QML-Oberflächen zwar auch generiert, aber von der QML-Engine ausgewertet, sodass in QML keine Events ankommen.
 
-
-    \newpage
-
     \subsubsection{QtAV}\label{subsubsec:qtav}
 
     QtAV ist ein Plugin für Qt, das Funktionen wie A/V-Wiedergabe/-Transkodierung hinzufügt.
@@ -248,6 +286,8 @@
     z.B. fehlt im Multimedia Modul die Möglichkeit, festzulegen,
     auf welche Art man das Video anzeigen möchte, ob in einem separaten Fenster oder so,
     dass es sich in die bestehende Oberfläche integriert.
+
+    \newpage
 
     \subsection{Entwicklungsverlauf}\label{subsec:entwicklungsverlauf}
     \includegraphics[width=\textwidth]{Progress.pdf}
@@ -285,28 +325,160 @@
     In dieser Phase ist geplant, die aktuell leistungsaufwändige Transkodierung effizienter zu machen
     und andere ineffiziente Anwendungsteile durch Tests ausfindig zu machen und zu beheben.
     Außerdem werden sowohl die gesamte Anwendung als auch die einzelnen Komponenten separat getestet,
-    um Bugs zu finden und zu beheben. Das heißt zum einen, dass ich die gesamte Anwendung,
-    in allen Varianten und Fehlermöglichkeiten testen werden, z.B. dass man während des Streams ein Seite per Taskmanager abbricht.
+    um Bugs zu finden und zu beheben.
+    Das heißt zum einen, dass ich die gesamte Anwendung, in allen Varianten und Fehlermöglichkeiten testen werden,
+    z.B. dass man während des Streams ein Seite per Taskmanager abbricht.
     Außerdem werden die einzelnen Komponenten durch Unit-Tests geprüft.
 
     Ein Unit-Test ist eine Sammlung von Methoden, die alle eine Komponente der Anwendung, aber verschiedene Szenarien, prüfen.
     Man muss so lange Fehler suchen und beheben, bis alle Tests erfolgreich durchlaufen werden.
 
-    \subsubsection {Veröffentlichung}\label{subsubsec:veröffentlichung}
+    \subsubsection {Phase 4: Veröffentlichung}\label{subsubsec:phase-4:-veröffentlichung}
     Zunächst muss ich mich über die verschiedenen Open-Source Lizenzen informieren und eine auswählen.
     Danach werde ich das Projekt vermutlich auf GitHub veröffentlichen, sodass jeder Zugriff darauf hat und es benutzen kann.
     Da GitHub auch Features wie Issues bietet, können anderen Fehler oder auch Verbesserungsvorschläge dort einreichen,
-    damit ich diese bearbeiten und gegebenenfalls Rückfragen stellen kann. Außerdem können dann Schulen VanadiumCast nutzen,
-    sobald die Desktop-Übertragung implementiert ist, um den Schülerinnen, Schülern und Lehrkräften eine komfortable Möglichkeit zu bieten,
+    damit ich diese bearbeiten und gegebenenfalls Rückfragen stellen kann.
+    Außerdem können dann Schulen VanadiumCast nutzen, sobald die Desktop-Übertragung implementiert ist,
+    um den Schülerinnen, Schülern und Lehrkräften eine komfortable Möglichkeit zu bieten,
     im Unterricht den eigenen Bildschirm zu teilen.
 
 
     \section{Architektur}\label{sec:architektur}
 
     \subsection{Komponenten}\label{subsec:komponenten}
-    \includegraphics[width=\textwidth]{Components.transparent.png}
+
+    \begin{figure}[!h]
+        \centering
+        {
+        \svgfont
+        \resizebox{\textwidth}{!}{\input{Components.pdf_tex}}
+        }
+        \caption*{Abb.\ref{subsec:komponenten}.1: Komponentendiagramm}
+    \end{figure}
+
+    Die Anwendung ist so strukturiert, dass sie leicht erweiterbar ist, z.B.
+    kann man die Device-Komponente austauschen, wenn die Geräte per Bluetooth gesucht werden sollen.
+    In der Streaming-Komponente muss in diesem Fall jedoch nichts geändert werden, wenn die
+    Daten weiterhin über das Netzwerk übertragen werden sollen, solange die Geräte ihre IP-Adresse beim Scannen mit zurückgeben.
+    Auch kann man die Sink-Komponente austauschen, wenn man z.B. die Ausgabe in eine Oberfläche integrieren möchte oder
+    der Stream in eine Datei geschrieben statt angezeigt werden soll.
+
+    \newpage
 
     \subsubsection{GUI (QML)}\label{subsubsec:gui-(qml)}
-    Die Oberfläche der Anwendung ist in QML geschrieben
+
+    \paragraph{Aufbau}
+    Die Oberfläche der Anwendung ist in QML geschrieben, daher ist sie vom Backend
+    (Backend $\hat=$ alles bis auf die Oberfläche und deren direkt Funktionalität wie "Knopfdruck\textrightarrow Dateiauswahldialog")
+    getrennt und kann auch nur über ein API-Objekt auf die Funktionen des Backends zugreifen.
+    Sie ist nach dem KISS-Prinzip gestaltet (Keep It Simple, Stupid).
+    Der Quellcode der Oberfläche ist in \texttt{src/res/gui} zu finden.
+
+    \paragraph{Geräteauswahl}
+    Hier ist die erste der drei Views zu sehen, die Geräteauswahl.
+    Diese ist, wie jede andere View, so einfach wie möglich gehalten,
+    es gibt nur die Liste der gefundenen Geräte und die nächsten Schritte am unteren Rand.
+    Der nächste Schritt ist jedoch nur auswählbar, wenn ein Gerät ausgewählt wurde,
+    damit der Stream nicht gestartet werden kann, wenn kein Gerät ausgewählt wurde,
+    da dies würde zu einem Absturz des Programmes führen.
+    \begin{figure} [!ht]
+        \centering
+        \includegraphics[height=6cm]{Devices.png}
+        \caption*{Abb.\ref{subsubsec:gui-(qml)}.1: Geräteauswahl}
+    \end{figure}
+
+    \paragraph{Quellenauswahl}
+    Zu sehen ist die Quellenauswahl in der aktuellen Fassung mit der Dateiauswahl.
+    Es sind zum einen das Textfeld mit der direkten Eingabemöglichkeit einer URL (lokale Dateien starten mit \texttt{file://})
+    Zudem gibt es einen Knopf zum Öffnen eines komfortableren Dateiauswahldialogs.
+    Nachdem eine Datei ausgewählt wurde, wird sowohl die Videovorschau gestartet als auch der Knopf zum Starten des Streams freigeschaltet, um Fehler zu vermeiden.
+
+    \begin{figure} [!ht]
+        \centering
+        \includegraphics[height=6cm]{Media.png}
+        \caption*{Abb.\ref{subsubsec:gui-(qml)}.2: Quellenauswahl}
+    \end{figure}
+
+    \newpage
+
+    \paragraph{Wiedergabesteuerung}
+    Die hier zu sehende Wiedergabesteuerung ist noch konzeptionell und ohne Funktion, d.h. es ist noch möglich, dass sich diese View im Rahmen der Entwicklung noch ändert.
+    Aber auch hier ist das KISS-Prinzip deutlich erkennbar.
+    Es gibt einen Knopf zum Pausieren/Fortsetzen der Wiedergabe,
+    eine Anzeige der aktuellen Position und einen Schieberegler zum Setzen der Position.
+    \begin{figure} [!ht]
+        \centering
+        \includegraphics[height=6cm]{Streaming.png}
+        \caption*{Abb.\ref{subsubsec:gui-(qml)}.3: Wiedergabesteuerung (konzeptionell)}
+    \end{figure}
+
+    \subsubsection{API (C++)}\label{subsubsec:api-(c++)}
+    Die API die Schnittstelle zwischen QML und dem Backend.
+    Dadurch kann man im Backend sehr einfach Komponenten austauschen, ohne in der Oberfläche etwas ändern zu müssen.
+    In der API ist nur gerade so viel Anwendungslogik vorhanden, dass die einzelnen Komponenten verknüpft werden,
+    der größte Teil ist in den einzelnen Komponenten.
+    In der API ist z.B. die Funktion \texttt{startSource()} definiert,
+    die lediglich der zuständigen Komponente Dateipfad und IP-Adresse des Ziels übergibt und die Komponente startet.
+
+    \subsubsection{Devices (C++)}\label{subsubsec:devices-(c++)}
+
+    \paragraph{DeviceScanner}
+    Die Klasse \texttt{NetworkDeviceScanner} ist für das Scannen nach Geräten im Netzwerk zuständig.
+    Die Funktion \texttt{run()} wird parallel zum Rest des Programms ausgeführt und verwaltet die gefundenen Geräte in einer Instanz der Klasse \texttt{NetworkDeviceDirectory}.
+    Der Ablauf eines Scan-Vorgangs läuft wie folgt ab:
+    \begin{enumerate}
+        \item Senden eines UDP-Pakets an den Netzwerk-Broadcast
+        \item Warten auf eingehende Pakete
+        \item In jedem eingehenden Paket stehen der Name des antwortenden Geräts und die Senderadresse des Pakets ist die IP des Geräts
+        \item Jedes so gefundene Gerät wird mit der Funktion \texttt{addDevice()} der Klasse \texttt{NetworkDeviceDirectory} zum Geräteverzeichnis hinzugefügt (siehe \textbf{DeviceDirectory})
+        \item Am Ende jedes Scan-Vorgangs wird die Funktion \texttt{syncLists()} der Klasse \texttt{NetworkDeviceDirectory} verwendet, um die Geräteliste in der Oberfläche zu aktualisieren
+    \end{enumerate}
+
+    \paragraph{DeviceDirectory}
+    Die Klasse \texttt{NetworkDeviceDirectory} verwaltet Instanzen der Klasse \texttt{NetworkDevice}, die in zwei Listen organisiert sind,
+    in der einen stehen die Geräte des letzten vollständigen Scans, in der anderen die Geräte des aktuellen Scans.
+    Diese Trennung ist dazu da, dass in \texttt{syncLists()} festgestellt werden kann, welche Geräte neu hinzugekommen sind und welche im aktuellen Scan fehlen.
+    Außerdem wird in \texttt{syncLists()} für jedes Gerät, das nur in einer der beiden Listen vorhanden ist,
+    entweder das Signal \texttt{addedDevice()} oder das Signal \texttt{removedDevice()} aufgerufen, welche mit einem Slot in QML verbunden sind,
+    wo dann die Aktualisierung der Geräteliste in der Oberfläche stattfindet.
+    Durch diese Methode werden nur so viele Aktualisierungen der Oberfläche durchgeführt, wie nötig sind.
+
+    \paragraph{Device}
+    Ein Gerät wird durch eine Instanz der Klasse \texttt{NetworkDevice} repräsentiert.
+    Sie enthält den Namen und die IP-Adresse des Geräts.
+
+    \subsubsection{Streaming (C++)}\label{subsubsec:streaming-(c++)}
+
+    \paragraph{VideoTranscoder}
+    Die Klasse \texttt{VideoTranscoder} enthält den für die Transkodierung zuständigen Code,
+    der im wesentlichen aus dem Initialisieren und Starten des \texttt{AVTranscoder} aus dem QtAV-Plugin besteht.
+    Beim Instanziieren der Klasse wird das Streaming-Profil übergeben, welches die Bitrate, FPS, Auflösung und den Videocodec angibt. (siehe Tabelle \ref{subsubsec:streaming-(c++)}.1)
+    Aktuell ist das ausgewählt Profil als STANDARD im Code festgeschrieben, es ist aber geplant eine Auswahlmöglichkeit in die Oberfläche einzubauen.
+
+    \begin{figure} [!ht]
+        \begin{center}
+            \texttt{
+            \begin{tabularx}{\textwidth}{
+            >{\raggedright\arraybackslash}X
+            | >{\centering\arraybackslash}X
+            | >{\centering\arraybackslash}X
+            | >{\centering\arraybackslash}X
+            | >{\centering\arraybackslash}X}
+                Auflösung  & 1280x720 & 1920x1080 & 1920x1080 & 2560x1440 \\
+                \hline
+                FPS        & 30       & 30        & 60        & 60        \\
+                \hline
+                Bitrate    & 1 MBit/s & 5 MBit/s  & 10 MBit/s & 15 MBit/s \\
+                \hline
+                Videocodec & H.264    & H.264     & H.264     & H.265     \\
+            \end{tabularx}
+            }
+        \end{center}
+        \caption*{Tabelle \ref{subsubsec:streaming-(c++)}.1: Streaming-Profile}
+        \label{fig:figure}
+    \end{figure}
+
+    \paragraph{StreamThread}
+
 
 \end{document}
