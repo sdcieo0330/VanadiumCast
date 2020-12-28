@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  19 DEC 2020 00:08
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020/Arch Linux) (preloaded format=xelatex 2020.12.18)  19 DEC 2020 01:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -753,9 +753,9 @@ röße, sondern nur in den Möglichkeiten,
  []
 
 
-Overfull \hbox (6.14621pt too wide) in paragraph at lines 204--214
-\TU/RobotoSlab(0)/m/n/10 nur Video- und Audiospuren, letzteres alle möglichen S
-puren inklusive 3D-Inhalte und Menüs
+Overfull \hbox (5.03586pt too wide) in paragraph at lines 204--214
+\TU/RobotoSlab(0)/m/n/10 nur Video-, Audio- und Untertitelspuren, letzteres all
+e möglichen Spuren inklusive 3D-Inhalte
  []
 
 
@@ -895,103 +895,103 @@ TU/lmtt/m/n/10 QTcpServer \TU/RobotoSlab(0)/m/n/10 abgeleitete Klasse,
 File: Flowchart.pdf Graphic file (type pdf)
 <use Flowchart.pdf, page 1>
 ) [13] [14]
-Overfull \hbox (7.70865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (7.70865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][] [] [][][] [][] [][][] [][] [] [][] [][][][] [][] [
 ] [][] [][][][][][][][][] [][] [][][][][] [][] [][] [][]
  []
 
 
-Overfull \hbox (1.45865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (1.45865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][] [] [][][] [][] [][] [][] [][][][][][][] [][] [][][] 
 [][] [][][][][][][][] [][] [][] [][] [][][][][]$[][] 
  []
 
 
-Overfull \hbox (0.95865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (0.95865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][][] [] [][][] [][] [][][][][][][] [][] [][][][][][] 
 [][] [][] [][] [][][][][][][][][][][] [][]
  []
 
 
-Overfull \hbox (2.45865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (2.45865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][] [] [][][] [][] [][] [][] [] [][] [][][] [][] [] []
 [] [][][][][][][][][][] [][] [][][][] [][] [][][] [][]
  []
 
 
-Overfull \hbox (6.20865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (6.20865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][][] [] [][][][][][][] [][] [][] [][] [][][][][] [][]
  [][][][][][] [][] [] [][] [][][][][][][][][]$[][] 
  []
 
 
-Overfull \hbox (12.45865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (12.45865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][][] [] [][][] [][] [][] [][] [][][] [][] [][][][][] 
 [][] [][][] [][] [][][][][][][][] [][] [][][][][] [][]
  []
 
 
-Overfull \hbox (1.95865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (1.95865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][] [] [][][] [][] [][] [][] [] [][] [][][][][][] [][]
  [][][][][] [][] [][][][][] [][] [][][][][][] [][]
  []
 
 
-Overfull \hbox (27.20865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (27.20865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][][] [] [][][][][][][][][] [][] [][][][][][][] [][] [
 ][][][][][][][] [][] [][][] [][] [][][][][][][] [][]
  []
 
 
-Overfull \hbox (27.70865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (27.70865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][][] [] [][][][] [][] [][] [][] [][][] [][] [][][][][
 ][][][][][] [][] [][][][][][][] [][] [][][][][][][] [][]
  []
 
 
-Overfull \hbox (22.45865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (22.45865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][] [] [][][][][][][][][] [][] [][][][][][][][][] [][]
  [][][][][][] [][] [][] [][] [][][] [][] [][][][] [][]
  []
 
 
-Overfull \hbox (7.70865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (7.70865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][] [] [][][] [][] [][] [][] [] [][] [][][] [][] [][][][
 ] [][] [][][][][] [][] [][][][][][][] [][] [][][][] [][]
  []
 
 
-Overfull \hbox (1.45865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (1.45865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][] [] [][][] [][] [][] [][] [][][][][][][] [][] [][][] 
 [][] [][][][][][][][] [][] [][] [][] [][][][][]$[][] 
  []
 
 
-Overfull \hbox (7.70865pt too wide) in paragraph at lines 563--589
+Overfull \hbox (7.70865pt too wide) in paragraph at lines 577--603
 [][]$[][][][][] [] [] [] [][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][][][][][][] [] [][][][][] [] [][][] [][] [][][] [][] [] [][] [][][][] [][] [
 ] [][] [][][][][][][][][] [][] [][][][][] [][] [][] [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 563--589
+Underfull \hbox (badness 10000) in paragraph at lines 577--603
 
  []
 
 
-Overfull \hbox (39.70865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (39.70865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][] [] [][] [] [][] [] [][][][][] [] [][][][][]
  [] [][][] [][] [][] [][] [][][][] [][] [][][][][] [][] [][][][] [][] [][][][][
 ][][] [][] [][][][] [][] [][][][][] [][] [][][] [][] [][][][][][][][][][]$[][] 
@@ -999,28 +999,28 @@ Overfull \hbox (39.70865pt too wide) in paragraph at lines 591--631
  []
 
 
-Overfull \hbox (1.45865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (1.45865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][][] [] [][][] [][] [][] [][] [][][][] [][] [][][][][][] []
 [] [][][][] [][] [][][][][][][][][][][] [][]
  []
 
 
-Overfull \hbox (12.45865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (12.45865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][][] [] [][][][][][][][][][] [][] [][] [][] [][][][] [][] [
 ][][][][][][] [][] [][] [][] [][] [][] [][][][] [][]
  []
 
 
-Overfull \hbox (1.45865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (1.45865pt too wide) in paragraph at lines 605--648
 [][]$[][][][] [] [] [] [][][][] [] [][][][][][][][][][][][][] [] [][][] [] [][]
 [][] [] [][] [] [][][] [][] [][][][] [][] [][][][][][][] [][] [][][][] [][] [][
 ] [][] [][][][] [][] [][][][][][][][][][][][][]$[][] 
  []
 
 
-Overfull \hbox (39.70865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (39.70865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][] [] [][] [] [][] [] [][][][][] [] [][][][][]
  [] [][][] [][] [][] [][] [][][][] [][] [][][][][] [][] [][][][] [][] [][][][][
 ][][] [][] [][][][] [][] [][][][][] [][] [][][] [][] [][][][][][][][][][]$[][] 
@@ -1028,103 +1028,110 @@ Overfull \hbox (39.70865pt too wide) in paragraph at lines 591--631
  []
 
 
-Overfull \hbox (1.45865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (1.45865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][][] [] [][][] [][] [][] [][] [][][][] [][] [][][][][][] []
 [] [][][][] [][] [][][][][][][][][][][] [][]
  []
 
 
-Overfull \hbox (0.45865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (0.45865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][][] [] [][][][][][][][][][][] [][] [][][][][][][][][] [][]
  [][] [][] [][][][][][][][][][] [][]
  []
 
 
-Overfull \hbox (16.70865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (16.70865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][][] [] [][] [][] [][][][][] [][] [][][][] [][] [][][] [][]
  [][][][] [][] [][][][][][][] [] [][][][][][][][]$[][] 
  []
 
 
-Overfull \hbox (2.45865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (2.45865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][] [] [][][] [] [][][] [] [][][][][][][][] [] [][]
  [][] [][][][] [][] [][][][][][] [][] [][][][][][][][][][][] [][] [][][][][] []
 [] [][][][][][] [][] [][][][] [][] [][][][][][] [][]
  []
 
 
-Overfull \hbox (17.70865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (17.70865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][] [] [][] [] [][] [] [][][][][] [] [][][][][]
  [] [][][][][] [][] [][][][][][] [][] [][][][] [][] [][][][] [][] [][][][][][][
 ][][] [][] [][][] [][] [][][][][][][][] [][] [][][][][][]$[][] 
  []
 
 
-Overfull \hbox (22.95865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (22.95865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][] [] [][] [] [][] [] [][][][][] [] [][][][][]
  [] [][][][][][][] [][] [][] [][] [][][][][][][][] [][] [][][][][][][] [][] [][
 ][][][] [][] [][] [][] [][][][][][] [][] [][][][][][][][][]$[][] 
  []
 
 
-Overfull \hbox (22.95865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (22.95865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][][] [] [][][] [][] [][][][][][][] [][] [][] [][] [][][][][
 ][][][][][][] [][] [][][][] [][] [][] [][] [][][][] [][]
  []
 
 
-Overfull \hbox (12.95865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (12.95865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][] [] [][] [] [][] [] [][][][][] [] [][][][][]
 [] [] [][][] [][] [][][] [][] [][][][][][][][][][] [][] [][][][][] [][] [][][][
 ] [][] [][] [][] [][][][][][][][] [][] [][][][][][][] [][]
  []
 
 
-Overfull \hbox (6.70865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (6.70865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][] [] [][][][][][][][][] [] [][][] [] [][]
 [][] [] [][] [] [][] [] [][][][][][][][][] [][] [][][][][][][][][] [][] [][] []
 [] [][][][][][] [][] [][][] [][] [][][][][][] [][]
  []
 
 
-Overfull \hbox (6.20865pt too wide) in paragraph at lines 591--631
+Overfull \hbox (6.20865pt too wide) in paragraph at lines 605--648
 [][]$[][][][][] [] [] [] [][][][][][][][][][][][][] [] [][][] [] [][][][][][][]
 [][] [] [][][][][][][] [] [] [][] [][][][][][] [][] [][][][][][][][] [][] [][][
 ][][][][][][] [][] [][][][][][][][][] [][]
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 591--631
-
- []
-
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 633--635
+Overfull \hbox (7.25569pt too wide) in paragraph at lines 650--655
+\TU/RobotoSlab(0)/m/n/10 [AUC] Audiocodecs, [][]$[][][][][] [] [] [] [][][] [] 
+[] [][] [][][][][][][][] [] [][][] [] [][][][][][][] [] [][][][][][][][][][][][
+] [] [][][][][] [] [][][][][][][][][][][]$[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 650--655
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 637.
+
+Underfull \hbox (badness 10000) in paragraph at lines 657--659
+
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 661.
 [16]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 637.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 661.
  (/home/silas/CLionProjects/VanadiumCast/out/Documentation.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 637.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 637.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 661.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 661.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 9AE8EAA3CD4ACDEAF83017936B75D44B;2537.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 637.
+(rerunfilecheck)             Checksum: 15EFE162DF9F06D7AC946A7D419E602A;2797.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 661.
  ) 
 Here is how much of TeX's memory you used:
- 16535 strings out of 479284
- 306891 string characters out of 5886219
- 792849 words of memory out of 5000000
- 33903 multiletter control sequences out of 15000+600000
- 557811 words of font info for 84 fonts, out of 8000000 for 9000
+ 16538 strings out of 479284
+ 306987 string characters out of 5886219
+ 795922 words of memory out of 5000000
+ 33905 multiletter control sequences out of 15000+600000
+ 557819 words of font info for 85 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 44i,15n,82p,297b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 44i,15n,82p,355b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on /home/silas/CLionProjects/VanadiumCast/out/Documentation.pdf 
 (17 pages).

@@ -176,7 +176,7 @@ linkcolor=black
     stecken seit ca. 10 Jahren Videoprozessoren, die die CPU beim
     En-/Dekodieren von Videos entlasten, sodass weniger Energie verbraucht
     wird. Erst dadurch wird es möglich, auf Handys, Tablets etc. Video
-    abzuspielen, da die Akkulaufzeit sonst zu gering wäre.
+    abzuspielen, da die Akkulaufzeit sonst zu gering wäre. [VKW]
 
     \subsection{Audiocodecs}\label{subsec:audiocodecs}
 
@@ -197,7 +197,7 @@ linkcolor=black
     Kompressionsalgorithmus und der Qualität bei bestimmten Bitraten, sodass
     sie unterschiedlich gut für das Streaming geeignet sind. In VanadiumCast
     wird aktuell AAC verwendet, da es die gleiche Qualität wie MP3 bei
-    geringerer Bitrate gewährleistet.
+    geringerer Bitrate gewährleistet. [M3W,AUC]
 
     \subsection{Containerformate}\label{subsec:containerformate}
 
@@ -208,9 +208,9 @@ linkcolor=black
     Containerformat hat nahezu keinen Einfluss auf die Dateigröße, sondern
     nur in den Möglichkeiten, welche Art von Daten enthalten sein können.
     Bekannte Beispiele sind das von Apple entwickelte und weit verbreitete
-    MP4 oder das offene Matroska-Format, ersteres unterstützt nur Video- und
-    Audiospuren, letzteres alle möglichen Spuren inklusive 3D-Inhalte und
-    Menüs wie auf DVDs.
+    MP4 oder das offene Matroska-Format, ersteres unterstützt nur Video-,
+    Audio- und Untertitelspuren, letzteres alle möglichen Spuren inklusive 3D-Inhalte und
+    Menüs wie auf DVDs. [MKW,M4W]
 
     \newpage
 
@@ -556,11 +556,24 @@ linkcolor=black
     \subsection{Quellcode}
     Der Quellcode ist auf Anfrage hier verfügbar: \href{https://github.com/Katharineum/VanadiumCast}{GitHub}
 
+    \subsection{Erklärung des Verfassers}
+
+    \begin{small}
+
+        Hiermit erkläre ich, dass ich die vorliegende Arbeit selbstständig und ohne fremde Hilfe verfasst und keine anderen als die in den Quellenverzeichnissen angegebenen Hilfsmittel verwendet habe. Insbesondere versichere ich, dass ich alle wörtlichen und sinngemäßen Übernahmen aus anderen Werken als solche kenntlich gemacht habe.
+
+        \vspace{2\baselineskip}
+        \noindent
+        \rule[0.5ex]{25em}{0.5pt}\\
+        Ort, Datum\qquad\qquad\qquad\qquad Unterschrift
+
+    \end{small}
+
     \newpage
 
     \subsection{Quellenverzeichnis}
 
-    \subsubsection{\LaTeX betreffend}
+    \subsubsection{\LaTeX\space betreffend}
     \url{https://www.overleaf.com/learn/latex/lists\#Ordered\_lists}\\
     \url{https://en.wikibooks.org/wiki/LaTeX/Source\_Code\_Listings}\\
     \url{https://tex.stackexchange.com/questions/73862/how-can-i-make-a-clickable-table-of-contents}\\
@@ -590,6 +603,9 @@ linkcolor=black
 
     \subsubsection{Programmieren betreffend}
     \textbf{Die folgenden Quellen wurden alle im November 2020 aufgerufen}\\
+    Qt API Referenz: \url{https://doc.qt.io/qt-5/} \\
+    QtAV (examples \& wiki): \url{https://github.com/wang-bin/QtAV} \\
+    C++ Referenz: \url{https://en.cppreference.org/}\\
     \url{https://forum.qt.io/topic/108139/qttest-test-multiple-classes}\\
     \url{https://www.qtcentre.org/threads/65673-when-QBuffer-emits-readyRead-signal}\\
     \url{https://forum.qt.io/topic/96771/how-to-test-class-with-signals-with-qtest-and-qsignalspy}\\
@@ -628,7 +644,14 @@ linkcolor=black
     \url{https://stackoverflow.com/questions/14010922/qt-undefined-reference-to-vtable}\\
     \url{https://www.geeksforgeeks.org/friend-class-function-cpp/}\\
     \url{https://en.cppreference.com/w/cpp/language/friend}\\
-    \url{https://stackoverflow.com/questions/4774291/q-object-throwing-undefined-reference-to-vtable-error}\\
+    \url{https://stackoverflow.com/questions/4774291/q-object-throwing-undefined-reference-to-vtable-error}
+
+    \subsection{Sonstige Quellen}
+    {[}VKW{]} Videokompression, \url{https://de.wikipedia.org/wiki/Videokompression} {[}2020-12-17{]} \\
+    {[}AUC{]} Audiocodecs, \url{https://www.e-teaching.org/technik/aufbereitung/audio/audiocodecs} {[}2020-12-17{]}\\
+    {[}M3W{]} MP3-Format, \url{https://de.wikipedia.org/wiki/MP3} {[}2020-12-17{]}\\
+    {[}MKW{]} Matroska-Format, \url{https://de.wikipedia.org/wiki/Matroska} {[}2020-12-17{]}\\
+    {[}M4W{]} Matroska-Format, \url{https://de.wikipedia.org/wiki/MP4} {[}2020-12-18{]}\\
 
     \subsection{Weiterführende Literatur}
     {[}QfB{]} Qt for Beginners: \url{https://wiki.qt.io/Qt\_for\_Beginners [12/2020]}\\
