@@ -2,16 +2,16 @@
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
     </qresource>
-    <qresource prefix="/res/wav">
-        <file>incoming.wav</file>
+    <qresource prefix="/sound">
+        <file alias="incoming.wav">sound/incoming.wav</file>
     </qresource>
     <qresource prefix="/gui">
-        <file>PageDevices.qml</file>
-        <file>main.qml</file>
-        <file>PageMedia.qml</file>
-        <file>PageStreaming.qml</file>
+        <file alias="PageDevices.qml">gui/PageDevices.qml</file>
+        <file alias="main.qml">gui/main.qml</file>
+        <file alias="PageMedia.qml">gui/PageMedia.qml</file>
+        <file alias="PageStreaming.qml">gui/PageStreaming.qml</file>
     </qresource>
     <qresource prefix="/gui/model">
-        <file>DeviceListModel.qml</file>
+        <file alias="DeviceListModel.qml">gui/model/DeviceListModel.qml</file>
     </qresource>
 </RCC>

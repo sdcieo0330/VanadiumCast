@@ -7,7 +7,12 @@ include_directories(../src)
 
 find_package(Qt5 COMPONENTS Core Test Gui Widgets Concurrent Network REQUIRED)
 
-find_package(QtAV)
+if (MSVC)
+    include_directories(E:\\QtAV\\src\\QtAV E:\\QtAV\\widgets\\QtAVWidgets)
+    link_directories(E:\\QtAV\\x64\\Debug)
+else ()
+    find_package(QtAV REQUIRED)
+endif ()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
