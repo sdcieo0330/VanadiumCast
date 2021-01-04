@@ -113,8 +113,8 @@ Page {
             anchors.topMargin: 8
             height: 1280
             width: 720
-            videoCodecPriority: ["QSV", "CUDA", "FFMPEG"]
-            audioBackends: ["null"]
+            videoCodecPriority: ["DXVA", "MMAL", "QSV", "CUDA", "FFMPEG"]
+            audioBackends: ["OpenAL", "XAudio2", "null"]
             Component.onCompleted: console.log(previewVideo.audioBackends)
             smooth: true
             onPositionChanged: {

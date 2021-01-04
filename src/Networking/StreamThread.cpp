@@ -5,17 +5,17 @@
 #include "StreamThread.h"
 #include "Commands.h"
 #include <QtConcurrent>
+#include <utility>
 
-StreamThread::StreamThread(NetworkDevice *target, InputFile *inputFile) : target(target), inputFile(inputFile) {
+StreamThread::StreamThread(NetworkDevice *target, QString inputFile) : inputFile(std::move(inputFile)), target(target->getAddress(), target->getName()) {
 }
 
 void StreamThread::run() {
     controlConnection = new QTcpSocket;
-    controlConnection->connectToHost(target->getAddress(), 55555);
+    controlConnection->connectToHost(target.getAddress(), 55555);
     controlConnection->waitForConnected();
     if (controlConnection->waitForReadyRead() && controlConnection->read(1) == Command::OK) {
-        inputFile->open();
-        qDebug() << "Sending data connection request to" << target;
+        qDebug() << "Sending data connection request to" << &target;
         QThread::msleep(100);
         controlConnection->write(Command::CONNECTDATA);
         qDebug() << "Sent data connection request";
@@ -25,11 +25,11 @@ void StreamThread::run() {
                 connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
                 dataConnection = new QTcpSocket;
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
-                dataConnection->waitForConnected(500);
+                dataConnection->waitForConnected(1000);
                 cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
-//            QFile tmpout("/home/silas/transcoded.mkv");
-//            tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
-                transcoder = new VideoTranscoder(inputFile->getIODevice(), cachedOutput->getEnd2(), VideoTranscoder::STANDARD);
+                QFile tmpout("C:\\Users\\Silas\\tmpout.mkv");
+                tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
+                transcoder = new VideoTranscoder(inputFile, &tmpout, VideoTranscoder::STANDARD);
                 readTimer = new QTimer;
                 readTimer->setInterval(2);
                 connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
@@ -38,6 +38,9 @@ void StreamThread::run() {
                     transcoder->startTranscoding();
                 });
                 exec();
+                tmpout.flush();
+                tmpout.close();
+                qDebug() << "Event queue terminated";
                 readTimer->stop();
                 transcoder->stopTranscoding();
                 disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
@@ -59,7 +62,6 @@ void StreamThread::run() {
                 qDebug() << "Streaming request rejected";
             }
         }
-        inputFile->close();
     }
     qDebug() << "Stopping StreamThread";
 
@@ -70,8 +72,8 @@ void StreamThread::run() {
 }
 
 void StreamThread::writeToOutput() {
-//    qDebug() << "writeToOutput()";
     QByteArray buf = cachedOutput->getEnd1()->readAll();
+    qDebug() << "writeToOutput():" << buf.size();
     if (!buf.isEmpty() && dataConnection->isOpen()) {
 //        qDebug() << "Writing data...";
         dataConnection->write(buf);

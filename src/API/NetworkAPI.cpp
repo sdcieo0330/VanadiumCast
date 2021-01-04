@@ -121,7 +121,7 @@ bool NetworkAPI::startSource(QUrl inputFile, QString address) {
             if (inputFile.isEmpty()) {
                 setInputFile();
             }
-            streamThread = new StreamThread(target, new InputFile(inputFile.toLocalFile()));
+            streamThread = new StreamThread(target, inputFile.toLocalFile());
             connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::deleteStreamThread, Qt::QueuedConnection);
             streamThread->start();
         });

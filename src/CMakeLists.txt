@@ -14,12 +14,12 @@ if (MSVC)
     link_directories(E:\\QtAV\\x64\\Debug E:\\ffmpeg-dev\\lib)
 else ()
     find_package(QtAV REQUIRED)
+    include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
 endif ()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Widgets Network Multimedia QuickControls2 Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Widgets Network Multimedia QuickControls2 Concurrent REQUIRED)
 
-#include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
 add_library(VanadiumCastLib STATIC
         API/NetworkAPI.cpp
         GUI/VideoGui.cpp
