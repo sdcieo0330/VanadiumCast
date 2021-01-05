@@ -13,6 +13,7 @@ if (MSVC)
     include_directories(E:\\QtAV\\src\\QtAV E:\\QtAV\\widgets\\QtAVWidgets E:\\ffmpeg-dev\\include)
     link_directories(E:\\QtAV\\x64\\Debug E:\\ffmpeg-dev\\lib)
 else ()
+    set(CMAKE_MODULE_PATH /usr/share/cmake-3.18/Modules /usr/share/cmake-3.19/Modules ${CMAKE_MODULE_PATH})
     find_package(QtAV REQUIRED)
 endif ()
 
