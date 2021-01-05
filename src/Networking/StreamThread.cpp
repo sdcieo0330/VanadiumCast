@@ -30,10 +30,10 @@ void StreamThread::run() {
                 QFile tmpout("C:\\Users\\Silas\\tmpout.mkv");
                 tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
                 transcoder = new VideoTranscoder(inputFile, &tmpout, VideoTranscoder::STANDARD);
-                readTimer = new QTimer;
-                readTimer->setInterval(2);
-                connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
-                readTimer->start();
+//                readTimer = new QTimer;
+//                readTimer->setInterval(2);
+//                connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
+//                readTimer->start();
                 QtConcurrent::run([&]() {
                     transcoder->startTranscoding();
                 });
