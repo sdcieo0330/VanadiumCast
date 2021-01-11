@@ -4,17 +4,20 @@
 #include <QtConcurrent>
 #include <QtMultimedia>
 
-VideoTranscoder::VideoTranscoder(QString inputFile, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent)
-        : QObject(parent), inputFile(std::move(inputFile)), outputDevice(outputDevice) {
+VideoTranscoder::VideoTranscoder(std::string inputFilePath, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent)
+        : QObject(parent), inputFile(std::move(inputFilePath)), outputDevice(outputDevice) {
     initializeProfiles();
-    avPlayer.setFile(inputFile);
-//    if (avPlayer.audioStreamCount() > 0) {
-//    avPlayer.audio()->setBackends(QStringList() << QString::fromLatin1("null"));
-//    } else {
+    qDebug() << "[VideoTranscoder]" << QString::fromStdString(inputFile);
+    avPlayer.setFile(QString::fromStdString(inputFile));
+    avPlayer.setAutoLoad(true);
+    avPlayer.setAsyncLoad(true);
+    if (avPlayer.audioStreamCount() > 0) {
+    avPlayer.audio()->setBackends(QStringList() << QString::fromLatin1("null"));
+    } else {
     avPlayer.setAudioStream(-1);
-//    }
+    }
 //    avPlayer.setFrameRate(10000.0);
-    avPlayer.setVideoDecoderPriority(QStringList() << "FFmpeg");
+    avPlayer.setVideoDecoderPriority(QStringList() << "QSV" << "FFmpeg");
     initTranscoder(profile);
 }
 
@@ -22,7 +25,7 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     QVariantHash muxopt, avfopt;
     avfopt[QString::fromLatin1("segment_time")] = 4;
     avfopt[QString::fromLatin1("segment_list_size")] = 0;
-    avfopt[QString::fromLatin1("segment_list")] = "C:\\Users\\Silas\\index.m3u8";
+    avfopt[QString::fromLatin1("segment_list")] = "index.m3u8";
     avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
     muxopt[QString::fromLatin1("avformat")] = avfopt;
 
@@ -46,24 +49,24 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     videoEncoder->setCodecName(profile.videoCodecName);
     videoEncoder->setBitRate(profile.rate);
 //    videoEncoder->setProperty("hwdevice", "/dev/dri/renderD128");
-//    videoEncoder->setHeight(profile.height);
-//    videoEncoder->setWidth(profile.width);
-//    videoEncoder->setPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
-//    QVariantHash venc_opt, opt;
-//    venc_opt["color_primaries"] = "bt2020";
-//    venc_opt["color_trc"] = "smpte2084";
-//    venc_opt["colorspace"] = "bt2020_ncl";
-//    opt["avcodec"] = venc_opt;
-//    avTranscoder.setOutputOptions(opt);
+    videoEncoder->setHeight(profile.height);
+    videoEncoder->setWidth(profile.width);
+    videoEncoder->setPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
+    QVariantHash venc_opt, opt;
+    venc_opt["color_primaries"] = "bt2020";
+    venc_opt["color_trc"] = "smpte2084";
+    venc_opt["colorspace"] = "bt2020_ncl";
+    opt["avcodec"] = venc_opt;
+    avTranscoder.setOutputOptions(opt);
 //    videoEncoder->setFrameRate(std::min(profile.framerate, player.metaData(QMediaMetaData::VideoFrameRate).toInt()));
-//    if (avPlayer.currentAudioStream() >= 0) {
-//        if (avTranscoder.createAudioEncoder()) {
-//            avTranscoder.audioEncoder()->setCodecName(profile.audioCodecName);
-//            avTranscoder.audioEncoder()->setBitRate(256000);
-//        } else {
-//            qWarning() << "Cannot initialize audio encoder";
-//        }
-//    }
+    if (avPlayer.currentAudioStream() >= 0) {
+        if (avTranscoder.createAudioEncoder()) {
+            avTranscoder.audioEncoder()->setCodecName(profile.audioCodecName);
+            avTranscoder.audioEncoder()->setBitRate(256000);
+        } else {
+            qWarning() << "Cannot initialize audio encoder";
+        }
+    }
     avTranscoder.setAsync(false);
 }
 

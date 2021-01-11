@@ -15,7 +15,7 @@
 class StreamThread : public QThread {
 Q_OBJECT
 public:
-    StreamThread(NetworkDevice *target, QString inputFile);
+    StreamThread(NetworkDevice *target, std::string inputFile);
 
     ~StreamThread() noexcept;
 
@@ -38,7 +38,7 @@ public slots:
 private:
     bool running = false;
     QTimer *readTimer;
-    QString inputFile;
+    std::string inputFile;
     NetworkDevice target;
     VideoTranscoder *transcoder;
     QTcpSocket *controlConnection, *dataConnection;

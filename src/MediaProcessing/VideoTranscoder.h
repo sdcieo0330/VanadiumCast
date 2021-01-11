@@ -12,7 +12,7 @@ class VideoTranscoder : public QObject {
 Q_OBJECT
 
 public:
-    explicit VideoTranscoder(QString inputFile, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent = nullptr);
+    explicit VideoTranscoder(std::string inputFilePath, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent = nullptr);
 
     void startTranscoding();
 
@@ -92,7 +92,7 @@ private:
     QtAV::AVTranscoder avTranscoder;
     QtAV::AVPlayer avPlayer;
     QIODevice *outputDevice;
-    QString inputFile;
+    std::string inputFile;
 };
 
 #endif // VIDEOTRANSCODER_H

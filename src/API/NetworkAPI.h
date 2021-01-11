@@ -48,7 +48,7 @@ public:
 
     Q_INVOKABLE QUrl getInputFile();
 
-    Q_INVOKABLE bool startSource(QUrl inputFile, QString address);
+    Q_INVOKABLE bool startSource(QUrl inputFileUrl, QString address);
 
     Q_INVOKABLE bool startSink();
     

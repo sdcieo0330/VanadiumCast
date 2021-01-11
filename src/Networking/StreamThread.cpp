@@ -7,7 +7,7 @@
 #include <QtConcurrent>
 #include <utility>
 
-StreamThread::StreamThread(NetworkDevice *target, QString inputFile) : inputFile(std::move(inputFile)), target(target->getAddress(), target->getName()) {
+StreamThread::StreamThread(NetworkDevice *target, std::string inputFile) : inputFile(std::move(inputFile)), target(target->getAddress(), target->getName()) {
 }
 
 void StreamThread::run() {
@@ -27,14 +27,17 @@ void StreamThread::run() {
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
                 dataConnection->waitForConnected(1000);
                 cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
-                QFile tmpout("C:\\Users\\Silas\\tmpout.mkv");
+                QFile tmpout(R"(C:\Users\Silas\tmpout.mkv)");
                 tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
-                transcoder = new VideoTranscoder(inputFile, &tmpout, VideoTranscoder::STANDARD);
-//                readTimer = new QTimer;
-//                readTimer->setInterval(2);
-//                connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
-//                readTimer->start();
+                QString iF = QString::fromStdString(inputFile);
+                qDebug() << "[StreamThread]" << iF;
+                transcoder = new VideoTranscoder(iF.toStdString(), cachedOutput->getEnd2(), VideoTranscoder::HIGH);
+                readTimer = new QTimer;
+                readTimer->setInterval(2);
+                connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
+                readTimer->start();
                 QtConcurrent::run([&]() {
+                    QThread::msleep(100);
                     transcoder->startTranscoding();
                 });
                 exec();

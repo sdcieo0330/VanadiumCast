@@ -107,9 +107,9 @@ bool NetworkAPI::setDevice(QString address) {
 /**
  * @return bool
  */
-bool NetworkAPI::startSource(QUrl inputFile, QString address) {
+bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
     if (streamThread == nullptr) {
-        qDebug() << "Start source entered:" << inputFile;
+        qDebug() << "Start source entered:" << inputFileUrl;
         setDevice(address);
         if (!target) {
             return false;
@@ -117,11 +117,13 @@ bool NetworkAPI::startSource(QUrl inputFile, QString address) {
         qDebug() << "target != nullptr";
         qDebug() << target;
         qDebug() << "Current thread:" << QThread::currentThread();
-        QtConcurrent::run([&]() {
-            if (inputFile.isEmpty()) {
+        QtConcurrent::run([=]() {
+            if (inputFileUrl.isEmpty()) {
                 setInputFile();
             }
-            streamThread = new StreamThread(target, inputFile.toLocalFile());
+            qDebug() << "Input file" << inputFileUrl.toString(QUrl::PreferLocalFile) << ";"
+                     << QDir::toNativeSeparators(inputFileUrl.toLocalFile());
+            streamThread = new StreamThread(target, QDir::toNativeSeparators(inputFileUrl.toLocalFile()).toStdString());
             connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::deleteStreamThread, Qt::QueuedConnection);
             streamThread->start();
         });
