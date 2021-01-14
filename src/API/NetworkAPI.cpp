@@ -124,11 +124,19 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
             qDebug() << "Input file" << inputFileUrl.toString(QUrl::PreferLocalFile) << ";"
                      << QDir::toNativeSeparators(inputFileUrl.toLocalFile());
             streamThread = new StreamThread(target, QDir::toNativeSeparators(inputFileUrl.toLocalFile()).toStdString());
+            streamConnecting();
             connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::streamThreadFinished, Qt::QueuedConnection);
             connect(streamThread, &StreamThread::connected, [&]() {
                 streamStarted();
             });
-            streamConnecting();
+            connect(streamThread, &StreamThread::connected, [&]() {
+                qDebug() << "Connecting playback control signals";
+                bool con1 = connect(this, &NetworkAPI::togglePlayPauseSignal, streamThread->getPlaybackController(),
+                        &PlaybackController::togglePlayPause, Qt::QueuedConnection);
+                bool con2 = connect(this, &NetworkAPI::seekSignal, streamThread->getPlaybackController(), &PlaybackController::seek,
+                        Qt::QueuedConnection);
+                qDebug() << "Playback control signals" << (con1 && con2 ? "" : "not") << "connected";
+            });
             streamThread->start();
         });
         return true;
@@ -149,7 +157,7 @@ bool NetworkAPI::startSink() {
 bool NetworkAPI::togglePlayPause() {
     if (streamThread != nullptr) {
         qDebug() << "Toggling transcoder";
-        streamThread->togglePlayPause();
+        togglePlayPauseSignal();
         return true;
     } else {
         return false;
@@ -162,7 +170,8 @@ bool NetworkAPI::togglePlayPause() {
  */
 bool NetworkAPI::forward(int secs) {
     if (streamThread != nullptr) {
-        return streamThread->forward(secs);
+        seekSignal(streamThread->getPlaybackController()->getPlaybackPosition() + secs);
+        return true;
     } else {
         return false;
     }
@@ -174,7 +183,8 @@ bool NetworkAPI::forward(int secs) {
  */
 bool NetworkAPI::backward(int secs) {
     if (streamThread != nullptr) {
-        return streamThread->backward(secs);
+        seekSignal(streamThread->getPlaybackController()->getPlaybackPosition() - secs);
+        return true;
     } else {
         return false;
     }
@@ -186,7 +196,8 @@ bool NetworkAPI::backward(int secs) {
  */
 bool NetworkAPI::seek(int secPos) {
     if (streamThread != nullptr) {
-        return streamThread->seek(secPos);
+        seekSignal(secPos);
+        return true;
     } else {
         return false;
     }
@@ -197,7 +208,7 @@ bool NetworkAPI::seek(int secPos) {
  */
 qint64 NetworkAPI::getPlaybackPosition() {
     if (streamThread != nullptr) {
-        return streamThread->getPlaybackPosition();
+        return streamThread->getPlaybackController()->getPlaybackPosition();
     } else {
         return 0;
     }

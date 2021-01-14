@@ -38,6 +38,10 @@ signals:
     void streamConnecting();
 
     void playbackPositionChanged();
+
+    void togglePlayPauseSignal();
+
+    void seekSignal(qint64 absPos);
 public slots:
 
     bool init() override;
@@ -108,7 +112,6 @@ private:
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;
     NetworkSinkHandler *sinkHandler;
-
 };
 
 #endif //_NETWORKAPI_H

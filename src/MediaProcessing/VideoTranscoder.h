@@ -33,20 +33,20 @@ public:
 
     void togglePlayPause() {
         if (!avPlayer.isPaused()) {
-            isPausedByUser = true;
             pause();
             qDebug() << "Transcoder paused";
         } else {
-            isPausedByUser = false;
             resume();
         }
     }
 
     void resume() {
         avPlayer.pause(false);
+        isPausedByUser = false;
     }
 
     void pause() {
+        isPausedByUser = true;
         avPlayer.pause(true);
     }
 
