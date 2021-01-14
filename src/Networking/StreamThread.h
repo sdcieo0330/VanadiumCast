@@ -41,29 +41,35 @@ public slots:
 
     void handleControl();
 
+protected slots:
+
+    void suspendControlHandling();
+
+    void resumeControlHandling();
+
 private:
     bool running = false;
-    QTimer *readTimer;
+    QTimer *readTimer{};
     std::string inputFile;
     NetworkDevice target;
-    VideoTranscoder *transcoder;
-    QTcpSocket *controlConnection, *dataConnection;
-    CachedLocalStream *cachedOutput;
+    VideoTranscoder *transcoder{};
+    QTcpSocket *controlConnection{}, *dataConnection{};
+    CachedLocalStream *cachedOutput{};
     QByteArray prevCommand;
     QQueue<QByteArray> commandQueue;
-    PlaybackController *playbackController;
+    PlaybackController *playbackController{};
+
+    friend class PlaybackController;
 };
 
 class PlaybackController : public QObject {
 Q_OBJECT
 public:
-    PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder);
+    PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *parent);
 
     Q_INVOKABLE qint64 getPlaybackPosition();
 
 public slots:
-
-    //TODO: Trigger control actions by queued connection to ensure that the socket is accessed in its own thread
 
     Q_INVOKABLE void togglePlayPause();
 
@@ -76,11 +82,13 @@ public slots:
     Q_INVOKABLE bool backward(qint64 secs);
 
 signals:
+
     void playbackPositionChanged(qint64 pos);
 
 private:
     VideoTranscoder *transcoder;
     QTcpSocket *controlConnection;
+    StreamThread *parent;
 };
 
 

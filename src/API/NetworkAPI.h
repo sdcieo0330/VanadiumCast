@@ -38,10 +38,6 @@ signals:
     void streamConnecting();
 
     void playbackPositionChanged();
-
-    void togglePlayPauseSignal();
-
-    void seekSignal(qint64 absPos);
 public slots:
 
     bool init() override;

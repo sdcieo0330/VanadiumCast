@@ -117,7 +117,7 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
         qDebug() << "target != nullptr";
         qDebug() << target;
         qDebug() << "Current thread:" << QThread::currentThread();
-        QtConcurrent::run([=]() {
+        QtConcurrent::run([&](const QUrl &inputFileUrl, const QString &address) {
             if (inputFileUrl.isEmpty()) {
                 setInputFile();
             }
@@ -129,16 +129,9 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
             connect(streamThread, &StreamThread::connected, [&]() {
                 streamStarted();
             });
-            connect(streamThread, &StreamThread::connected, [&]() {
-                qDebug() << "Connecting playback control signals";
-                bool con1 = connect(this, &NetworkAPI::togglePlayPauseSignal, streamThread->getPlaybackController(),
-                        &PlaybackController::togglePlayPause, Qt::QueuedConnection);
-                bool con2 = connect(this, &NetworkAPI::seekSignal, streamThread->getPlaybackController(), &PlaybackController::seek,
-                        Qt::QueuedConnection);
-                qDebug() << "Playback control signals" << (con1 && con2 ? "" : "not") << "connected";
-            });
             streamThread->start();
-        });
+
+        }, inputFileUrl, address);
         return true;
     }
     return false;
@@ -157,7 +150,7 @@ bool NetworkAPI::startSink() {
 bool NetworkAPI::togglePlayPause() {
     if (streamThread != nullptr) {
         qDebug() << "Toggling transcoder";
-        togglePlayPauseSignal();
+        QMetaObject::invokeMethod(streamThread->getPlaybackController(), "togglePlayPause", Qt::QueuedConnection);
         return true;
     } else {
         return false;
@@ -170,7 +163,8 @@ bool NetworkAPI::togglePlayPause() {
  */
 bool NetworkAPI::forward(int secs) {
     if (streamThread != nullptr) {
-        seekSignal(streamThread->getPlaybackController()->getPlaybackPosition() + secs);
+        QMetaObject::invokeMethod(streamThread->getPlaybackController(), "seek", Qt::QueuedConnection,
+                                  Q_ARG(qint64, streamThread->getPlaybackController()->getPlaybackPosition() + secs));
         return true;
     } else {
         return false;
@@ -183,7 +177,8 @@ bool NetworkAPI::forward(int secs) {
  */
 bool NetworkAPI::backward(int secs) {
     if (streamThread != nullptr) {
-        seekSignal(streamThread->getPlaybackController()->getPlaybackPosition() - secs);
+        QMetaObject::invokeMethod(streamThread->getPlaybackController(), "seek", Qt::QueuedConnection,
+                                  Q_ARG(qint64, streamThread->getPlaybackController()->getPlaybackPosition() - secs));
         return true;
     } else {
         return false;
@@ -196,7 +191,8 @@ bool NetworkAPI::backward(int secs) {
  */
 bool NetworkAPI::seek(int secPos) {
     if (streamThread != nullptr) {
-        seekSignal(secPos);
+        QMetaObject::invokeMethod(streamThread->getPlaybackController(), "seek", Qt::QueuedConnection,
+                                  Q_ARG(qint64, secPos));
         return true;
     } else {
         return false;

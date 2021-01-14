@@ -17,52 +17,25 @@ public:
 
     void startTranscoding();
 
-    void stopTranscoding();
-
-    void connectPlayerSignals(PlayerStateControl *stateController) {
-        connect(&avPlayer, &QtAV::AVPlayer::positionChanged, stateController, &PlayerStateControl::positionChanged);
-        connect(stateController, &PlayerStateControl::setPaused, &avPlayer, &QtAV::AVPlayer::pause);
-        connect(stateController, SIGNAL(seek(qint64)), &avPlayer, SLOT(seek(qint64)));
-    };
+    void stopTranscoding();;
 
     static EncodingProfile LOW, STANDARD, HIGH, ULTRA;
 
-    qint64 getPlaybackPosition() {
-        return avPlayer.position();
-    }
+    qint64 getPlaybackPosition();
 
-    void togglePlayPause() {
-        if (!avPlayer.isPaused()) {
-            pause();
-            qDebug() << "Transcoder paused";
-        } else {
-            resume();
-        }
-    }
+    void togglePlayPause();
 
-    void resume() {
-        avPlayer.pause(false);
-        isPausedByUser = false;
-    }
+    void resume();
 
-    void pause() {
-        isPausedByUser = true;
-        avPlayer.pause(true);
-    }
+    void pause();
 
-    bool seek(qint64 secPos) {
-        if (secPos <= avPlayer.duration() && secPos >= 0) {
-            avPlayer.seek(secPos);
-            return true;
-        }
-        return false;
-    }
+    bool seek(qint64 secPos);
 
-    bool isPaused() {
-        return avPlayer.isPaused();
-    }
+    bool isPaused();
 
 signals:
+
+    void playbackPositionChanged(qint64 pos);
 
 private:
     void initTranscoder(const EncodingProfile &profile);

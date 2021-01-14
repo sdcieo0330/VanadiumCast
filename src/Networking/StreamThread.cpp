@@ -10,11 +10,9 @@
 
 StreamThread::StreamThread(NetworkDevice *target, std::string inputFile) : inputFile(std::move(inputFile)),
                                                                            target(target->getAddress(), target->getName()) {
-    playbackController = new PlaybackController(controlConnection, transcoder);
 }
 
 void StreamThread::run() {
-    playbackController->moveToThread(this);
     controlConnection = new QTcpSocket;
     controlConnection->connectToHost(target.getAddress(), 55555);
     controlConnection->waitForConnected();
@@ -30,12 +28,11 @@ void StreamThread::run() {
                 dataConnection = new QTcpSocket;
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
                 dataConnection->waitForConnected(1000);
-                cachedOutput = new CachedLocalStream(64 * 1024 * 1024, 3, 5);
-                QFile tmpout(R"(C:\Users\Silas\tmpout.mkv)");
-                tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
-                QString iF = QString::fromStdString(inputFile);
-                qDebug() << "[StreamThread]" << iF;
-                transcoder = new VideoTranscoder(iF.toStdString(), cachedOutput->getEnd2(), VideoTranscoder::HIGH);
+                cachedOutput = new CachedLocalStream(64 * 1024 * 1024, 128, 1024);
+                transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::STANDARD);
+                playbackController = new PlaybackController(controlConnection, transcoder, this);
+                qDebug() << "[StreamThread] Playback Controller lives in:" << playbackController->thread() << Qt::endl
+                         << "StreamThread::run() is running in:" << currentThread();
                 readTimer = new QTimer;
                 readTimer->setInterval(2);
                 connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
@@ -46,8 +43,6 @@ void StreamThread::run() {
                     transcoder->startTranscoding();
                 });
                 exec();
-                tmpout.flush();
-                tmpout.close();
                 qDebug() << "Event queue terminated";
                 readTimer->stop();
                 transcoder->stopTranscoding();
@@ -163,12 +158,22 @@ StreamThread::~StreamThread() noexcept {
     }
 }
 
+void StreamThread::suspendControlHandling() {
+    disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+}
+
+void StreamThread::resumeControlHandling() {
+    connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+}
+
 PlaybackController *StreamThread::getPlaybackController() {
     return playbackController;
 }
 
-PlaybackController::PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder) : controlConnection(controlConn),
-                                                                                               transcoder(transcoder) {
+PlaybackController::PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *parent) :
+        controlConnection(controlConn),
+        transcoder(transcoder),
+        parent(parent) {
 
 }
 
@@ -180,18 +185,24 @@ void PlaybackController::togglePlayPause() {
     qDebug() << "[PlaybackController] toggling play/pause";
     if (transcoder->isPaused()) {
         transcoder->resume();
+        parent->suspendControlHandling();
         controlConnection->write(Command::RESUME);
         if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
+            parent->resumeControlHandling();
             return;
         } else {
+            parent->resumeControlHandling();
             return;
         }
     } else {
         transcoder->pause();
+        parent->suspendControlHandling();
         controlConnection->write(Command::PAUSE);
         if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
+            parent->resumeControlHandling();
             return;
         } else {
+            parent->resumeControlHandling();
             return;
         }
     }

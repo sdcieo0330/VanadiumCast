@@ -19,17 +19,17 @@ VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, E
         avPlayer.audio()->setBackends(QStringList() << "null");
         avPlayer.setAudioStream(-1);
 //    }
-    avPlayer.setFrameRate(10000.0);
+//    avPlayer.setFrameRate(500.0);
     avPlayer.setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "FFmpeg");
     bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
         if (!isPausedByUser && avPlayer.isPaused()) {
-            qDebug() << "[VideoTranscoder] Resuming";
+//            qDebug() << "[VideoTranscoder] Resuming";
             avPlayer.pause(false);
         }
     });
     bufferCon2 = connect(outputDevice, &End::outputEnoughData, [&]() {
         if (!isPausedByUser && !avPlayer.isPaused()) {
-            qDebug() << "[VideoTranscoder] Pausing";
+//            qDebug() << "[VideoTranscoder] Pausing";
             avPlayer.pause(true);
         }
     });
@@ -108,3 +108,38 @@ EncodingProfile VideoTranscoder::LOW{};
 EncodingProfile VideoTranscoder::STANDARD{};
 EncodingProfile VideoTranscoder::HIGH{};
 EncodingProfile VideoTranscoder::ULTRA{};
+
+bool VideoTranscoder::isPaused() {
+    return avPlayer.isPaused();
+}
+
+bool VideoTranscoder::seek(qint64 secPos) {
+    if (secPos <= avPlayer.duration() && secPos >= 0) {
+        avPlayer.seek(secPos);
+        return true;
+    }
+    return false;
+}
+
+void VideoTranscoder::pause() {
+    isPausedByUser = true;
+    avPlayer.pause(true);
+}
+
+void VideoTranscoder::resume() {
+    avPlayer.pause(false);
+    isPausedByUser = false;
+}
+
+void VideoTranscoder::togglePlayPause() {
+    if (!avPlayer.isPaused()) {
+        pause();
+        qDebug() << "Transcoder paused";
+    } else {
+        resume();
+    }
+}
+
+qint64 VideoTranscoder::getPlaybackPosition() {
+    return avPlayer.position();
+}

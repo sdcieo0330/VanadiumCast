@@ -15,6 +15,7 @@ bool WindowCloseEventFilter::eventFilter(QObject *object, QEvent *event) {
     if (event->type() == QEvent::Close) {
         qDebug() << "Sink Window closing";
         closing();
+        return true;
     } else if (event->type() == QEvent::MouseButtonDblClick) {
         qDebug() << "Toggling fullscreen";
         QMouseEvent *mouseEvent = reinterpret_cast<QMouseEvent *>(event);

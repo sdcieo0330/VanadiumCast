@@ -18,8 +18,8 @@ Page {
         anchors.leftMargin: 20
         height: 48
         width: 48
-        icon.name: "media-playback-start"
-        icon.source: "qrc:/gui/icons/play.svg"
+        icon.name: "media-playback-pause"
+        icon.source: "qrc:/gui/icons/pause.svg"
         onClicked: {
             if (playPauseBtn.icon.name == "media-playback-pause" || playPauseBtn.icon.source == "qrc:/gui/icons/pause.svg") {
                 playPauseBtn.icon.source = "qrc:/gui/icons/play.svg"

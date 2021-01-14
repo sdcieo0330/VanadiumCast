@@ -10,29 +10,35 @@
 class VideoGuiLauncher : public QObject {
 Q_OBJECT
 public:
+    enum class EventAction : int {
+        CREATE, DESTROY, PAUSE, RESUME, RESET, START_PLAYER, NONE
+    };
+
     explicit VideoGuiLauncher(End *inputDevice, QObject *parent = nullptr);
 
-    ~VideoGuiLauncher();
+    QtAV::VideoRenderer *getVideoRenderer();
 
-    QtAV::VideoRenderer *getVideoRenderer() {
-        return videoRenderer;
-    }
+    QWidget *getVideoWindow();
 
-    QtAV::AVPlayer *getVideoPlayer() {
-        return avPlayer;
-    }
+    QtAV::AVPlayer *getVideoPlayer();
 
     void closeAndDelete();
 
-    WindowCloseEventFilter *getCloseEventFilter() {
-        return closeEventFilter;
-    }
+    WindowCloseEventFilter *getCloseEventFilter();
+
+    void triggerAction(EventAction action);
 
 public slots:
 
     bool event(QEvent *event) override;
 
+protected:
+
+    void destroy();
+
     void reset();
+
+    void create();
 
 private:
     WindowCloseEventFilter *closeEventFilter;
@@ -40,8 +46,9 @@ private:
     QWidget *videoWindow;
     QtAV::AVPlayer *avPlayer;
     End *inputDevice;
-    bool shouldDelete = false;
+    EventAction eventAction = EventAction::NONE;
     QMetaObject::Connection bufferCon1, bufferCon2;
+    bool isPausedByUser = false;
 };
 
 #endif // VIDEOGUILAUNCHER_H

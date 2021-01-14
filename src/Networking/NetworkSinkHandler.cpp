@@ -48,13 +48,17 @@ void NetworkSinkHandler::run() {
                 if (dataConnectionServer->waitForNewConnection(30000)) {
                     connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
                     dataConnection = dataConnectionServer->nextPendingConnection();
-                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 3, 5);
+                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 128, 1024);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
                     videoGuiLauncher->moveToThread(QApplication::instance()->thread());
-                    connect(videoGuiLauncher->getCloseEventFilter(), &WindowCloseEventFilter::closing, this, &NetworkSinkHandler::stop);
+                    connect(videoGuiLauncher->getCloseEventFilter(), &WindowCloseEventFilter::closing, [&]() {
+                        QtConcurrent::run([&]() {
+                            this->stop();
+                        });
+                    });
                     qDebug() << "dataConnection:" << dataConnection->openMode();
                     qDebug() << "controlConnection:" << controlConnection->openMode();
-                    QCoreApplication::postEvent(videoGuiLauncher, new QEvent(QEvent::User));
+                    videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::CREATE);
                     msleep(100);
                     while (running) {
                         if (dataConnection->waitForReadyRead(8)) {
@@ -81,6 +85,7 @@ void NetworkSinkHandler::run() {
                         if (controlConnection->waitForReadyRead(5000) && controlConnection->readAll() == Command::OK) {
                             dataConnection->disconnectFromHost();
                         } else {
+                            // TODO: Fix crash if stream playback paused
                             dataConnection->close();
                         }
                     } else {
@@ -102,6 +107,7 @@ void NetworkSinkHandler::run() {
 //    output.close();
     shouldConnect = 0;
     running = false;
+//    makeDiscoverable();
     resumeAccepting();
     streamEnded();
 }
@@ -109,6 +115,7 @@ void NetworkSinkHandler::run() {
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
     controlConnectionHandle = handle;
     qDebug() << "Incoming control connect";
+//    stopDiscoverable();
     start();
 }
 
@@ -131,19 +138,20 @@ void NetworkSinkHandler::handleControl() {
         running = false;
     } else if (command == Command::PAUSE) {
         qDebug() << "Pausing sink";
-        videoGuiLauncher->getVideoPlayer()->pause(true);
+        videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::PAUSE);
         controlConnection->write(Command::OK);
     } else if (command == Command::RESUME) {
         qDebug() << "Resuming sink";
-        videoGuiLauncher->getVideoPlayer()->pause(false);
+        videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::RESUME);
         controlConnection->write(Command::OK);
     } else if (command == Command::SEEK) {
         qDebug() << "Skipping cached frames";
         cachedLocalStream->clear();
+        videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::RESET);
         controlConnection->write(Command::OK);
         // If source sends OK (data available), start the player
         if (controlConnection->waitForReadyRead(5000) && controlConnection->read(1) == Command::OK) {
-            videoGuiLauncher->getVideoPlayer()->play();
+            videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::START_PLAYER);
             controlConnection->write(Command::OK);
         }
     }
