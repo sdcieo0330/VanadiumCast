@@ -22,7 +22,7 @@ VideoGUI::VideoGUI(QIODevice *inputDevice, QWidget *parent) :
 void VideoGUI::showEvent(QShowEvent *event) {
     QWidget::showEvent(event);
     qDebug() << "Event queue in gui running:" << QApplication::instance()->eventDispatcher()->thread()->isRunning();
-    avPlayer->play("/home/silas/Downloads/Earth_Zoom_In.mov");
+    //avPlayer->play("/home/silas/Downloads/Earth_Zoom_In.mov");
     QTimer::singleShot(1000, [&]() {
         qDebug() << "AVPlayer playing:" << (avPlayer->state() == QtAV::AVPlayer::State::PlayingState);
     });

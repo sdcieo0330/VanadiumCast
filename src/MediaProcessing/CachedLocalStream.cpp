@@ -5,24 +5,24 @@
 #include "CachedLocalStream.h"
 #include <QQueue>
 
-CachedLocalStream::CachedLocalStream(int size, QObject *parent) : QObject(parent), cacheSize(size) {
+CachedLocalStream::CachedLocalStream(int size, int lowerThreshold, int upperThreshold, QObject *parent) : QObject(parent), cacheSize(size) {
     queueTXRX.clear();
     queueRXTX.clear();
-    end1 = new End(this, End::Direction::TXTX_RXRX, this);
-    end2 = new End(this, End::Direction::TXRX_RXTX, this);
+    end1 = new End(this, End::Direction::TXTX_RXRX, lowerThreshold, upperThreshold);
+    end2 = new End(this, End::Direction::TXRX_RXTX, lowerThreshold, upperThreshold);
     end1->open(QIODevice::ReadWrite);
     end2->open(QIODevice::ReadWrite);
 }
 
-CachedLocalStream::End *CachedLocalStream::getEnd1() const {
+End *CachedLocalStream::getEnd1() const {
     return end1;
 }
 
-CachedLocalStream::End *CachedLocalStream::getEnd2() const {
+End *CachedLocalStream::getEnd2() const {
     return end2;
 }
 
-CachedLocalStream::End *CachedLocalStream::otherEnd(CachedLocalStream::End *end) {
+End *CachedLocalStream::otherEnd(End *end) {
     if (end == end1) {
         return end2;
     } else if (end == end2) {
@@ -32,8 +32,14 @@ CachedLocalStream::End *CachedLocalStream::otherEnd(CachedLocalStream::End *end)
     }
 }
 
-CachedLocalStream::End::End(CachedLocalStream *localStream, CachedLocalStream::End::Direction direction, QObject *parent) :
-        QIODevice(parent), localStream(localStream), direction(direction) {
+void CachedLocalStream::clear() {
+    queueRXTX.clear();
+    queueTXRX.clear();
+}
+
+End::End(CachedLocalStream *localStream, End::Direction direction, int lowerThreshold,
+                            int upperThreshold) :
+        QIODevice(localStream), localStream(localStream), lowerThreshold(lowerThreshold), upperThreshold(upperThreshold) {
     switch (direction) {
         case Direction::TXTX_RXRX:
             outputMutex = &localStream->TXRXMutex;
@@ -50,7 +56,7 @@ CachedLocalStream::End::End(CachedLocalStream *localStream, CachedLocalStream::E
     }
 }
 
-qint64 CachedLocalStream::End::readData(char *data, qint64 maxSize) {
+qint64 End::readData(char *data, qint64 maxSize) {
     QByteArray result;
     QMutexLocker lock(inputMutex);
     while (result.size() < maxSize && !inputQueue->isEmpty()) {
@@ -63,6 +69,10 @@ qint64 CachedLocalStream::End::readData(char *data, qint64 maxSize) {
             inputQueue->first()->remove(0, maxSize);
         }
     }
+    if (inputQueue->size() < lowerThreshold) {
+        localStream->otherEnd(this)->outputUnderrun();
+        inputUnderrun();
+    }
 
     for (int i = 0; i < result.size(); ++i) {
         data[i] = result.at(i);
@@ -71,7 +81,7 @@ qint64 CachedLocalStream::End::readData(char *data, qint64 maxSize) {
     return result.size();
 }
 
-qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
+qint64 End::writeData(const char *data, qint64 inputSize) {
     QByteArray inputData(data, inputSize);
     qint64 bytesWritten = 0;
     size_t availableSpaceLastElement = 0;
@@ -95,10 +105,15 @@ qint64 CachedLocalStream::End::writeData(const char *data, qint64 inputSize) {
         inputData.remove(0, 1024);
     }
 
+    if (outputQueue->size() >= upperThreshold) {
+        localStream->otherEnd(this)->inputEnoughData();
+        outputEnoughData();
+    }
+
     return bytesWritten;
 }
 
-qint64 CachedLocalStream::End::bytesAvailable() const {
+qint64 End::bytesAvailable() const {
     qint64 available = 0;
     QMutexLocker lock(inputMutex);
     for (int i = 0; i < inputQueue->size(); ++i) {
@@ -107,11 +122,11 @@ qint64 CachedLocalStream::End::bytesAvailable() const {
     return available;
 }
 
-qint64 CachedLocalStream::End::bytesToWrite() const {
+qint64 End::bytesToWrite() const {
     return 0;
 }
 
-bool CachedLocalStream::End::open(QIODevice::OpenMode mode) {
+bool End::open(QIODevice::OpenMode mode) {
     setOpenMode(mode);
     return true;
 }

@@ -5,7 +5,7 @@
 #include "CachedLocalStreamTest.h"
 
 void CachedLocalStreamTest::init() {
-    cachedLocalStream = new CachedLocalStream(cacheSize, this);
+    cachedLocalStream = new CachedLocalStream(cacheSize, 3, 5, this);
     readBuf = new char[readBufSize];
 }
 

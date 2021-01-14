@@ -7,12 +7,13 @@
 #include <QtAVWidgets/QtAVWidgets>
 #include "PlayerStateSlots.h"
 #include "EncodingProfile.h"
+#include "CachedLocalStream.h"
 
 class VideoTranscoder : public QObject {
 Q_OBJECT
 
 public:
-    explicit VideoTranscoder(std::string inputFilePath, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent = nullptr);
+    VideoTranscoder(std::string inputFilePath, End *outputDevice, EncodingProfile &profile, QObject *parent = nullptr);
 
     void startTranscoding();
 
@@ -31,15 +32,34 @@ public:
     }
 
     void togglePlayPause() {
-        avPlayer.pause(!avPlayer.isPaused());
+        if (!avPlayer.isPaused()) {
+            isPausedByUser = true;
+            pause();
+            qDebug() << "Transcoder paused";
+        } else {
+            isPausedByUser = false;
+            resume();
+        }
+    }
+
+    void resume() {
+        avPlayer.pause(false);
+    }
+
+    void pause() {
+        avPlayer.pause(true);
     }
 
     bool seek(qint64 secPos) {
-        if (secPos <= avPlayer.duration()) {
+        if (secPos <= avPlayer.duration() && secPos >= 0) {
             avPlayer.seek(secPos);
             return true;
         }
         return false;
+    }
+
+    bool isPaused() {
+        return avPlayer.isPaused();
     }
 
 signals:
@@ -91,8 +111,10 @@ private:
 
     QtAV::AVTranscoder avTranscoder;
     QtAV::AVPlayer avPlayer;
-    QIODevice *outputDevice;
+    End *outputDevice;
     std::string inputFile;
+    QMetaObject::Connection bufferCon1, bufferCon2;
+    bool isPausedByUser = false;
 };
 
 #endif // VIDEOTRANSCODER_H

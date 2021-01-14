@@ -6,8 +6,10 @@
 #include "Commands.h"
 #include <QtConcurrent>
 #include <utility>
+#include <QMessageBox>
 
-StreamThread::StreamThread(NetworkDevice *target, std::string inputFile) : inputFile(std::move(inputFile)), target(target->getAddress(), target->getName()) {
+StreamThread::StreamThread(NetworkDevice *target, std::string inputFile) : inputFile(std::move(inputFile)),
+                                                                           target(target->getAddress(), target->getName()) {
 }
 
 void StreamThread::run() {
@@ -26,7 +28,7 @@ void StreamThread::run() {
                 dataConnection = new QTcpSocket;
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
                 dataConnection->waitForConnected(1000);
-                cachedOutput = new CachedLocalStream(64 * 1024 * 1024);
+                cachedOutput = new CachedLocalStream(64 * 1024 * 1024, 3, 5);
                 QFile tmpout(R"(C:\Users\Silas\tmpout.mkv)");
                 tmpout.open(QIODevice::ReadWrite | QIODevice::Truncate);
                 QString iF = QString::fromStdString(inputFile);
@@ -37,6 +39,7 @@ void StreamThread::run() {
                 connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
                 readTimer->start();
                 QtConcurrent::run([&]() {
+                    connected();
                     QThread::msleep(100);
                     transcoder->startTranscoding();
                 });
@@ -76,11 +79,48 @@ void StreamThread::run() {
 
 void StreamThread::writeToOutput() {
     QByteArray buf = cachedOutput->getEnd1()->readAll();
-    qDebug() << "writeToOutput():" << buf.size();
+//    qDebug() << "writeToOutput():" << buf.size();
     if (!buf.isEmpty() && dataConnection->isOpen()) {
 //        qDebug() << "Writing data...";
         dataConnection->write(buf);
         dataConnection->flush();
+    }
+    while (!commandQueue.isEmpty()) {
+        QByteArray command = commandQueue.takeLast();
+        controlConnection->write(command);
+        if (command == Command::SEEK) {
+            if (controlConnection->waitForReadyRead(3000)) {
+                if (controlConnection->read(1) == Command::OK) {
+                    transcoder->resume();
+                    controlConnection->write(Command::OK);
+                    if (controlConnection->waitForReadyRead(3000)) {
+                        if (controlConnection->read(1) != Command::OK) {
+                            qWarning() << "Invalid command response from sink";
+                        }
+                    } else {
+                        QMessageBox::warning(nullptr, "Warning - VanadiumCast", "Streaming target is not responding!");
+                        QTimer::singleShot(100, [&]() {
+                            stop();
+                        });
+                        break;
+                    }
+                } else {
+                    qWarning() << "Invalid command response from sink";
+                }
+            }
+        } else {
+            if (controlConnection->waitForReadyRead(3000)) {
+                if (controlConnection->read(1) != Command::OK) {
+                    qWarning() << "Invalid command response from sink";
+                }
+            } else {
+                QMessageBox::warning(nullptr, "Warning - VanadiumCast", "Streaming target is not responding!");
+                QTimer::singleShot(100, [&]() {
+                    stop();
+                });
+                break;
+            }
+        }
     }
 }
 
@@ -118,5 +158,49 @@ void StreamThread::stop() {
 StreamThread::~StreamThread() noexcept {
     if (running) {
         stop();
+    }
+}
+
+void StreamThread::togglePlayPause() {
+    if (running) {
+        if (transcoder->isPaused()) {
+            transcoder->resume();
+            commandQueue.enqueue(Command::RESUME);
+        } else {
+            transcoder->pause();
+            commandQueue.enqueue(Command::PAUSE);
+        }
+    }
+}
+
+bool StreamThread::seek(qint64 absPos) {
+    if (running) {
+        return transcoder->seek(absPos);
+    } else {
+        return false;
+    }
+}
+
+bool StreamThread::forward(qint64 secs) {
+    if (running) {
+        return transcoder->seek(transcoder->getPlaybackPosition() + secs);
+    } else {
+        return false;
+    }
+}
+
+bool StreamThread::backward(qint64 secs) {
+    if (running) {
+        return transcoder->seek(transcoder->getPlaybackPosition() - secs);
+    } else {
+        return false;
+    }
+}
+
+qint64 StreamThread::getPlaybackPosition() {
+    if (running) {
+        return transcoder->getPlaybackPosition();
+    } else {
+        return 0;
     }
 }

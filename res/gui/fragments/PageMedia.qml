@@ -25,7 +25,7 @@ Page {
     FileDialog {
         id: mediaSelectionDialog
         title: "Please choose a media file"
-        folder: "file:///home/silas"
+        folder: "file:///C:/Users/Silas/Videos/Captures"
         selectMultiple: false
         selectExisting: true
         selectFolder: false
@@ -56,6 +56,7 @@ Page {
             previewVideo.stop()
             previewVideo.source = fileName
             previewVideo.play()
+            previewVideo.pause()
             startStreamBtn.enabled = true
         }
     }
@@ -129,8 +130,10 @@ Page {
             onPlaybackStateChanged: {
                 if (playbackState == MediaPlayer.PlayingState) {
                     playPause.icon.name = "media-playback-pause"
+                    playPause.icon.source = "qrc:/gui/icons/pause.svg"
                 } else if (playbackState == MediaPlayer.PausedState) {
                     playPause.icon.name = "media-playback-start"
+                    playPause.icon.source = "qrc:/gui/icons/play.svg"
                 }
             }
             MouseArea {
@@ -161,14 +164,17 @@ Page {
                 anchors.margins: 0
                 id: playPause
                 enabled: previewVideo.hasVideo
-                icon.name: "media-playback-start"
+                icon.source: "qrc:/gui/icons/play.svg"
+                icon.name: "media-playback-pause"
                 onClicked: {
-                    if (icon.name == "media-playback-pause") {
+                    if (playPause.icon.name == "media-playback-pause" || playPause.icon.source == "qrc:/gui/icons/pause.svg") {
                         previewVideo.pause()
-                        icon.name = "media-playback-start"
+                        playPause.icon.source = "qrc:/gui/icons/play.svg"
+                        playPause.icon.name = "media-playback-start"
                     } else {
                         previewVideo.play()
-                        icon.name = "media-playback-pause"
+                        playPause.icon.source = "qrc:/gui/icons/pause.svg"
+                        playPause.icon.name = "media-playback-pause"
                     }
                 }
             }

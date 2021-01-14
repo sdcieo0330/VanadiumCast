@@ -51,6 +51,8 @@ signals:
 
     void resumeAccepting();
 
+    void streamEnded();
+
 private:
     QUdpSocket *udpBroadcast;
     QUdpSocket *udpSocket;
@@ -61,7 +63,7 @@ private:
     qintptr controlConnectionHandle{};
     VideoGuiLauncher *videoGuiLauncher{};
     CachedLocalStream *cachedLocalStream;
-    QFile output{"/home/silas/output.mkv"};
+    //QFile output{"/home/silas/output.mkv"};
     bool running = false;
     bool quitFromNetworkRequest = false;
     int shouldConnect = 0;

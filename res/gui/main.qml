@@ -137,6 +137,22 @@ ApplicationWindow {
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
+        Connections {
+            target: backendAPI
+
+            function onStreamStarted() {
+                pageStreaming.enabled = true
+                pageStreamingBtn.enabled = true
+                swipeView.setCurrentIndex(2)
+            }
+
+            function onStreamEnded() {
+                swipeView.setCurrentIndex(1)
+                pageStreaming.enabled = false
+                pageStreamingBtn.enabled = false
+            }
+        }
+
         PageDevices {
             property string deviceAddress;
             id: pageDevices
@@ -162,8 +178,6 @@ ApplicationWindow {
             Connections {
                 target: pageMedia
                 function onSelectedMedia(fileName) {
-                    pageStreaming.enabled = true
-                    pageStreamingBtn.enabled = true
                     console.debug(fileName) // second data entry is the address label
                     pageMedia.inputFileName = fileName
                 }
@@ -171,8 +185,6 @@ ApplicationWindow {
             Connections {
                 target: pageMedia.streamButton
                 function onClicked() {
-                    pageStreaming.enabled = true
-                    pageStreamingBtn.enabled = true
                     console.debug(pageMedia.inputFileName)
                     backendAPI.startSource(pageMedia.inputFileName, pageDevices.deviceAddress)
                 }

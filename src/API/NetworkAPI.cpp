@@ -124,7 +124,11 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
             qDebug() << "Input file" << inputFileUrl.toString(QUrl::PreferLocalFile) << ";"
                      << QDir::toNativeSeparators(inputFileUrl.toLocalFile());
             streamThread = new StreamThread(target, QDir::toNativeSeparators(inputFileUrl.toLocalFile()).toStdString());
-            connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::deleteStreamThread, Qt::QueuedConnection);
+            connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::streamThreadFinished, Qt::QueuedConnection);
+            connect(streamThread, &StreamThread::connected, [&]() {
+                streamStarted();
+            });
+            streamConnecting();
             streamThread->start();
         });
         return true;
@@ -143,8 +147,9 @@ bool NetworkAPI::startSink() {
  * @return bool
  */
 bool NetworkAPI::togglePlayPause() {
-    if (transcoder != nullptr) {
-        transcoder->togglePlayPause();
+    if (streamThread != nullptr) {
+        qDebug() << "Toggling transcoder";
+        streamThread->togglePlayPause();
         return true;
     } else {
         return false;
@@ -152,24 +157,24 @@ bool NetworkAPI::togglePlayPause() {
 }
 
 /**
- * @param sec
+ * @param secs
  * @return bool
  */
-bool NetworkAPI::forward(int sec) {
-    if (transcoder != nullptr) {
-        return transcoder->seek(transcoder->getPlaybackPosition() + sec);
+bool NetworkAPI::forward(int secs) {
+    if (streamThread != nullptr) {
+        return streamThread->forward(secs);
     } else {
         return false;
     }
 }
 
 /**
- * @param sec
+ * @param secs
  * @return bool
  */
-bool NetworkAPI::backward(int sec) {
-    if (transcoder != nullptr) {
-        return transcoder->seek(transcoder->getPlaybackPosition() + sec);
+bool NetworkAPI::backward(int secs) {
+    if (streamThread != nullptr) {
+        return streamThread->backward(secs);
     } else {
         return false;
     }
@@ -180,8 +185,8 @@ bool NetworkAPI::backward(int sec) {
  * @return bool
  */
 bool NetworkAPI::seek(int secPos) {
-    if (transcoder != nullptr) {
-        return transcoder->seek(secPos);
+    if (streamThread != nullptr) {
+        return streamThread->seek(secPos);
     } else {
         return false;
     }
@@ -191,33 +196,15 @@ bool NetworkAPI::seek(int secPos) {
  * @return int
  */
 qint64 NetworkAPI::getPlaybackPosition() {
-    if (transcoder != nullptr) {
-        return transcoder->getPlaybackPosition();
+    if (streamThread != nullptr) {
+        return streamThread->getPlaybackPosition();
     } else {
         return 0;
     }
 }
 
-/**
- * @return bool
- */
-bool NetworkAPI::toggleSourceSinkDisplay() {
-    return false;
-}
-
-/**
- * @param widget
- * @return bool
- */
-bool NetworkAPI::connectWidgetToSinkHandler(SinkHandleWidget *widget) {
-    return false;
-}
-
-void NetworkAPI::newSinkConnection(NetworkDevice *device) {
-    sinkInput = new NetworkInput(device);
-}
-
-void NetworkAPI::deleteStreamThread() {
+void NetworkAPI::streamThreadFinished() {
+    streamEnded();
     QThread::msleep(5);
     delete streamThread;
     streamThread = nullptr;

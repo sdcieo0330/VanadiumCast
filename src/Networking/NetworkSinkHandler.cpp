@@ -48,7 +48,7 @@ void NetworkSinkHandler::run() {
                 if (dataConnectionServer->waitForNewConnection(30000)) {
                     connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
                     dataConnection = dataConnectionServer->nextPendingConnection();
-                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024);
+                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 3, 5);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
                     videoGuiLauncher->moveToThread(QApplication::instance()->thread());
                     connect(videoGuiLauncher->getCloseEventFilter(), &WindowCloseEventFilter::closing, this, &NetworkSinkHandler::stop);
@@ -61,7 +61,7 @@ void NetworkSinkHandler::run() {
                             QByteArray buf = dataConnection->readAll();
                             if (!buf.isEmpty()) {
 //                                qDebug() << "data total:" << buf.size() << "bytes";
-                                output.write(buf);
+//                                output.write(buf);
                                 while (!buf.isEmpty()) {
                                     buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
                                 }
@@ -98,11 +98,12 @@ void NetworkSinkHandler::run() {
     }
     controlConnection->disconnectFromHost();
     delete controlConnection;
-    output.flush();
-    output.close();
+//    output.flush();
+//    output.close();
     shouldConnect = 0;
     running = false;
     resumeAccepting();
+    streamEnded();
 }
 
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
@@ -128,9 +129,23 @@ void NetworkSinkHandler::handleControl() {
         qDebug() << "Terminating Sink";
         quitFromNetworkRequest = true;
         running = false;
-        connect(this, &QThread::finished, [&]() {
-
-        });
+    } else if (command == Command::PAUSE) {
+        qDebug() << "Pausing sink";
+        videoGuiLauncher->getVideoPlayer()->pause(true);
+        controlConnection->write(Command::OK);
+    } else if (command == Command::RESUME) {
+        qDebug() << "Resuming sink";
+        videoGuiLauncher->getVideoPlayer()->pause(false);
+        controlConnection->write(Command::OK);
+    } else if (command == Command::SEEK) {
+        qDebug() << "Skipping cached frames";
+        cachedLocalStream->clear();
+        controlConnection->write(Command::OK);
+        // If source sends OK (data available), start the player
+        if (controlConnection->waitForReadyRead(5000) && controlConnection->read(1) == Command::OK) {
+            videoGuiLauncher->getVideoPlayer()->play();
+            controlConnection->write(Command::OK);
+        }
     }
 }
 
@@ -158,6 +173,6 @@ void NetworkSinkHandler::start() {
         running = true;
         controlConnectionServer->pauseAccepting();
         QThread::start();
-        output.open(QIODevice::ReadWrite | QIODevice::Truncate);
+//        output.open(QIODevice::ReadWrite | QIODevice::Truncate);
     }
 }

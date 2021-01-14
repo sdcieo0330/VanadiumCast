@@ -21,9 +21,13 @@ public:
 
     void run() override;
 
+    Q_INVOKABLE qint64 getPlaybackPosition();
+
 signals:
 
     void stopped();
+
+    void connected();
 
 public slots:
 
@@ -35,6 +39,14 @@ public slots:
 
     void handleControl();
 
+    void togglePlayPause();
+
+    bool seek(qint64 absPos);
+
+    bool forward(qint64 secs);
+
+    bool backward(qint64 secs);
+
 private:
     bool running = false;
     QTimer *readTimer;
@@ -44,6 +56,7 @@ private:
     QTcpSocket *controlConnection, *dataConnection;
     CachedLocalStream *cachedOutput;
     QByteArray prevCommand;
+    QQueue<QByteArray> commandQueue;
 };
 
 

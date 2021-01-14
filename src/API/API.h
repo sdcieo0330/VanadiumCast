@@ -59,13 +59,7 @@ public:
     virtual bool seek(int secPos) = 0;
     
     virtual qint64 getPlaybackPosition() = 0;
-    
-    virtual bool toggleSourceSinkDisplay() = 0;
-    
-    /**
- * @param widget
- */
-    bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
+
 };
 
 #endif //_API_H

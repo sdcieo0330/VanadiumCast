@@ -30,29 +30,36 @@ extern "C" {
 
 class NetworkAPI final : public QObject, public API<NetworkDevice> {
 Q_OBJECT
+signals:
+    void streamEnded();
+
+    void streamStarted();
+
+    void streamConnecting();
+
+    void playbackPositionChanged();
 public slots:
 
-    bool init();
+    bool init() override;
 
     bool start();
 
-    bool stop();
+    bool stop() override;
 
-    void deleteStreamThread();
-
+    void streamThreadFinished();
 public:
     /**
  * @param inputFileName
  */
-    Q_INVOKABLE bool setInputFile();
+    Q_INVOKABLE bool setInputFile() override;
 
-    Q_INVOKABLE QUrl getInputFile();
+    Q_INVOKABLE QUrl getInputFile() override;
 
-    Q_INVOKABLE bool startSource(QUrl inputFileUrl, QString address);
+    Q_INVOKABLE bool startSource(QUrl inputFileUrl, QString address) override;
 
-    Q_INVOKABLE bool startSink();
+    Q_INVOKABLE bool startSink() override;
     
-    Q_INVOKABLE NetworkDeviceDirectory *getDeviceDirectory();
+    Q_INVOKABLE NetworkDeviceDirectory *getDeviceDirectory() override;
 
     Q_INVOKABLE NetworkSinkHandler *getSinkHandler() {
         return sinkHandler;
@@ -61,7 +68,7 @@ public:
     /**
  * @param device
  */
-    Q_INVOKABLE bool setDevice(NetworkDevice* device);
+    Q_INVOKABLE bool setDevice(NetworkDevice* device) override;
 
     NetworkDevice *getDevice() {
         return target;
@@ -75,14 +82,14 @@ public:
     Q_INVOKABLE bool togglePlayPause();
     
     /**
- * @param sec
+ * @param secs
  */
-    Q_INVOKABLE bool forward(int sec);
+    Q_INVOKABLE bool forward(int secs);
     
     /**
- * @param sec
+ * @param secs
  */
-    Q_INVOKABLE bool backward(int sec);
+    Q_INVOKABLE bool backward(int secs);
     
     /**
  * @param secPos
@@ -90,22 +97,12 @@ public:
     Q_INVOKABLE bool seek(int secPos);
     
     Q_INVOKABLE qint64 getPlaybackPosition();
-    
-    Q_INVOKABLE bool toggleSourceSinkDisplay();
-    
-    /**
- * @param widget
- */
-    Q_INVOKABLE bool connectWidgetToSinkHandler(SinkHandleWidget* widget);
 
-public slots:
-    void newSinkConnection(NetworkDevice* device);
 private:
     NetworkDevice *target = nullptr;
     QTcpSocket *controlConnection = nullptr, *dataConnection = nullptr;
     QUrl inputFileName;
     InputFile *inputFile = nullptr;
-    VideoTranscoder *transcoder = nullptr;
     StreamThread *streamThread = nullptr;
     NetworkDeviceScanner *deviceScanner;
     NetworkDeviceDirectory *deviceDirectory;

@@ -16,12 +16,13 @@ bool WindowCloseEventFilter::eventFilter(QObject *object, QEvent *event) {
         qDebug() << "Sink Window closing";
         closing();
     } else if (event->type() == QEvent::MouseButtonDblClick) {
+        qDebug() << "Toggling fullscreen";
         QMouseEvent *mouseEvent = reinterpret_cast<QMouseEvent *>(event);
         if (mouseEvent->button() == Qt::LeftButton) {
-            if (isFullscreen) {
-                reinterpret_cast<QtAV::VideoRenderer *>(object)->qwindow()->showFullScreen();
+            if (reinterpret_cast<QWidget *>(object)->isFullScreen()) {
+                reinterpret_cast<QWidget *>(object)->showNormal();
             } else {
-                reinterpret_cast<QtAV::VideoRenderer *>(object)->qwindow()->showNormal();
+                reinterpret_cast<QWidget *>(object)->showFullScreen();
             }
             isFullscreen = !isFullscreen;
         }

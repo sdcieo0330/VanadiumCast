@@ -19,8 +19,15 @@ Page {
         height: 48
         width: 48
         icon.name: "media-playback-start"
+        icon.source: "qrc:/gui/icons/play.svg"
         onClicked: {
-            icon.name = "media-playback-pause"
+            if (playPauseBtn.icon.name == "media-playback-pause" || playPauseBtn.icon.source == "qrc:/gui/icons/pause.svg") {
+                playPauseBtn.icon.source = "qrc:/gui/icons/play.svg"
+                playPauseBtn.icon.name = "media-playback-start"
+            } else {
+                playPauseBtn.icon.source = "qrc:/gui/icons/pause.svg"
+                playPauseBtn.icon.name = "media-playback-pause"
+            }
             backendAPI.togglePlayPause()
         }
     }

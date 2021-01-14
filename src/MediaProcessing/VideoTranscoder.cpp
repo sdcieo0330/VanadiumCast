@@ -1,23 +1,38 @@
 #include "VideoTranscoder.h"
+#include "CachedLocalStream.h"
 #include <QApplication>
 #include <utility>
 #include <QtConcurrent>
 #include <QtMultimedia>
 
-VideoTranscoder::VideoTranscoder(std::string inputFilePath, QIODevice *outputDevice, EncodingProfile &profile, QObject *parent)
+VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, EncodingProfile &profile, QObject *parent)
         : QObject(parent), inputFile(std::move(inputFilePath)), outputDevice(outputDevice) {
     initializeProfiles();
     qDebug() << "[VideoTranscoder]" << QString::fromStdString(inputFile);
     avPlayer.setFile(QString::fromStdString(inputFile));
     avPlayer.setAutoLoad(true);
     avPlayer.setAsyncLoad(true);
-    if (avPlayer.audioStreamCount() > 0) {
-    avPlayer.audio()->setBackends(QStringList() << QString::fromLatin1("null"));
-    } else {
-    avPlayer.setAudioStream(-1);
-    }
-//    avPlayer.setFrameRate(10000.0);
-    avPlayer.setVideoDecoderPriority(QStringList() << "QSV" << "FFmpeg");
+//    if (avPlayer.audioStreamCount() > 0) {
+//    avPlayer.audio()->setBackends(QStringList() << "null");
+//        avPlayer.setAudioStream(0);
+//    } else {
+        avPlayer.audio()->setBackends(QStringList() << "null");
+        avPlayer.setAudioStream(-1);
+//    }
+    avPlayer.setFrameRate(10000.0);
+    avPlayer.setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "FFmpeg");
+    bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
+        if (!isPausedByUser && avPlayer.isPaused()) {
+            qDebug() << "[VideoTranscoder] Resuming";
+            avPlayer.pause(false);
+        }
+    });
+    bufferCon2 = connect(outputDevice, &End::outputEnoughData, [&]() {
+        if (!isPausedByUser && !avPlayer.isPaused()) {
+            qDebug() << "[VideoTranscoder] Pausing";
+            avPlayer.pause(true);
+        }
+    });
     initTranscoder(profile);
 }
 
@@ -29,8 +44,8 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
     muxopt[QString::fromLatin1("avformat")] = avfopt;
 
-//    QMediaPlayer player;
-//    player.setMedia(QMediaContent(QUrl::fromLocalFile(inputFile)));
+    QMediaPlayer player;
+    player.setMedia(QMediaContent(QUrl::fromLocalFile(QString::fromStdString(inputFile))));
 
     avTranscoder.setMediaSource(&avPlayer);
     avTranscoder.setOutputMedia(outputDevice);
@@ -59,14 +74,18 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     opt["avcodec"] = venc_opt;
     avTranscoder.setOutputOptions(opt);
 //    videoEncoder->setFrameRate(std::min(profile.framerate, player.metaData(QMediaMetaData::VideoFrameRate).toInt()));
-    if (avPlayer.currentAudioStream() >= 0) {
-        if (avTranscoder.createAudioEncoder()) {
-            avTranscoder.audioEncoder()->setCodecName(profile.audioCodecName);
-            avTranscoder.audioEncoder()->setBitRate(256000);
-        } else {
-            qWarning() << "Cannot initialize audio encoder";
-        }
-    }
+//    avPlayer.setFrameRate(player.metaData(QMediaMetaData::VideoFrameRate).toInt() * 1.1);
+//    if (avPlayer.setAudioStream(0)) {
+//    if (avTranscoder.createAudioEncoder()) {
+//        avTranscoder.audioEncoder()->setCodecName(profile.audioCodecName);
+//        avTranscoder.audioEncoder()->setBitRate(256000);
+//    } else {
+//        qWarning() << "Cannot initialize audio encoder";
+//    }
+//    } else {
+//        qDebug() << "No audio track detected";
+//        avPlayer.setAudioStream(-1);
+//    }
     avTranscoder.setAsync(false);
 }
 
@@ -81,6 +100,8 @@ void VideoTranscoder::startTranscoding() {
 void VideoTranscoder::stopTranscoding() {
     avPlayer.stop();
     avTranscoder.stop();
+    disconnect(bufferCon1);
+    disconnect(bufferCon2);
 }
 
 EncodingProfile VideoTranscoder::LOW{};

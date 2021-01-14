@@ -5,16 +5,21 @@
 #include <QWidget>
 #include "VideoGui.h"
 #include "WindowCloseEventFilter.h"
+#include "MediaProcessing/CachedLocalStream.h"
 
 class VideoGuiLauncher : public QObject {
 Q_OBJECT
 public:
-    explicit VideoGuiLauncher(QIODevice *inputDevice, QObject *parent = nullptr);
+    explicit VideoGuiLauncher(End *inputDevice, QObject *parent = nullptr);
 
     ~VideoGuiLauncher();
 
     QtAV::VideoRenderer *getVideoRenderer() {
         return videoRenderer;
+    }
+
+    QtAV::AVPlayer *getVideoPlayer() {
+        return avPlayer;
     }
 
     void closeAndDelete();
@@ -27,13 +32,16 @@ public slots:
 
     bool event(QEvent *event) override;
 
+    void reset();
+
 private:
     WindowCloseEventFilter *closeEventFilter;
     QtAV::VideoRenderer *videoRenderer;
-    VideoGUI *videoGui;
+    QWidget *videoWindow;
     QtAV::AVPlayer *avPlayer;
-    QIODevice *inputDevice;
+    End *inputDevice;
     bool shouldDelete = false;
+    QMetaObject::Connection bufferCon1, bufferCon2;
 };
 
 #endif // VIDEOGUILAUNCHER_H
