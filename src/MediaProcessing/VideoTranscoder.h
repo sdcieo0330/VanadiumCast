@@ -15,6 +15,8 @@ Q_OBJECT
 public:
     VideoTranscoder(std::string inputFilePath, End *outputDevice, EncodingProfile &profile, QObject *parent = nullptr);
 
+    ~VideoTranscoder();
+
     void startTranscoding();
 
     void stopTranscoding();;
@@ -82,8 +84,8 @@ private:
         }
     }
 
-    QtAV::AVTranscoder avTranscoder;
-    QtAV::AVPlayer avPlayer;
+    QtAV::AVTranscoder *avTranscoder;
+    QtAV::AVPlayer *avPlayer;
     End *outputDevice;
     std::string inputFile;
     QMetaObject::Connection bufferCon1, bufferCon2;

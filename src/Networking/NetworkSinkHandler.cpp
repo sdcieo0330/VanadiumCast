@@ -88,7 +88,6 @@ void NetworkSinkHandler::run() {
                         if (controlConnection->waitForReadyRead(5000) && controlConnection->read(1) == Command::OK) {
                             dataConnection->disconnectFromHost();
                         } else {
-                            // TODO: Fix crash if stream playback paused
                             dataConnection->close();
                         }
                     }

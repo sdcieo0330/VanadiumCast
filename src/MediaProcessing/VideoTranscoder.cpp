@@ -8,29 +8,31 @@
 VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, EncodingProfile &profile, QObject *parent)
         : QObject(parent), inputFile(std::move(inputFilePath)), outputDevice(outputDevice) {
     initializeProfiles();
+    avTranscoder = new QtAV::AVTranscoder;
+    avPlayer = new QtAV::AVPlayer;
     qDebug() << "[VideoTranscoder]" << QString::fromStdString(inputFile);
-    avPlayer.setFile(QString::fromStdString(inputFile));
-    avPlayer.setAutoLoad(true);
-    avPlayer.setAsyncLoad(true);
-//    if (avPlayer.audioStreamCount() > 0) {
-//    avPlayer.audio()->setBackends(QStringList() << "null");
-//        avPlayer.setAudioStream(0);
+    avPlayer->setFile(QString::fromStdString(inputFile));
+    avPlayer->setAutoLoad(true);
+    avPlayer->setAsyncLoad(true);
+//    if (avPlayer->audioStreamCount() > 0) {
+//    avPlayer->audio()->setBackends(QStringList() << "null");
+//        avPlayer->setAudioStream(0);
 //    } else {
-        avPlayer.audio()->setBackends(QStringList() << "null");
-        avPlayer.setAudioStream(-1);
+    avPlayer->audio()->setBackends(QStringList() << "null");
+    avPlayer->setAudioStream(-1);
 //    }
-//    avPlayer.setFrameRate(500.0);
-    avPlayer.setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "FFmpeg");
+//    avPlayer->setFrameRate(500.0);
+    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "FFmpeg");
     bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
-        if (!isPausedByUser && avPlayer.isPaused()) {
+        if (!isPausedByUser && avPlayer->isPaused()) {
 //            qDebug() << "[VideoTranscoder] Resuming";
-            avPlayer.pause(false);
+            avPlayer->pause(false);
         }
     });
     bufferCon2 = connect(outputDevice, &End::outputEnoughData, [&]() {
-        if (!isPausedByUser && !avPlayer.isPaused()) {
+        if (!isPausedByUser && !avPlayer->isPaused()) {
 //            qDebug() << "[VideoTranscoder] Pausing";
-            avPlayer.pause(true);
+            avPlayer->pause(true);
         }
     });
     initTranscoder(profile);
@@ -47,20 +49,20 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     QMediaPlayer player;
     player.setMedia(QMediaContent(QUrl::fromLocalFile(QString::fromStdString(inputFile))));
 
-    avTranscoder.setMediaSource(&avPlayer);
-    avTranscoder.setOutputMedia(outputDevice);
-    avTranscoder.setOutputOptions(muxopt);
+    avTranscoder->setMediaSource(avPlayer);
+    avTranscoder->setOutputMedia(outputDevice);
+    avTranscoder->setOutputOptions(muxopt);
 
-    avTranscoder.setOutputFormat("mpegts");
-    if (!avTranscoder.createVideoEncoder()) {
+    avTranscoder->setOutputFormat("mpegts");
+    if (!avTranscoder->createVideoEncoder()) {
         qFatal("Failed to create video encoder");
     }
-    QtAV::VideoEncoder *videoEncoder = avTranscoder.videoEncoder();
+    QtAV::VideoEncoder *videoEncoder = avTranscoder->videoEncoder();
 //    QVariantHash muxopt, avfopt;
 //    avfopt[QString::fromLatin1("segment_format")] = QString::fromLatin1("mpegts");
 //    muxopt[QString::fromLatin1("avformat")] = avfopt;
-//    avTranscoder.setOutputOptions(muxopt);
-//    avPlayer.setFrameRate(player.metaData(QMediaMetaData::VideoFrameRate).toInt() * 1.5);
+//    avTranscoder->setOutputOptions(muxopt);
+//    avPlayer->setFrameRate(player.metaData(QMediaMetaData::VideoFrameRate).toInt() * 1.5);
     videoEncoder->setCodecName(profile.videoCodecName);
     videoEncoder->setBitRate(profile.rate);
 //    videoEncoder->setProperty("hwdevice", "/dev/dri/renderD128");
@@ -72,33 +74,33 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
     venc_opt["color_trc"] = "smpte2084";
     venc_opt["colorspace"] = "bt2020_ncl";
     opt["avcodec"] = venc_opt;
-    avTranscoder.setOutputOptions(opt);
+    avTranscoder->setOutputOptions(opt);
 //    videoEncoder->setFrameRate(std::min(profile.framerate, player.metaData(QMediaMetaData::VideoFrameRate).toInt()));
-//    avPlayer.setFrameRate(player.metaData(QMediaMetaData::VideoFrameRate).toInt() * 1.1);
-//    if (avPlayer.setAudioStream(0)) {
-//    if (avTranscoder.createAudioEncoder()) {
-//        avTranscoder.audioEncoder()->setCodecName(profile.audioCodecName);
-//        avTranscoder.audioEncoder()->setBitRate(256000);
+//    avPlayer->setFrameRate(player.metaData(QMediaMetaData::VideoFrameRate).toInt() * 1.1);
+//    if (avPlayer->setAudioStream(0)) {
+//    if (avTranscoder->createAudioEncoder()) {
+//        avTranscoder->audioEncoder()->setCodecName(profile.audioCodecName);
+//        avTranscoder->audioEncoder()->setBitRate(256000);
 //    } else {
 //        qWarning() << "Cannot initialize audio encoder";
 //    }
 //    } else {
 //        qDebug() << "No audio track detected";
-//        avPlayer.setAudioStream(-1);
+//        avPlayer->setAudioStream(-1);
 //    }
-    avTranscoder.setAsync(false);
+    avTranscoder->setAsync(false);
 }
 
 void VideoTranscoder::startTranscoding() {
-    avTranscoder.start();
-    avPlayer.play();
+    avTranscoder->start();
+    avPlayer->play();
     QThread::msleep(100);
-    qDebug() << avTranscoder.isRunning() << avPlayer.isLoaded() << avPlayer.isPlaying();
+    qDebug() << avTranscoder->isRunning() << avPlayer->isLoaded() << avPlayer->isPlaying();
     qDebug() << outputDevice->isWritable();
 }
 
 void VideoTranscoder::stopTranscoding() {
-    avPlayer.stop();
+    avPlayer->stop();
     disconnect(bufferCon1);
     disconnect(bufferCon2);
 }
@@ -109,12 +111,12 @@ EncodingProfile VideoTranscoder::HIGH{};
 EncodingProfile VideoTranscoder::ULTRA{};
 
 bool VideoTranscoder::isPaused() {
-    return avPlayer.isPaused();
+    return avPlayer->isPaused();
 }
 
 bool VideoTranscoder::seek(qint64 secPos) {
-    if (secPos <= avPlayer.duration() && secPos >= 0) {
-        avPlayer.seek(secPos);
+    if (secPos <= avPlayer->duration() && secPos >= 0) {
+        avPlayer->seek(secPos);
         return true;
     }
     return false;
@@ -122,16 +124,16 @@ bool VideoTranscoder::seek(qint64 secPos) {
 
 void VideoTranscoder::pause() {
     isPausedByUser = true;
-    avPlayer.pause(true);
+    avPlayer->pause(true);
 }
 
 void VideoTranscoder::resume() {
-    avPlayer.pause(false);
+    avPlayer->pause(false);
     isPausedByUser = false;
 }
 
 void VideoTranscoder::togglePlayPause() {
-    if (!avPlayer.isPaused()) {
+    if (!avPlayer->isPaused()) {
         pause();
         qDebug() << "Transcoder paused";
     } else {
@@ -140,5 +142,11 @@ void VideoTranscoder::togglePlayPause() {
 }
 
 qint64 VideoTranscoder::getPlaybackPosition() {
-    return avPlayer.position();
+    return avPlayer->position();
+}
+
+VideoTranscoder::~VideoTranscoder() {
+    avPlayer->stop();
+    delete avTranscoder;
+    delete avPlayer;
 }
