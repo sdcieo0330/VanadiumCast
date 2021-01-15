@@ -125,8 +125,8 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
                      << QDir::toNativeSeparators(inputFileUrl.toLocalFile());
             streamThread = new StreamThread(target, QDir::toNativeSeparators(inputFileUrl.toLocalFile()).toStdString());
             streamConnecting();
-            connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::streamThreadFinished, Qt::QueuedConnection);
-            connect(streamThread, &StreamThread::connected, [&]() {
+            streamThreadCon1 = connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::streamThreadFinished, Qt::QueuedConnection);
+            streamThreadCon2 = connect(streamThread, &StreamThread::connected, [&]() {
                 streamStarted();
             });
             streamThread->start();
@@ -212,7 +212,8 @@ qint64 NetworkAPI::getPlaybackPosition() {
 
 void NetworkAPI::streamThreadFinished() {
     streamEnded();
-    QThread::msleep(5);
+    disconnect(streamThreadCon1);
+    disconnect(streamThreadCon2);
     delete streamThread;
     streamThread = nullptr;
 }

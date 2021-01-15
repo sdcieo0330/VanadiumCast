@@ -143,6 +143,8 @@ ApplicationWindow {
             function onStreamStarted() {
                 pageStreaming.enabled = true
                 pageStreamingBtn.enabled = true
+                pageStreaming.togglePlayPauseBtn.icon.name = "media-playback-pause"
+                pageStreaming.togglePlayPauseBtn.icon.source = "qrc:/gui/icons/pause.svg"
                 swipeView.setCurrentIndex(2)
             }
 

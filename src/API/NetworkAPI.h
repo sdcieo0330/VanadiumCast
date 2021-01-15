@@ -108,6 +108,7 @@ private:
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;
     NetworkSinkHandler *sinkHandler;
+    QMetaObject::Connection streamThreadCon1, streamThreadCon2;
 };
 
 #endif //_NETWORKAPI_H

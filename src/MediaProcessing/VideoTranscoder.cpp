@@ -99,7 +99,6 @@ void VideoTranscoder::startTranscoding() {
 
 void VideoTranscoder::stopTranscoding() {
     avPlayer.stop();
-    avTranscoder.stop();
     disconnect(bufferCon1);
     disconnect(bufferCon2);
 }

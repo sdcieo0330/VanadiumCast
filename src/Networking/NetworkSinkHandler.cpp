@@ -80,17 +80,17 @@ void NetworkSinkHandler::run() {
 
                     disconnect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl);
 
-                    if (!quitFromNetworkRequest) {
+                    if (quitFromNetworkRequest) {
+                        controlConnection->write(Command::OK);
+                        dataConnection->disconnectFromHost();
+                    } else {
                         controlConnection->write(Command::CLOSEDATA);
-                        if (controlConnection->waitForReadyRead(5000) && controlConnection->readAll() == Command::OK) {
+                        if (controlConnection->waitForReadyRead(5000) && controlConnection->read(1) == Command::OK) {
                             dataConnection->disconnectFromHost();
                         } else {
                             // TODO: Fix crash if stream playback paused
                             dataConnection->close();
                         }
-                    } else {
-                        controlConnection->write(Command::OK);
-                        dataConnection->disconnectFromHost();
                     }
                     delete dataConnection;
                 }

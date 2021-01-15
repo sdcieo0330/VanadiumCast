@@ -53,8 +53,10 @@ void StreamThread::run() {
                     running = false;
                 } else {
                     controlConnection->write(Command::CLOSEDATA);
-                    if (controlConnection->waitForReadyRead(2000) && controlConnection->readAll() == Command::OK) {
+                    if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
                         dataConnection->disconnectFromHost();
+                    } else {
+                        dataConnection->close();
                     }
                 }
                 delete dataConnection;
@@ -71,16 +73,26 @@ void StreamThread::run() {
     controlConnection->disconnectFromHost();
     delete controlConnection;
 
+    running = false;
     stopped();
 }
 
 void StreamThread::writeToOutput() {
+    qDebug() << "[StreamThread] writeToOutput()";
     QByteArray buf = cachedOutput->getEnd1()->readAll();
 //    qDebug() << "writeToOutput():" << buf.size();
     if (!buf.isEmpty() && dataConnection->isOpen()) {
 //        qDebug() << "Writing data...";
         dataConnection->write(buf);
         dataConnection->flush();
+    }
+     qDebug() << "[StreamThread] Transcoder" << (transcoder->isPaused() ? "paused" : "not paused") << "checking for incoming control messages";
+    if (transcoder->isPaused() && controlConnection->waitForReadyRead(1)) {
+        if (controlConnection->read(1) == Command::CLOSEDATA) {
+            QtConcurrent::run([&]() {
+                stop();
+            });
+        }
     }
 //    while (!commandQueue.isEmpty()) {
 //        QByteArray command = commandQueue.takeLast();
@@ -146,9 +158,8 @@ void StreamThread::stop() {
         running = false;
         quit();
         while (isRunning()) {
-            QThread::msleep(10);
+            QThread::msleep(1);
         }
-        deleteLater();
     }
 }
 
@@ -170,10 +181,10 @@ PlaybackController *StreamThread::getPlaybackController() {
     return playbackController;
 }
 
-PlaybackController::PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *parent) :
+PlaybackController::PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *streamThread) :
         controlConnection(controlConn),
         transcoder(transcoder),
-        parent(parent) {
+        streamThread(streamThread) {
 
 }
 
@@ -185,24 +196,24 @@ void PlaybackController::togglePlayPause() {
     qDebug() << "[PlaybackController] toggling play/pause";
     if (transcoder->isPaused()) {
         transcoder->resume();
-        parent->suspendControlHandling();
+        streamThread->suspendControlHandling();
         controlConnection->write(Command::RESUME);
         if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
-            parent->resumeControlHandling();
+            streamThread->resumeControlHandling();
             return;
         } else {
-            parent->resumeControlHandling();
+            streamThread->resumeControlHandling();
             return;
         }
     } else {
         transcoder->pause();
-        parent->suspendControlHandling();
+        streamThread->suspendControlHandling();
         controlConnection->write(Command::PAUSE);
         if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
-            parent->resumeControlHandling();
+            streamThread->resumeControlHandling();
             return;
         } else {
-            parent->resumeControlHandling();
+            streamThread->resumeControlHandling();
             return;
         }
     }

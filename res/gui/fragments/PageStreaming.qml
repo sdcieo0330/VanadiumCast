@@ -5,6 +5,8 @@ Page {
     width: 772
     height: 460
 
+    property alias togglePlayPauseBtn: playPauseBtn
+
     header: Label {
         font.pixelSize: Qt.application.font.pixelSize * 2
         text: qsTr("Streaming Control Panel")

@@ -65,7 +65,7 @@ private:
 class PlaybackController : public QObject {
 Q_OBJECT
 public:
-    PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *parent);
+    PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *streamThread);
 
     Q_INVOKABLE qint64 getPlaybackPosition();
 
@@ -88,7 +88,7 @@ signals:
 private:
     VideoTranscoder *transcoder;
     QTcpSocket *controlConnection;
-    StreamThread *parent;
+    StreamThread *streamThread;
 };
 
 
