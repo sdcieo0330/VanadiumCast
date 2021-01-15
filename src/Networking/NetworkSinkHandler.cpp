@@ -5,7 +5,6 @@
 
 #include "GUI/WindowCloseEventFilter.h"
 #include "NetworkSinkHandler.h"
-#include "NetworkSinkTcpServer.h"
 #include "Commands.h"
 #include <QtNetwork>
 #include <QApplication>
@@ -46,7 +45,6 @@ void NetworkSinkHandler::run() {
                 controlConnection->flush();
                 qDebug() << "Answered request";
                 if (dataConnectionServer->waitForNewConnection(30000)) {
-                    connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
                     dataConnection = dataConnectionServer->nextPendingConnection();
                     cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 128, 1024);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
@@ -59,22 +57,25 @@ void NetworkSinkHandler::run() {
                     qDebug() << "dataConnection:" << dataConnection->openMode();
                     qDebug() << "controlConnection:" << controlConnection->openMode();
                     videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::CREATE);
+                    connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
+                    connect(dataConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::readData, Qt::DirectConnection);
                     msleep(100);
-                    while (running) {
-                        if (dataConnection->waitForReadyRead(8)) {
-                            QByteArray buf = dataConnection->readAll();
-                            if (!buf.isEmpty()) {
-//                                qDebug() << "data total:" << buf.size() << "bytes";
-//                                output.write(buf);
-                                while (!buf.isEmpty()) {
-                                    buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
-                                }
-                            }
-                        }
-                        if (controlConnection->waitForReadyRead(1)) {
-                            handleControl();
-                        }
-                    }
+//                    while (running) {
+//                        if (dataConnection->waitForReadyRead(8)) {
+//                            QByteArray buf = dataConnection->readAll();
+//                            if (!buf.isEmpty()) {
+////                                qDebug() << "data total:" << buf.size() << "bytes";
+////                                output.write(buf);
+//                                while (!buf.isEmpty()) {
+//                                    buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
+//                                }
+//                            }
+//                        }
+//                        if (controlConnection->waitForReadyRead(1)) {
+//                            handleControl();
+//                        }
+//                    }
+                    exec();
 
                     videoGuiLauncher->closeAndDelete();
 
@@ -166,7 +167,9 @@ void NetworkSinkHandler::stopDiscoverable() {
 
 void NetworkSinkHandler::stop() {
     if (running) {
+        qDebug() << "Stopping SinkHandler-thread";
         running = false;
+        quit();
         while (this->isRunning()) {
             QThread::msleep(10);
         }
@@ -181,5 +184,14 @@ void NetworkSinkHandler::start() {
         controlConnectionServer->pauseAccepting();
         QThread::start();
 //        output.open(QIODevice::ReadWrite | QIODevice::Truncate);
+    }
+}
+
+void NetworkSinkHandler::readData() {
+    QByteArray buf = dataConnection->readAll();
+    if (!buf.isEmpty()) {
+        while (!buf.isEmpty()) {
+            buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
+        }
     }
 }

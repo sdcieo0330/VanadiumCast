@@ -21,8 +21,8 @@ VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, E
     avPlayer->audio()->setBackends(QStringList() << "null");
     avPlayer->setAudioStream(-1);
 //    }
-//    avPlayer->setFrameRate(500.0);
-    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "FFmpeg");
+    avPlayer->setFrameRate(10000.0);
+    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "CUDA" << "FFmpeg");
     bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
         if (!isPausedByUser && avPlayer->isPaused()) {
 //            qDebug() << "[VideoTranscoder] Resuming";
@@ -68,7 +68,7 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
 //    videoEncoder->setProperty("hwdevice", "/dev/dri/renderD128");
     videoEncoder->setHeight(profile.height);
     videoEncoder->setWidth(profile.width);
-    videoEncoder->setPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
+    videoEncoder->setPixelFormat(QtAV::VideoFormat::Format_YUV444P);
     QVariantHash venc_opt, opt;
     venc_opt["color_primaries"] = "bt2020";
     venc_opt["color_trc"] = "smpte2084";
@@ -106,9 +106,10 @@ void VideoTranscoder::stopTranscoding() {
 }
 
 EncodingProfile VideoTranscoder::LOW{};
-EncodingProfile VideoTranscoder::STANDARD{};
+EncodingProfile VideoTranscoder::MEDIUM{};
 EncodingProfile VideoTranscoder::HIGH{};
 EncodingProfile VideoTranscoder::ULTRA{};
+EncodingProfile VideoTranscoder::EXTREME{};
 
 bool VideoTranscoder::isPaused() {
     return avPlayer->isPaused();

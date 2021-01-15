@@ -30,7 +30,7 @@ Page {
         selectExisting: true
         selectFolder: false
         onAccepted: selectedMedia(mediaSelectionDialog.fileUrl)
-        nameFilters: ["Video files (*.mp4 *.mkv *.avi *.mov)", "Audio files (*.mp3 *.m4a *.flac *.mp2 *.wav)", "All files (*.*)"]
+        nameFilters: ["Video files (*.mp4 *.mkv *.avi *.mov *.webm)", "Audio files (*.mp3 *.m4a *.flac *.mp2 *.wav)", "All files (*.*)"]
         visible: false
     }
 
@@ -114,7 +114,7 @@ Page {
             anchors.topMargin: 8
             height: 1280
             width: 720
-            videoCodecPriority: ["DXVA", "MMAL", "QSV", "CUDA", "FFMPEG"]
+            videoCodecPriority: ["QSV", "DXVA", "MMAL", "CUDA", "FFMPEG"]
             audioBackends: ["OpenAL", "XAudio2", "null"]
             Component.onCompleted: console.log(previewVideo.audioBackends)
             smooth: true

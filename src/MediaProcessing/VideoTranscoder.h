@@ -21,7 +21,7 @@ public:
 
     void stopTranscoding();;
 
-    static EncodingProfile LOW, STANDARD, HIGH, ULTRA;
+    static EncodingProfile LOW, MEDIUM, HIGH, ULTRA, EXTREME;
 
     qint64 getPlaybackPosition();
 
@@ -55,20 +55,20 @@ private:
             LOW.bytesPerColor = 1;
 
             // Standard profile
-            STANDARD.audioCodecName = "aac";
-            STANDARD.videoCodecName = "h264_qsv";
-            STANDARD.width = 1920;
-            STANDARD.height = 1080;
-            STANDARD.rate = 5000000;
-            STANDARD.framerate = 30;
-            STANDARD.bytesPerColor = 1;
+            MEDIUM.audioCodecName = "aac";
+            MEDIUM.videoCodecName = "h264_qsv";
+            MEDIUM.width = 1920;
+            MEDIUM.height = 1080;
+            MEDIUM.rate = 5000000;
+            MEDIUM.framerate = 30;
+            MEDIUM.bytesPerColor = 1;
 
             // High profile
             HIGH.audioCodecName = "aac";
             HIGH.videoCodecName = "h264_qsv";
             HIGH.width = 1920;
             HIGH.height = 1080;
-            HIGH.rate = 8000000;
+            HIGH.rate = 10000000;
             HIGH.framerate = 60;
             HIGH.bytesPerColor = 1;
 
@@ -80,6 +80,16 @@ private:
             ULTRA.rate = 15000000;
             ULTRA.framerate = 60;
             ULTRA.bytesPerColor = 2;
+
+            // Extreme profile
+            EXTREME.audioCodecName = "aac";
+            EXTREME.videoCodecName = "hevc_qsv";
+            EXTREME.width = 3840;
+            EXTREME.height = 2160;
+            EXTREME.rate = 30000000;
+            EXTREME.framerate = 60;
+            EXTREME.bytesPerColor = 2;
+
             encodingProfilesInitialized = true;
         }
     }

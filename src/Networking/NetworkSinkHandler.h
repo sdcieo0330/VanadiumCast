@@ -37,11 +37,15 @@ public slots:
 
     void stopDiscoverable();
 
+protected slots:
+
     void incomingTcpConnect(qintptr handle);
 
     void answerScanRequest();
 
     void handleControl();
+
+    void readData();
 
 signals:
 
@@ -63,6 +67,7 @@ private:
     qintptr controlConnectionHandle{};
     VideoGuiLauncher *videoGuiLauncher{};
     CachedLocalStream *cachedLocalStream;
+    QTimer *readTimer;
     //QFile output{"/home/silas/output.mkv"};
     bool running = false;
     bool quitFromNetworkRequest = false;
