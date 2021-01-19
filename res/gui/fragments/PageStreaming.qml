@@ -6,6 +6,7 @@ Page {
     height: 460
 
     property alias togglePlayPauseBtn: playPauseBtn
+    property alias positionChangeSlider: positionSlider
 
     header: Label {
         font.pixelSize: Qt.application.font.pixelSize * 2
@@ -57,10 +58,38 @@ Page {
         anchors.right: parent.right
         anchors.rightMargin: 20
         id: positionSlider
-        onPressedChanged: {
-            if (!pressed) {
-                backendAPI.seek(value)
+//        onPressedChanged: {
+//            if (!pressed) {
+//                backendAPI.seek(value)
+//            }
+//        }
+        from: 0
+        value: 0
+        to: 100
+        enabled: true
+
+        Behavior on value {
+            NumberAnimation {
+                duration: 512
+                easing.type: Easing.InOutQuad
             }
         }
+
+        Connections {
+            target: backendAPI
+            function onPlaybackPositionChanged(position) {
+                positionSlider.value = position
+                console.log("[PageStreaming] position set:" + position + "/" + positionSlider.to)
+            }
+
+            function onDurationLoaded(duration) {
+                positionSlider.to = duration
+                console.log("[PageStreaming] duration set")
+            }
+        }
+    }
+    Label {
+        id: positionLabel
+        text: positionSlider.value
     }
 }

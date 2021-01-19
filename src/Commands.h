@@ -16,6 +16,7 @@ namespace Command {
     static QByteArray PAUSE(1, 0x09);
     static QByteArray RESUME(1, 0x0A);
     static QByteArray SEEK(1, 0x0B);
+    static QByteArray POSITION(1, 0x0C);
 }
 
 #endif // COMMANDS_H

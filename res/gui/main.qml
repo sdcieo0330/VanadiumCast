@@ -152,6 +152,8 @@ ApplicationWindow {
                 swipeView.setCurrentIndex(1)
                 pageStreaming.enabled = false
                 pageStreamingBtn.enabled = false
+                pageStreaming.positionChangeSlider.value = 0
+                pageStreaming.positionChangeSlider.to = 100
             }
         }
 
@@ -194,6 +196,15 @@ ApplicationWindow {
         }
 
         PageStreaming {
+            Timer {
+                id: getDurationTimer
+                interval: 100
+                running: false
+                repeat: false
+                onTriggered: {
+                    pageStreaming.positionChangeSlider.to = backendAPI.getDuration()
+                }
+            }
             id: pageStreaming
             enabled: false
         }

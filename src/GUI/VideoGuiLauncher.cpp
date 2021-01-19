@@ -90,15 +90,20 @@ void VideoGuiLauncher::create() {
             avPlayer->pause(false);
         }
     });
+    posCon1 = connect(avPlayer, &QtAV::AVPlayer::positionChanged, [&](qint64 position) {
+        playbackPositionChanged(position);
+    });
     QtConcurrent::run([&]() {
         QThread::sleep(2);
         avPlayer->play();
     });
+    created();
 }
 
 void VideoGuiLauncher::destroy() {
     disconnect(bufferCon1);
     disconnect(bufferCon2);
+    disconnect(posCon1);
     avPlayer->stop();
     avPlayer->removeVideoRenderer(videoRenderer);
     videoWindow->removeEventFilter(closeEventFilter);

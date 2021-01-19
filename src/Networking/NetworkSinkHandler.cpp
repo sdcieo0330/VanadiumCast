@@ -8,6 +8,7 @@
 #include "Commands.h"
 #include <QtNetwork>
 #include <QApplication>
+#include "../util.h"
 
 /**
  * NetworkSinkHandler implementation
@@ -47,6 +48,7 @@ void NetworkSinkHandler::run() {
                 if (dataConnectionServer->waitForNewConnection(30000)) {
                     dataConnection = dataConnectionServer->nextPendingConnection();
                     cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 128, 1024);
+                    controller = new SinkController(this);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
                     videoGuiLauncher->moveToThread(QApplication::instance()->thread());
                     connect(videoGuiLauncher->getCloseEventFilter(), &WindowCloseEventFilter::closing, [&]() {
@@ -59,6 +61,14 @@ void NetworkSinkHandler::run() {
                     videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::CREATE);
                     connect(controlConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::handleControl, Qt::DirectConnection);
                     connect(dataConnection, &QTcpSocket::readyRead, this, &NetworkSinkHandler::readData, Qt::DirectConnection);
+//                    positionTimer = new QTimer;
+//                    positionTimer->setInterval(10);
+//                    positionTimer->setSingleShot(false);
+                    posCon1 = connect(videoGuiLauncher, &VideoGuiLauncher::playbackPositionChanged, controller,
+                                      &SinkController::sendPlaybackPosition, Qt::QueuedConnection);
+//                    timerCon2 = connect(videoGuiLauncher, &VideoGuiLauncher::created, [&](){3
+//                        QMetaObject::invokeMethod(positionTimer, "start", Qt::QueuedConnection);
+//                    });
                     msleep(100);
 //                    while (running) {
 //                        if (dataConnection->waitForReadyRead(8)) {
@@ -76,6 +86,10 @@ void NetworkSinkHandler::run() {
 //                        }
 //                    }
                     exec();
+
+                    disconnect(posCon1);
+                    disconnect(timerCon2);
+                    delete controller;
 
                     videoGuiLauncher->closeAndDelete();
 
@@ -194,4 +208,25 @@ void NetworkSinkHandler::readData() {
             buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
         }
     }
+}
+
+void NetworkSinkHandler::sendPlaybackPosition(qint64 position) {
+    qDebug() << "Playback position changed";
+    QByteArray packet;
+    packet.append(Command::POSITION);
+    packet.append(util::numToBytes(position));
+    QMetaObject::invokeMethod(controlConnection, "write", Qt::QueuedConnection, Q_ARG(const char *, packet.constData()),
+                              Q_ARG(qint64, packet.size()));
+//    controlConnection->write();
+}
+
+SinkController::SinkController(NetworkSinkHandler *sinkHandler) : networkSinkHandler(sinkHandler) {
+
+}
+
+void SinkController::sendPlaybackPosition(qint64 position) {
+    QByteArray packet;
+    packet.append(Command::POSITION);
+    packet.append(util::numToBytes(position));
+    networkSinkHandler->controlConnection->write(packet);
 }

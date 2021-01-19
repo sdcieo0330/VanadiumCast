@@ -69,6 +69,8 @@ public:
 
     Q_INVOKABLE qint64 getPlaybackPosition();
 
+    Q_INVOKABLE qint64 getVideoDuration();
+
 public slots:
 
     Q_INVOKABLE void togglePlayPause();
@@ -86,9 +88,11 @@ signals:
     void playbackPositionChanged(qint64 pos);
 
 private:
+    QMetaObject::Connection posCon1;
     VideoTranscoder *transcoder;
     QTcpSocket *controlConnection;
     StreamThread *streamThread;
+    bool paused = false;
 };
 
 

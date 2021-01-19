@@ -7,6 +7,8 @@
 #include <QtConcurrent>
 #include <utility>
 #include <QMessageBox>
+#include <QtMultimedia>
+#include "../util.h"
 
 StreamThread::StreamThread(NetworkDevice *target, std::string inputFile) : inputFile(std::move(inputFile)),
                                                                            target(target->getAddress(), target->getName()) {
@@ -29,7 +31,7 @@ void StreamThread::run() {
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
                 dataConnection->waitForConnected(1000);
                 cachedOutput = new CachedLocalStream(64 * 1024 * 1024, 128, 1024);
-                transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::EXTREME);
+                transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::HIGH);
                 playbackController = new PlaybackController(controlConnection, transcoder, this);
                 qDebug() << "[StreamThread] Playback Controller lives in:" << playbackController->thread() << Qt::endl
                          << "StreamThread::run() is running in:" << currentThread();
@@ -38,9 +40,9 @@ void StreamThread::run() {
                 connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
                 readTimer->start();
                 QtConcurrent::run([&]() {
-                    connected();
                     QThread::msleep(100);
                     transcoder->startTranscoding();
+                    connected();
                 });
                 exec();
                 qDebug() << "Event queue terminated";
@@ -86,8 +88,8 @@ void StreamThread::writeToOutput() {
         dataConnection->write(buf);
         dataConnection->flush();
     }
-//    qDebug() << "[StreamThread] Transcoder" << (transcoder->isPaused() ? "paused" : "not paused") << "checking for incoming control messages";
-//    if (transcoder->isPaused() && controlConnection->waitForReadyRead(1)) {
+//    qDebug() << "[StreamThread] Transcoder" << (transcoder->paused() ? "paused" : "not paused") << "checking for incoming control messages";
+//    if (transcoder->paused() && controlConnection->waitForReadyRead(1)) {
 //        if (controlConnection->read(1) == Command::CLOSEDATA) {
 //            QtConcurrent::run([&]() {
 //                stop();
@@ -142,6 +144,10 @@ void StreamThread::handleControl() {
             qDebug() << "CLOSEDATA command";
             quit();
             qDebug() << "Send quit() to event loop";
+        } else if (command == Command::POSITION) {
+            buf.remove(0, 1);
+            qDebug() << "Incoming playback position:" << util::bytesToNum(buf);
+            playbackController->playbackPositionChanged(util::bytesToNum(buf));
         }
     }
 }
@@ -181,46 +187,48 @@ PlaybackController *StreamThread::getPlaybackController() {
     return playbackController;
 }
 
+qint64 PlaybackController::getVideoDuration() {
+    return streamThread->transcoder->getDuration();
+}
+
+qint64 PlaybackController::getPlaybackPosition() {
+    return streamThread->transcoder->getPlaybackPosition();
+}
+
 PlaybackController::PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *streamThread) :
         controlConnection(controlConn),
         transcoder(transcoder),
         streamThread(streamThread) {
-
-}
-
-qint64 PlaybackController::getPlaybackPosition() {
-    return transcoder->getPlaybackPosition();
 }
 
 void PlaybackController::togglePlayPause() {
     qDebug() << "[PlaybackController] toggling play/pause";
-    if (transcoder->isPaused()) {
+    if (paused) {
+        qDebug() << "[PlaybackController] Resuming";
         transcoder->resume();
         streamThread->suspendControlHandling();
         controlConnection->write(Command::RESUME);
         if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
             streamThread->resumeControlHandling();
-            return;
         } else {
             streamThread->resumeControlHandling();
-            return;
         }
     } else {
+        qDebug() << "[PlaybackController] Pausing";
         transcoder->pause();
         streamThread->suspendControlHandling();
         controlConnection->write(Command::PAUSE);
         if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
             streamThread->resumeControlHandling();
-            return;
         } else {
             streamThread->resumeControlHandling();
-            return;
         }
     }
+    paused = !paused;
 }
 
 bool PlaybackController::isPaused() {
-    return transcoder->isPaused();
+    return paused;
 }
 
 bool PlaybackController::seek(qint64 absPos) {

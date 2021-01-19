@@ -22,22 +22,27 @@ extern "C" {
 #include "MediaProcessing/InputFile.h"
 #include "MediaProcessing/NetworkInput.h"
 #include "MediaProcessing/VideoTranscoder.h"
+#include "VanadiumCastLib_EXPORTS.h"
 
 
 #ifndef _NETWORKAPI_H
 #define _NETWORKAPI_H
 
 
-class NetworkAPI final : public QObject, public API<NetworkDevice> {
+class VanadiumCastLib_EXPORTS NetworkAPI final : public QObject, public API<NetworkDevice> {
 Q_OBJECT
 signals:
+
     void streamEnded();
 
     void streamStarted();
 
     void streamConnecting();
 
-    void playbackPositionChanged();
+    void playbackPositionChanged(qint64 pos);
+
+    void durationLoaded(qint64 duration);
+
 public slots:
 
     bool init() override;
@@ -47,6 +52,7 @@ public slots:
     bool stop() override;
 
     void streamThreadFinished();
+
 public:
     /**
  * @param inputFileName
@@ -85,18 +91,20 @@ public:
  * @param secs
  */
     Q_INVOKABLE bool forward(int secs);
-    
+
     /**
  * @param secs
  */
     Q_INVOKABLE bool backward(int secs);
-    
+
     /**
  * @param secPos
  */
     Q_INVOKABLE bool seek(int secPos);
-    
+
     Q_INVOKABLE qint64 getPlaybackPosition();
+
+    Q_INVOKABLE qint64 getDuration();
 
 private:
     NetworkDevice *target = nullptr;
@@ -108,7 +116,10 @@ private:
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;
     NetworkSinkHandler *sinkHandler;
-    QMetaObject::Connection streamThreadCon1, streamThreadCon2;
+    QFile positionLog{"positions.log"};
+    QMetaObject::Connection streamThreadCon1, streamThreadCon2, streamThreadCon3;
+    qint64 prevPosition = 0;
+    bool firstPositionChange = true;
 };
 
 #endif //_NETWORKAPI_H

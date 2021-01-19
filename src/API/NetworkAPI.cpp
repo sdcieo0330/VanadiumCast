@@ -6,6 +6,7 @@
 #include "NetworkAPI.h"
 #include <QtConcurrent>
 #include <iostream>
+#include "VanadiumCastLib_EXPORTS.h"
 
 /**
  * NetworkAPI implementation
@@ -117,7 +118,8 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
         qDebug() << "target != nullptr";
         qDebug() << target;
         qDebug() << "Current thread:" << QThread::currentThread();
-        QtConcurrent::run([&](const QUrl &inputFileUrl, const QString &address) {
+        QtConcurrent::run([&](const QUrl inputFileUrl, const QString address) {
+            positionLog.open(QIODevice::ReadWrite | QIODevice::Truncate);
             if (inputFileUrl.isEmpty()) {
                 setInputFile();
             }
@@ -128,9 +130,24 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
             streamThreadCon1 = connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::streamThreadFinished, Qt::QueuedConnection);
             streamThreadCon2 = connect(streamThread, &StreamThread::connected, [&]() {
                 streamStarted();
+                qDebug() << "Stream started";
+                qDebug() << "Video duration:" << getDuration();
+                streamThreadCon3 = connect(streamThread->getPlaybackController(), &PlaybackController::playbackPositionChanged,
+                                           [&](qint64 position) {
+                                               if (firstPositionChange) {
+                                                   durationLoaded(getDuration());
+                                                   firstPositionChange = false;
+                                               }
+                                               if (position > prevPosition) {
+                                                   qDebug() << "PlaybackPosition changed:" << getDuration() << "/" << position;
+                                                   playbackPositionChanged(position);
+                                                   prevPosition = position;
+                                               }
+                                               positionLog.write(QString::number(position).toUtf8());
+                                               positionLog.write("\r\n");
+                                           });
             });
             streamThread->start();
-
         }, inputFileUrl, address);
         return true;
     }
@@ -214,6 +231,15 @@ void NetworkAPI::streamThreadFinished() {
     streamEnded();
     disconnect(streamThreadCon1);
     disconnect(streamThreadCon2);
+    disconnect(streamThreadCon3);
     delete streamThread;
     streamThread = nullptr;
+}
+
+qint64 NetworkAPI::getDuration() {
+    if (streamThread != nullptr) {
+        return streamThread->getPlaybackController()->getVideoDuration();
+    } else {
+        return 0;
+    }
 }

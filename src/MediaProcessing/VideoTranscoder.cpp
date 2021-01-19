@@ -36,6 +36,12 @@ VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, E
         }
     });
     initTranscoder(profile);
+    posCon1 = connect(avPlayer, &QtAV::AVPlayer::positionChanged, [&](qint64 position) {
+        playbackPositionChanged(position);
+    });
+    posCon2 = connect(avPlayer, &QtAV::AVPlayer::loaded, [&]() {
+        duration = avPlayer->duration();
+    });
 }
 
 void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
@@ -103,6 +109,7 @@ void VideoTranscoder::stopTranscoding() {
     avPlayer->stop();
     disconnect(bufferCon1);
     disconnect(bufferCon2);
+    disconnect(posCon1);
 }
 
 EncodingProfile VideoTranscoder::LOW{};
@@ -142,12 +149,16 @@ void VideoTranscoder::togglePlayPause() {
     }
 }
 
-qint64 VideoTranscoder::getPlaybackPosition() {
-    return avPlayer->position();
-}
-
 VideoTranscoder::~VideoTranscoder() {
     avPlayer->stop();
     delete avTranscoder;
     delete avPlayer;
+}
+
+qint64 VideoTranscoder::getPlaybackPosition() {
+    return avPlayer->position();
+}
+
+qint64 VideoTranscoder::getDuration() {
+    return duration;
 }

@@ -3,8 +3,8 @@
 //
 
 #include "WindowCloseEventFilter.h"
-#include <QtAVWidgets>
-#include <QtAV>
+#include <QtAVWidgets/QtAVWidgets>
+#include <QtAV/QtAV>
 
 WindowCloseEventFilter::WindowCloseEventFilter(QObject *parent) : QObject(parent) {
 

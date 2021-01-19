@@ -35,6 +35,8 @@ public:
 
     bool isPaused();
 
+    Q_INVOKABLE qint64 getDuration();
+
 signals:
 
     void playbackPositionChanged(qint64 pos);
@@ -98,8 +100,9 @@ private:
     QtAV::AVPlayer *avPlayer;
     End *outputDevice;
     std::string inputFile;
-    QMetaObject::Connection bufferCon1, bufferCon2;
+    QMetaObject::Connection bufferCon1, bufferCon2, posCon1, posCon2;
     bool isPausedByUser = false;
+    qint64 duration = 0;
 };
 
 #endif // VIDEOTRANSCODER_H

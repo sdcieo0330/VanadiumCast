@@ -32,6 +32,12 @@ public slots:
 
     bool event(QEvent *event) override;
 
+signals:
+
+    void created();
+
+    void playbackPositionChanged(qint64 position);
+
 protected:
 
     void destroy();
@@ -47,7 +53,7 @@ private:
     QtAV::AVPlayer *avPlayer;
     End *inputDevice;
     EventAction eventAction = EventAction::NONE;
-    QMetaObject::Connection bufferCon1, bufferCon2;
+    QMetaObject::Connection bufferCon1, bufferCon2, posCon1;
     bool isPausedByUser = false;
 };
 

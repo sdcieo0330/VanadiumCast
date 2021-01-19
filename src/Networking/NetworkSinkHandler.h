@@ -16,6 +16,8 @@
 #include <QtNetwork>
 #include <MediaProcessing/CachedLocalStream.h>
 
+class SinkController;
+
 class NetworkSinkHandler final : public QThread, public SinkHandler {
 Q_OBJECT
 public:
@@ -47,6 +49,8 @@ protected slots:
 
     void readData();
 
+    void sendPlaybackPosition(qint64 position);
+
 signals:
 
     void newConnection(NetworkDevice *device);
@@ -58,6 +62,7 @@ signals:
     void streamEnded();
 
 private:
+    QMetaObject::Connection posCon1, timerCon2;
     QUdpSocket *udpBroadcast;
     QUdpSocket *udpSocket;
     NetworkSinkTcpServer *controlConnectionServer;
@@ -67,12 +72,32 @@ private:
     qintptr controlConnectionHandle{};
     VideoGuiLauncher *videoGuiLauncher{};
     CachedLocalStream *cachedLocalStream;
-    QTimer *readTimer;
+    QTimer *positionTimer;
     //QFile output{"/home/silas/output.mkv"};
     bool running = false;
     bool quitFromNetworkRequest = false;
     int shouldConnect = 0;
     QByteArray prevCommand = nullptr;
+    SinkController *controller = nullptr;
+
+    friend class SinkController;
+};
+
+
+/*
+ * @brief Class for invoking methods in the handler-thread, e.g. network actions
+ */
+class SinkController : public QObject {
+Q_OBJECT
+public:
+    SinkController(NetworkSinkHandler *sinkHandler);
+
+public slots:
+
+    void sendPlaybackPosition(qint64 position);
+
+private:
+    NetworkSinkHandler *networkSinkHandler;
 };
 
 #endif //NETWORKSINKHANDLER_H
