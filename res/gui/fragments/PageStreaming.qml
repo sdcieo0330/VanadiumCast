@@ -70,8 +70,8 @@ Page {
 
         Behavior on value {
             NumberAnimation {
-                duration: 512
-                easing.type: Easing.InOutQuad
+                duration: 640
+                easing.type: Easing.Linear
             }
         }
 
