@@ -114,7 +114,7 @@ Page {
             anchors.topMargin: 8
             height: 1280
             width: 720
-            videoCodecPriority: ["QSV", "DXVA", "MMAL", "CUDA", "FFMPEG"]
+            videoCodecPriority: ["VAAPI", "QSV", "DXVA", "MMAL", "CUDA", "FFMPEG"]
             audioBackends: ["OpenAL", "XAudio2", "null"]
             Component.onCompleted: console.log(previewVideo.audioBackends)
             smooth: true
@@ -275,6 +275,6 @@ Page {
         id: startStreamBtn
         text: qsTr("Stream")
         enabled: false
-        onClicked: previewVideo.stop()
+        onClicked: previewVideo.pause()
     }
 }

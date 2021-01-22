@@ -18,6 +18,8 @@ win32 {
 
 unix {
     LIBS += ../backend/libbackend.so -lQtAV -lQtAVWidgets
+    QMAKE_LFLAGS_RPATH=
+    QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
 }
 
 CONFIG += c++20
