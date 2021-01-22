@@ -2,22 +2,22 @@ TEMPLATE = lib
 
 QT += core gui widgets network multimedia quick concurrent
 
-win32-msvc* {
+win32 {
     QMAKE_CXXFLAGS_RELEASE += /O2 /Oy
+    CONFIG(release, debug|release) {
+        message("release")
+        LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
+    }
+    CONFIG(debug, debug|release) {
+        message("debug")
+        LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
+    }
 }
 
 unix {
-    QMAKE_CXXFLAGS_RELEASE += -O4
+    QT += av avwidgets
 }
 
-CONFIG(release, debug|release) {
-    message("release")
-    LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
-}
-CONFIG(debug, debug|release) {
-    message("debug")
-    LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
-}
 
 CONFIG += c++20
 

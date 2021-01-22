@@ -2,23 +2,22 @@ QT += core quick quickcontrols2 gui widgets multimedia network concurrent
 
 CONFIG += qtquickcompiler
 
-win32-msvc* {
+win32 {
     QMAKE_CXXFLAGS_RELEASE += /O2 /Oy
+    CONFIG(release, debug|release) {
+        message("release")
+        LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
+        LIBS += ../backend/release/backend.lib
+    }
+    CONFIG(debug, debug|release) {
+        message("debug")
+        LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
+        LIBS += ../backend/debug/backend.lib
+    }
 }
 
 unix {
-    QMAKE_CXXFLAGS_RELEASE += -O4
-}
-
-CONFIG(release, debug|release) {
-    message("release")
-    LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
-    LIBS += ../backend/release/backend.lib
-}
-CONFIG(debug, debug|release) {
-    message("debug")
-    LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
-    LIBS += ../backend/debug/backend.lib
+    LIBS += ../backend/libbackend.so -lQtAV -lQtAVWidgets
 }
 
 CONFIG += c++20

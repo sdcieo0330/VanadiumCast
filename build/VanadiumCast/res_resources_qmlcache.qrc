@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="qtquickcontrols2.conf">../../VanadiumCast/res/qtquickcontrols2.conf</file>
+    </qresource>
+    <qresource prefix="/sound">
+        <file alias="incoming.wav">../../VanadiumCast/res/sound/incoming.wav</file>
+    </qresource>
+    <qresource prefix="/gui">
+        <file alias="PageDevices.qml">../../VanadiumCast/res/gui/fragments/PageDevices.qml</file>
+        <file alias="main.qml">../../VanadiumCast/res/gui/main.qml</file>
+        <file alias="PageMedia.qml">../../VanadiumCast/res/gui/fragments/PageMedia.qml</file>
+        <file alias="PageStreaming.qml">../../VanadiumCast/res/gui/fragments/PageStreaming.qml</file>
+    </qresource>
+    <qresource prefix="/gui/model">
+        <file alias="DeviceListModel.qml">../../VanadiumCast/res/gui/model/DeviceListModel.qml</file>
+    </qresource>
+    <qresource prefix="/gui/icons">
+        <file alias="play.svg">../../VanadiumCast/res/gui/icons/play.svg</file>
+        <file alias="pause.svg">../../VanadiumCast/res/gui/icons/pause.svg</file>
+    </qresource>
+</RCC>
