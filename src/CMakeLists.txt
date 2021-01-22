@@ -10,16 +10,15 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (MSVC)
-    include_directories(E:\\QtAV\\src E:\\QtAV\\widgets E:\\ffmpeg-dev\\include)
-    #    set(CMAKE_MODULE_PATH E:\\Qt\\5.15.2\\msvc2019_64\\lib\\cmake\\Qt5 ${CMAKE_MODULE_PATH})
-    link_directories(E:\\QtAV\\x64\\Debug E:\\ffmpeg-dev\\lib)
-else ()
-    set(CMAKE_MODULE_PATH /usr/share/cmake-3.18/Modules /usr/share/cmake-3.19/Modules ${CMAKE_MODULE_PATH})
-    find_package(QtAV REQUIRED)
-    include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
-endif ()
+    include_directories("C:\\QtAV.new\\QtAV\\src\\compat\\msvc")
+endif()
+
+set(CMAKE_MODULE_PATH /usr/share/cmake-3.18/Modules /usr/share/cmake-3.19/Modules ${CMAKE_MODULE_PATH})
+find_package(QtAV REQUIRED)
+include_directories(${QTAV_INCLUDE_DIRS} ${QTAVWIDGETS_INCLUDE_DIRS})
 
 find_package(Qt5 COMPONENTS Core Quick Widgets Network QuickControls2 Multimedia Concurrent REQUIRED)
+find_package(QtAV)
 
 add_library(VanadiumCastLib-obj OBJECT
         API/NetworkAPI.cpp
@@ -106,9 +105,9 @@ target_link_libraries(VanadiumCast
         PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
 
 if (MSVC)
-    target_link_libraries(VanadiumCastLib-obj PRIVATE QtAV QtAVWidgets)
-    target_link_libraries(VanadiumCastLib-shared PRIVATE QtAV QtAVWidgets)
-    target_link_libraries(VanadiumCast PRIVATE QtAV QtAVWidgets QmlAV)
+    target_link_libraries(VanadiumCastLib-obj PRIVATE QtAV1 QtAVWidgets1)
+    target_link_libraries(VanadiumCastLib-shared PRIVATE QtAV1 QtAVWidgets1)
+    target_link_libraries(VanadiumCast PRIVATE QtAVd1 QtAVWidgets1 QmlAV)
 else ()
     target_link_libraries(VanadiumCastLib-obj PRIVATE QtAV QtAVWidgets)
     target_link_libraries(VanadiumCast PRIVATE QtAV QtAVWidgets)
