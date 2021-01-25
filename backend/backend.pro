@@ -6,11 +6,15 @@ win32 {
     QMAKE_CXXFLAGS_RELEASE += /O2 /Oy
     CONFIG(release, debug|release) {
         message("release")
-        LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
+        message("$$QT.core.libs")
+#        LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
+        LIBS += -L$$QT.core.libs -lQt5AV -lQt5AVWidgets
     }
     CONFIG(debug, debug|release) {
         message("debug")
-        LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
+        message("$$QT.core.libs")
+#        LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
+        LIBS += -L$$QT.core.libs -lQt5AVd -lQt5AVWidgetsd
     }
 }
 
