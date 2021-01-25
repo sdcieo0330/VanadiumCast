@@ -1,4 +1,4 @@
-QT += core quick quickcontrols2 gui widgets multimedia network concurrent av avwidgets
+QT += core quick quickcontrols2 gui widgets multimedia network concurrent
 
 CONFIG += qtquickcompiler
 

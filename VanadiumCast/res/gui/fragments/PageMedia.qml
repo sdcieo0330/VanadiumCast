@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 2.14
+import QtQuick.Controls 2.14
 import QtQuick.Dialogs 1.2
 import QtAV 1.6
 import QtQuick.Controls.Material 2.12
@@ -114,7 +114,7 @@ Page {
             anchors.topMargin: 8
             height: 1280
             width: 720
-            videoCodecPriority: ["VAAPI", "QSV", "DXVA", "MMAL", "CUDA", "FFMPEG"]
+            videoCodecPriority: ["QSV", "DXVA", "MMAL", "CUDA", "FFMPEG"]
             audioBackends: ["OpenAL", "XAudio2", "null"]
             Component.onCompleted: console.log(previewVideo.audioBackends)
             smooth: true
