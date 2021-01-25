@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += backend \
-           VanadiumCast
+           VanadiumCast \
+	   QtAV
 
-app.depends = backend
+backend.depends = QtAV
+VanadiumCast.depends = backend

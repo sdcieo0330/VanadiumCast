@@ -73,3 +73,4 @@ Thumbs.db
 
 cmake-build-*/
 build/
+build-flatpak/

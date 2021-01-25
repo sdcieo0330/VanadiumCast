@@ -43,6 +43,9 @@ unix {
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     copyToDestDir($$OUT_PWD/../backend/libbackend.so, $$OUT_PWD/)
+    copyToDestDir($$OUT_PWD/../backend/libbackend.so.1, $$OUT_PWD/)
+    copyToDestDir($$OUT_PWD/../backend/libbackend.so.1.0, $$OUT_PWD/)
+    copyToDestDir($$OUT_PWD/../backend/libbackend.so.1.0.0, $$OUT_PWD/)
 }
 
 CONFIG += c++20
