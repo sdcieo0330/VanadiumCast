@@ -1,4 +1,4 @@
-QT += core quick quickcontrols2 gui widgets multimedia network concurrent av avwidgets
+QT += core quick quickcontrols2 gui widgets multimedia network concurrent
 
 CONFIG += qtquickcompiler
 
@@ -39,13 +39,10 @@ win32 {
 }
 
 unix {
-    LIBS += ../backend/libbackend.so -lQtAV -lQtAVWidgets
+    INCLUDEPATH += $$PWD/QtAV/src $$PWD/QtAV/widgets
+    LIBS += -L../backend/ -L../QtAV/lib_linux_x86_64/ -lQtAV -lQtAVWidgets -lbackend
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
-    copyToDestDir($$OUT_PWD/../backend/libbackend.so, $$OUT_PWD/)
-    copyToDestDir($$OUT_PWD/../backend/libbackend.so.1, $$OUT_PWD/)
-    copyToDestDir($$OUT_PWD/../backend/libbackend.so.1.0, $$OUT_PWD/)
-    copyToDestDir($$OUT_PWD/../backend/libbackend.so.1.0.0, $$OUT_PWD/)
 }
 
 CONFIG += c++20
