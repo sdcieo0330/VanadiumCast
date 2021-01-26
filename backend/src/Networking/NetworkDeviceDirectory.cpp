@@ -30,7 +30,7 @@ int NetworkDeviceDirectory::addDevice(NetworkDevice* device) {
 }
 
 NetworkDevice *NetworkDeviceDirectory::getDevice(QString address) {
-    qDebug() << address << Qt::endl;
+    qDebug() << address;
     for (auto device: *deviceList) {
         qDebug() << device->getAddressString();
         if (device->getAddress().toString() == address) {
