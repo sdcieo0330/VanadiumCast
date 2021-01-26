@@ -33,8 +33,8 @@ void StreamThread::run() {
                 cachedOutput = new CachedLocalStream(64 * 1024 * 1024, 128, 1024);
                 transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::HIGH);
                 playbackController = new PlaybackController(controlConnection, transcoder, this);
-                qDebug() << "[StreamThread] Playback Controller lives in:" << playbackController->thread() << Qt::endl
-                         << "StreamThread::run() is running in:" << currentThread();
+                qDebug() << "[StreamThread] Playback Controller lives in:" << playbackController->thread();
+                qDebug()  << "StreamThread::run() is running in:" << currentThread();
                 readTimer = new QTimer;
                 readTimer->setInterval(2);
                 connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
