@@ -39,7 +39,7 @@ win32 {
 }
 
 unix {
-    LIBS += ../backend/libbackend.so -lQtAV -lQtAVWidgets
+    LIBS += $$OUT_PWD/../backend/libbackend.so -lQtAV -lQtAVWidgets
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
     copyToDestDir($$OUT_PWD/../backend/libbackend.so, $$OUT_PWD/)
