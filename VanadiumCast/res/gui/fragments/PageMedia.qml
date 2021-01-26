@@ -1,8 +1,8 @@
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Dialogs 1.2
+import QtQuick 2.12
+import QtQuick.Controls 2.10
+import QtQuick.Dialogs 1.1
 import QtAV 1.6
-import QtQuick.Controls.Material 2.12
+import QtQuick.Controls.Material 2.10
 
 Page {
     property alias streamButton: startStreamBtn

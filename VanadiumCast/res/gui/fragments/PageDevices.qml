@@ -1,7 +1,7 @@
-import QtQuick 2.14
-import QtQuick.Controls 2.14
-import QtQuick.Controls.Universal 2.12
-import QtQuick.Controls.Material 2.12
+import QtQuick 2.10
+import QtQuick.Controls 2.10
+import QtQuick.Controls.Universal 2.10
+import QtQuick.Controls.Material 2.10
 import "qrc:/gui/model"
 
 Page {
