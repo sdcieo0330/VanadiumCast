@@ -4,6 +4,7 @@ QT += core gui widgets network multimedia quick concurrent
 
 win32 {
     QMAKE_CXXFLAGS_RELEASE += /O2 /Oy
+    LIBS += -lOpenGL32
     CONFIG(release, debug|release) {
         message("release")
         message("$$QT.core.libs")
@@ -33,6 +34,7 @@ SOURCES += src/util.cpp \
            src/GUI/WindowCloseEventFilter.cpp \
            src/MediaProcessing/CachedLocalStream.cpp \
            src/MediaProcessing/InputFile.cpp \
+           src/MediaProcessing/OGLUtil.cpp \
            src/MediaProcessing/VideoTranscoder.cpp \
            src/Networking/NetworkDevice.cpp \
            src/Networking/NetworkDeviceDirectory.cpp \
@@ -48,6 +50,7 @@ HEADERS += src/util.h \
            src/GUI/WindowCloseEventFilter.h \
            src/MediaProcessing/CachedLocalStream.h \
            src/MediaProcessing/InputFile.h \
+           src/MediaProcessing/OGLUtil.h \
            src/MediaProcessing/VideoTranscoder.h \
            src/Networking/NetworkDevice.h \
            src/Networking/NetworkDeviceDirectory.h \
