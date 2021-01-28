@@ -7,6 +7,8 @@
 #include <QtNetwork>
 #include <csignal>
 #include "API/NetworkAPI.h"
+#include <QtOpenGL>
+#include <QtOpenGL/QGLContext>
 
 
 QApplication *app;
@@ -25,8 +27,9 @@ int main(int argc, char *argv[])
     app = new QApplication(argc, argv);
 
     NetworkAPI api;
-    api.init();
     QtAV::Widgets::registerRenderers();
+    qDebug() << QtAV::VideoEncoder::supportedCodecs();
+    api.init();
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("deviceDirectory", api.getDeviceDirectory());

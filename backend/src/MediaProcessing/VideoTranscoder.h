@@ -2,12 +2,15 @@
 #define VIDEOTRANSCODER_H
 
 #include <QObject>
+#include <QOffscreenSurface>
 #include <QtAV/QtAV>
 #include <QtAV/AVTranscoder.h>
 #include <QtAVWidgets/QtAVWidgets>
 #include "PlayerStateSlots.h"
 #include "EncodingProfile.h"
 #include "CachedLocalStream.h"
+#include <gl/GL.h>
+#include "OGLUtil.h"
 
 class VideoTranscoder : public QObject {
 Q_OBJECT
@@ -47,9 +50,45 @@ private:
     static void initializeProfiles() {
         static bool encodingProfilesInitialized = false;
         if (!encodingProfilesInitialized) {
+            OGLUtil *oglutil = new OGLUtil;
+            oglutil->moveToThread(qApp->thread());
+            oglutil->triggerAction(OGLUtil::Action::GET_OGL_VENDOR);
+            oglutil->waitForFinished(10000);
+            QString vendor = oglutil->getResult().toString();
+            QString videoCodecSQ = "";
+            QString videoCodecHQ = "";
+//            qDebug() << "[VideoTranscoder] Video card vendor:";
+
+#ifdef __APPLE__
+            videoCodecSQ = "h264_videotoolbox";
+            videoCodecHQ = "hevc_videotoolbox";
+#else
+            qDebug() << "[VideoTranscoder] OpenGL Renderer:" << vendor;
+            if (vendor.compare("Intel", Qt::CaseInsensitive) == 0) {
+                qDebug() << "[VideoTranscoder] Intel QSV encoder selected";
+                videoCodecSQ = "h264_qsv";
+                videoCodecHQ = "h264_qsv";
+            } else if (vendor.compare("NVIDIA Corporation", Qt::CaseInsensitive) == 0) {
+                qDebug() << "[VideoTranscoder] nVidia NVENC encoder selected";
+                videoCodecSQ = "h264_nvenc";
+                videoCodecHQ = "hevc_nvenc";
+            } else if (vendor.compare("AMD", Qt::CaseInsensitive) == 0) {
+#ifdef _WIN32
+                qDebug() << "[VideoTranscoder] AMD AMF encoder selected";
+                videoCodecSQ = "h264_amf";
+                videoCodecHQ = "hevc_amf";
+#endif
+#ifdef __linux__
+                qDebug() << "[VideoTranscoder] AMD VAAPI encoder selected";
+                videoCodec1 = "h264_vaapi";
+                videoCodec2 = "hevc_vaapi";
+#endif
+            }
+#endif
+
             // Low profile
             LOW.audioCodecName = "aac";
-            LOW.videoCodecName = "h264_qsv";
+            LOW.videoCodecName = videoCodecSQ;
             LOW.width = 1280;
             LOW.height = 720;
             LOW.rate = 1000000;
@@ -58,7 +97,7 @@ private:
 
             // Standard profile
             MEDIUM.audioCodecName = "aac";
-            MEDIUM.videoCodecName = "h264_qsv";
+            MEDIUM.videoCodecName = videoCodecSQ;
             MEDIUM.width = 1920;
             MEDIUM.height = 1080;
             MEDIUM.rate = 5000000;
@@ -67,7 +106,7 @@ private:
 
             // High profile
             HIGH.audioCodecName = "aac";
-            HIGH.videoCodecName = "h264_qsv";
+            HIGH.videoCodecName = videoCodecSQ;
             HIGH.width = 1920;
             HIGH.height = 1080;
             HIGH.rate = 10000000;
@@ -76,7 +115,7 @@ private:
 
             // Ultra profile
             ULTRA.audioCodecName = "aac";
-            ULTRA.videoCodecName = "hevc_qsv";
+            ULTRA.videoCodecName = videoCodecHQ;
             ULTRA.width = 2560;
             ULTRA.height = 1440;
             ULTRA.rate = 15000000;
@@ -85,7 +124,7 @@ private:
 
             // Extreme profile
             EXTREME.audioCodecName = "aac";
-            EXTREME.videoCodecName = "hevc_qsv";
+            EXTREME.videoCodecName = videoCodecHQ;
             EXTREME.width = 3840;
             EXTREME.height = 2160;
             EXTREME.rate = 30000000;
@@ -103,6 +142,7 @@ private:
     QMetaObject::Connection bufferCon1, bufferCon2, posCon1, posCon2;
     bool isPausedByUser = false;
     qint64 duration = 0;
+    OGLUtil *oglutil;
 };
 
 #endif // VIDEOTRANSCODER_H

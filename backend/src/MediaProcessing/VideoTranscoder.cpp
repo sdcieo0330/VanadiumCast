@@ -22,7 +22,15 @@ VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, E
     avPlayer->setAudioStream(-1);
 //    }
     avPlayer->setFrameRate(10000.0);
-    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "DXVA" << "VAAPI" << "MMAL" << "VideoToolbox" << "CUDA" << "FFmpeg");
+#ifdef _WIN32
+    avPlayer->setVideoDecoderPriority(QStringList() << "DXVA" << "QSV" << "CUDA" << "FFmpeg");
+#endif
+#ifdef __linux__
+    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "CUDA" << "VAAPI" << "FFmpeg");
+#endif
+#ifdef __APPLE__
+    avPlayer->setVideoDecoderPriority(QStringList() << "VideoToolbox" << "FFmpeg");
+#endif
     bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
         if (!isPausedByUser && avPlayer->isPaused()) {
 //            qDebug() << "[VideoTranscoder] Resuming";
