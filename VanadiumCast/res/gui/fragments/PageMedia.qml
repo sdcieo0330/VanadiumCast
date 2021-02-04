@@ -1,4 +1,4 @@
-import QtQuick 2.12
+﻿import QtQuick 2.12
 import QtQuick.Controls 2.10
 import QtQuick.Dialogs 1.1
 import QtAV 1.6
@@ -114,9 +114,12 @@ Page {
             anchors.topMargin: 8
             height: 1280
             width: 720
-            videoCodecPriority: ["VAAPI", "FFMPEG"]
+            videoCodecPriority: backendAPI.getDecoderList()
             audioBackends: ["OpenAL", "XAudio2", "null"]
-            Component.onCompleted: console.log(previewVideo.audioBackends)
+            Component.onCompleted: {
+                console.log(previewVideo.audioBackends)
+                console.log(previewVideo.videoCodecPriority)
+            }
             smooth: true
             onPositionChanged: {
                 previewVideoSlider.isChangedFromVideo = true

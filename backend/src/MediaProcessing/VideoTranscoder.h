@@ -84,6 +84,7 @@ private:
 #endif
             }
 #endif
+            delete oglutil;
 
             // Low profile
             LOW.audioCodecName = "aac";

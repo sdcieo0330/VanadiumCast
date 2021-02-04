@@ -70,6 +70,8 @@ public:
     Q_INVOKABLE NetworkSinkHandler *getSinkHandler() {
         return sinkHandler;
     }
+
+    Q_INVOKABLE QStringList getDecoderList();
     
     /**
  * @param device

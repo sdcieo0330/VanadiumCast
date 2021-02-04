@@ -78,6 +78,42 @@ NetworkDeviceDirectory *NetworkAPI::getDeviceDirectory() {
     return deviceDirectory;
 }
 
+QStringList NetworkAPI::getDecoderList()
+{
+    OGLUtil *oglutil = new OGLUtil;
+    oglutil->moveToThread(qApp->thread());
+    oglutil->triggerAction(OGLUtil::Action::GET_OGL_VENDOR);
+    oglutil->waitForFinished(10000);
+    QString vendor = oglutil->getResult().toString();
+    QStringList videoCodecs;
+//            qDebug() << "[VideoTranscoder] Video card vendor:";
+
+#ifdef __APPLE__
+    videoCodecs << "VideoToolbox";
+#endif
+#ifdef __linux__
+    qDebug() << "[API] OpenGL Renderer:" << vendor;
+    if (vendor.compare("Intel", Qt::CaseInsensitive) == 0) {
+        qDebug() << "[API] Intel QSV decoder selected";
+        videoCodecs << "QSV";
+    } else if (vendor.compare("NVIDIA Corporation", Qt::CaseInsensitive) == 0) {
+        qDebug() << "[API] nVidia CUVID decoder selected";
+        videoCodecs << "CUDA";
+    } else if (vendor.compare("AMD", Qt::CaseInsensitive) == 0) {
+        qDebug() << "[API] VAAPI decoder selected";
+        videoCodecs << "VAAPI";
+    }
+#endif
+#ifdef _WIN32
+        qDebug() << "[API] DXVA decoder selected";
+#endif
+    delete oglutil;
+
+    videoCodecs << "FFmpeg";
+
+    return videoCodecs;
+}
+
 /**
  * @param device
  * @return bool
