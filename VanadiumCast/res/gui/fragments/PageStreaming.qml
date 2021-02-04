@@ -15,6 +15,23 @@ Page {
     }
 
     Button {
+//        Timer {
+//            id: playPauseBtnBreak
+//            interval: 3200
+//            repeat: false
+//            onTriggered: {
+//                playPauseBtn.enabled = true
+//            }
+//        }
+
+//        Connections {
+//            target: playPauseBtn
+//            function onClicked() {
+//                playPauseBtn.enabled = false
+//                playPauseBtnBreak.start()
+//            }
+//        }
+
         id: playPauseBtn
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left

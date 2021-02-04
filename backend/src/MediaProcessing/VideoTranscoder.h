@@ -9,7 +9,6 @@
 #include "PlayerStateSlots.h"
 #include "EncodingProfile.h"
 #include "CachedLocalStream.h"
-#include <gl/GL.h>
 #include "OGLUtil.h"
 
 class VideoTranscoder : public QObject {
@@ -80,8 +79,8 @@ private:
 #endif
 #ifdef __linux__
                 qDebug() << "[VideoTranscoder] AMD VAAPI encoder selected";
-                videoCodec1 = "h264_vaapi";
-                videoCodec2 = "hevc_vaapi";
+                videoCodecSQ = "h264_vaapi";
+                videoCodecHQ = "hevc_vaapi";
 #endif
             }
 #endif
