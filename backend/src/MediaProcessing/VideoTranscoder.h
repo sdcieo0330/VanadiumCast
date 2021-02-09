@@ -138,11 +138,11 @@ private:
     QtAV::AVTranscoder *avTranscoder;
     QtAV::AVPlayer *avPlayer;
     End *outputDevice;
-    std::string inputFile;
     QMetaObject::Connection bufferCon1, bufferCon2, posCon1, posCon2;
     bool isPausedByUser = false;
     qint64 duration = 0;
     OGLUtil *oglutil;
+    std::string inputFile;
 };
 
 #endif // VIDEOTRANSCODER_H

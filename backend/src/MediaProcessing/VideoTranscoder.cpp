@@ -6,7 +6,7 @@
 #include <QtMultimedia>
 
 VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, EncodingProfile &profile, QObject *parent)
-        : QObject(parent), inputFile(std::move(inputFilePath)), outputDevice(outputDevice) {
+        : QObject(parent), outputDevice(outputDevice), inputFile(std::move(inputFilePath)){
     initializeProfiles();
     avTranscoder = new QtAV::AVTranscoder;
     avPlayer = new QtAV::AVPlayer;
@@ -32,22 +32,24 @@ VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, E
 
 #ifdef __APPLE__
     videoCodecs << "VideoToolbox";
+    qDebug() << "[VideoTranscoder] VideoToolbox decoder selected";
 #endif
 #ifdef __linux__
-    qDebug() << "[API] OpenGL Renderer:" << vendor;
+//    qDebug() << "[VideoTranscoder] OpenGL Renderer:" << vendor;
     if (vendor.compare("Intel", Qt::CaseInsensitive) == 0) {
-        qDebug() << "[API] Intel QSV decoder selected";
+        qDebug() << "[VideoTranscoder] Intel QSV decoder selected";
         videoCodecs << "QSV";
     } else if (vendor.compare("NVIDIA Corporation", Qt::CaseInsensitive) == 0) {
-        qDebug() << "[API] nVidia CUVID decoder selected";
+        qDebug() << "[VideoTranscoder] nVidia CUVID decoder selected";
         videoCodecs << "CUDA";
     } else if (vendor.compare("AMD", Qt::CaseInsensitive) == 0) {
-        qDebug() << "[API] VAAPI decoder selected";
+        qDebug() << "[VideoTranscoder] VAAPI decoder selected";
         videoCodecs << "VAAPI";
     }
 #endif
 #ifdef _WIN32
-        qDebug() << "[API] DXVA decoder selected";
+    videoCodecs << "DXVA";
+    qDebug() << "[VideoTranscoder] DXVA decoder selected";
 #endif
     delete oglutil;
 

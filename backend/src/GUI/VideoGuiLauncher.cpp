@@ -3,6 +3,7 @@
 #include <QtWidgets>
 #include <QtConcurrent>
 #include "MediaProcessing/CachedLocalStream.h"
+#include <MediaProcessing/OGLUtil.h>
 
 VideoGuiLauncher::VideoGuiLauncher(End *inputDevice, QObject *parent) : QObject(parent), inputDevice(inputDevice) {
     closeEventFilter = new WindowCloseEventFilter(this);
@@ -37,6 +38,7 @@ bool VideoGuiLauncher::event(QEvent *event) {
                 break;
             }
             case EventAction::START_PLAYER: {
+                qDebug() << "[VideoGui] Starting resetted sink playback";
                 avPlayer->play();
                 break;
             }
@@ -45,7 +47,9 @@ bool VideoGuiLauncher::event(QEvent *event) {
                 break;
             }
         }
+        auto tmpAction = eventAction;
         eventAction = EventAction::NONE;
+        emit actionFinished(tmpAction);
         return true;
     } else {
         return false;
@@ -59,7 +63,7 @@ void VideoGuiLauncher::closeAndDelete() {
 
 void VideoGuiLauncher::create() {
     videoRenderer = QtAV::VideoRenderer::create(QtAV::VideoRendererId_OpenGLWidget);
-    videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
+    videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P);
     closeEventFilter->moveToThread(videoRenderer->widget()->thread());
     videoRenderer->widget()->setMinimumSize(QSize(480.0, 480.0 / 16.0 * 9.0));
     auto *layout = new QVBoxLayout;
@@ -77,7 +81,39 @@ void VideoGuiLauncher::create() {
     avPlayer->setIODevice(inputDevice);
     avPlayer->audio()->setBackends(QStringList() << "XAudio2" << "OpenAL");
     avPlayer->setAudioStream(0);
-    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "FFmpeg");
+    OGLUtil *oglutil = new OGLUtil;
+    oglutil->moveToThread(qApp->thread());
+    oglutil->triggerAction(OGLUtil::Action::GET_OGL_VENDOR);
+    oglutil->waitForFinished(10000);
+    QString vendor = oglutil->getResult().toString();
+    QStringList videoCodecs;
+//            qDebug() << "[VideoTranscoder] Video card vendor:";
+
+#ifdef __APPLE__
+    videoCodecs << "VideoToolbox";
+    qDebug() << "[VideoGui] VideoToolbox decoder selected";
+#endif
+#ifdef __linux__
+    qDebug() << "[API] OpenGL Renderer:" << vendor;
+    if (vendor.compare("Intel", Qt::CaseInsensitive) == 0) {
+        qDebug() << "[VideoGui] Intel QSV decoder selected";
+        videoCodecs << "QSV";
+    } else if (vendor.compare("NVIDIA Corporation", Qt::CaseInsensitive) == 0) {
+        qDebug() << "[VideoGui] nVidia CUVID decoder selected";
+        videoCodecs << "CUDA";
+    } else if (vendor.compare("AMD", Qt::CaseInsensitive) == 0) {
+        qDebug() << "[VideoGui] VAAPI decoder selected";
+        videoCodecs << "VAAPI";
+    }
+#endif
+#ifdef _WIN32
+    videoCodecs << "DXVA";
+        qDebug() << "[VideoGui] DXVA decoder selected";
+#endif
+    delete oglutil;
+
+    videoCodecs << "FFmpeg";
+    avPlayer->setVideoDecoderPriority(videoCodecs);
     videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
     //            avPlayer->setAutoLoad();
     //            avPlayer->setAsyncLoad();
@@ -113,15 +149,11 @@ void VideoGuiLauncher::destroy() {
 }
 
 void VideoGuiLauncher::reset() {
-    avPlayer->pause(true);
-    avPlayer->removeVideoRenderer(videoRenderer);
-    delete avPlayer;
-    avPlayer = new QtAV::AVPlayer;
-    avPlayer->setRenderer(videoRenderer);
-    avPlayer->setVideoDecoderPriority(QStringList() << "QSV" << "FFmpeg");
-    avPlayer->setAudioStream(0);
-    reinterpret_cast<CachedLocalStream *>(inputDevice->parent())->clear();
-    avPlayer->setIODevice(inputDevice);
+    QtConcurrent::run([&](){
+        qDebug() << "[VideoGui] Resetting sink playback";
+        avPlayer->stop();
+        reinterpret_cast<CachedLocalStream *>(inputDevice->parent())->clear();
+    });
 }
 
 QtAV::AVPlayer *VideoGuiLauncher::getVideoPlayer() {

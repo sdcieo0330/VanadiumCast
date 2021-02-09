@@ -15,7 +15,7 @@ signals:
     void setPaused(bool);
     void seek(qint64);
 public slots:
-    void positionChanged(qint64 position){}
+    void positionChanged(qint64 position);
 };
 
 #endif // PLAYERSTATESLOTS_H

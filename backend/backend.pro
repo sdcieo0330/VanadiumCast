@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 QT += core gui widgets network multimedia quick concurrent
 
+QMAKE_CXXFLAGS += -Werror=all -Werror=extra
+
 win32 {
     QMAKE_CXXFLAGS_RELEASE += /O2 /Oy
     LIBS += -lOpenGL32

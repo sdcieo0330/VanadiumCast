@@ -41,14 +41,21 @@ Page {
         icon.name: "media-playback-pause"
         icon.source: "qrc:/gui/icons/pause.svg"
         onClicked: {
-            if (playPauseBtn.icon.name == "media-playback-pause" || playPauseBtn.icon.source == "qrc:/gui/icons/pause.svg") {
-                playPauseBtn.icon.source = "qrc:/gui/icons/play.svg"
-                playPauseBtn.icon.name = "media-playback-start"
-            } else {
-                playPauseBtn.icon.source = "qrc:/gui/icons/pause.svg"
-                playPauseBtn.icon.name = "media-playback-pause"
-            }
+            enabled = false
             backendAPI.togglePlayPause()
+        }
+        Connections {
+            target: backendAPI
+            function onPlaybackToggled(paused) {
+                if (paused) {
+                    playPauseBtn.icon.source = "qrc:/gui/icons/play.svg"
+                    playPauseBtn.icon.name = "media-playback-start"
+                } else {
+                    playPauseBtn.icon.source = "qrc:/gui/icons/pause.svg"
+                    playPauseBtn.icon.name = "media-playback-pause"
+                }
+                playPauseBtn.enabled = true;
+            }
         }
     }
 
@@ -75,11 +82,11 @@ Page {
         anchors.right: parent.right
         anchors.rightMargin: 20
         id: positionSlider
-//        onPressedChanged: {
-//            if (!pressed) {
-//                backendAPI.seek(value)
-//            }
-//        }
+        onPressedChanged: {
+            if (!pressed) {
+                backendAPI.seek(value)
+            }
+        }
         from: 0
         value: 0
         to: 100

@@ -191,24 +191,38 @@ qint64 PlaybackController::getVideoDuration() {
     return streamThread->transcoder->getDuration();
 }
 
+bool PlaybackController::waitForToggleFinished(qint64 msec)
+{
+    bool result = playbackStateMutex.tryLock(msec);
+    if (result) {
+        playbackStateMutex.unlock();
+    }
+    return result;
+}
+
 qint64 PlaybackController::getPlaybackPosition() {
     return streamThread->transcoder->getPlaybackPosition();
 }
 
 PlaybackController::PlaybackController(QTcpSocket *controlConn, VideoTranscoder *transcoder, StreamThread *streamThread) :
-        controlConnection(controlConn),
         transcoder(transcoder),
-        streamThread(streamThread) {
+        streamThread(streamThread),
+        controlConnection(controlConn) {
 }
 
 void PlaybackController::togglePlayPause() {
     qDebug() << "[PlaybackController] toggling play/pause";
+    if (!playbackStateMutex.tryLock()) {
+        qDebug() << "[PlaybackController] cannot toggle playback state twice in parallel";
+        emit finishedToggle(paused);
+        return;
+    }
     if (paused) {
         qDebug() << "[PlaybackController] Resuming";
         transcoder->resume();
         streamThread->suspendControlHandling();
         controlConnection->write(Command::RESUME);
-        if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
+        if (controlConnection->waitForReadyRead(3000) && controlConnection->read(1) == Command::OK) {
             streamThread->resumeControlHandling();
             qDebug() << "[PlaybackController] Resumed";
         } else {
@@ -219,7 +233,7 @@ void PlaybackController::togglePlayPause() {
         transcoder->pause();
         streamThread->suspendControlHandling();
         controlConnection->write(Command::PAUSE);
-        if (controlConnection->waitForReadyRead(2000) && controlConnection->read(1) == Command::OK) {
+        if (controlConnection->waitForReadyRead(3000) && controlConnection->read(1) == Command::OK) {
             streamThread->resumeControlHandling();
             qDebug() << "[PlaybackController] Paused";
         } else {
@@ -227,6 +241,8 @@ void PlaybackController::togglePlayPause() {
         }
     }
     paused = !paused;
+    playbackStateMutex.unlock();
+    emit finishedToggle(paused);
 }
 
 bool PlaybackController::isPaused() {
@@ -234,7 +250,23 @@ bool PlaybackController::isPaused() {
 }
 
 bool PlaybackController::seek(qint64 absPos) {
-    return transcoder->seek(absPos);
+    streamThread->transcoder->pause();
+    streamThread->cachedOutput->clear();
+    controlConnection->write(Command::SEEK);
+    if (controlConnection->waitForReadyRead(3000)) {
+        auto incoming = controlConnection->readAll();
+        qDebug() << "[PlaybackController]" << incoming << "?=" << Command::OK;
+        if (incoming == Command::OK && transcoder->seek(absPos)) {
+            transcoder->resume();
+            QMetaObject::Connection *connection = nullptr;
+            *connection = connect(streamThread->cachedOutput->getEnd1(), &End::inputEnoughData, [this, connection]() {
+                controlConnection->write(Command::OK);
+                QObject::disconnect(*connection);
+            });
+            return true;
+        }
+    }
+    return false;
 }
 
 bool PlaybackController::forward(qint64 secs) {

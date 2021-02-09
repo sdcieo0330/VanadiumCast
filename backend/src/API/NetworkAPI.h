@@ -43,6 +43,8 @@ signals:
 
     void durationLoaded(qint64 duration);
 
+    void playbackToggled(bool paused);
+
 public slots:
 
     bool init() override;

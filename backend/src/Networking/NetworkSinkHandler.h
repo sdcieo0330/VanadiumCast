@@ -49,7 +49,9 @@ protected slots:
 
     void readData();
 
-    void sendPlaybackPosition(qint64 position);
+    void suspendControlHandling();
+
+    void resumeControlHandling();
 
 signals:
 
@@ -62,7 +64,7 @@ signals:
     void streamEnded();
 
 private:
-    QMetaObject::Connection posCon1, timerCon2;
+    QMetaObject::Connection posCon1, timerCon2, controlHandleCon;
     QUdpSocket *udpBroadcast;
     QUdpSocket *udpSocket;
     NetworkSinkTcpServer *controlConnectionServer;

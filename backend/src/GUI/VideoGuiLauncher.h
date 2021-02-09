@@ -38,6 +38,8 @@ signals:
 
     void playbackPositionChanged(qint64 position);
 
+    void actionFinished(EventAction action);
+
 protected:
 
     void destroy();

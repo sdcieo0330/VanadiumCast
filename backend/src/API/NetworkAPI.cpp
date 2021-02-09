@@ -90,6 +90,7 @@ QStringList NetworkAPI::getDecoderList()
 
 #ifdef __APPLE__
     videoCodecs << "VideoToolbox";
+    qDebug() << "[API] VideoToolbox decoder selected";
 #endif
 #ifdef __linux__
     qDebug() << "[API] OpenGL Renderer:" << vendor;
@@ -105,7 +106,8 @@ QStringList NetworkAPI::getDecoderList()
     }
 #endif
 #ifdef _WIN32
-        qDebug() << "[API] DXVA decoder selected";
+    videoCodecs << "DXVA";
+    qDebug() << "[API] DXVA decoder selected";
 #endif
     delete oglutil;
 
@@ -154,7 +156,7 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
         qDebug() << "target != nullptr";
         qDebug() << target;
         qDebug() << "Current thread:" << QThread::currentThread();
-        QtConcurrent::run([&](const QUrl inputFileUrl, const QString address) {
+        QtConcurrent::run([&](const QUrl inputFileUrl) {
             positionLog.open(QIODevice::ReadWrite | QIODevice::Truncate);
             if (inputFileUrl.isEmpty()) {
                 setInputFile();
@@ -184,7 +186,7 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
                                            });
             });
             streamThread->start();
-        }, inputFileUrl, address);
+        }, inputFileUrl);
         return true;
     }
     return false;
@@ -204,6 +206,9 @@ bool NetworkAPI::togglePlayPause() {
     if (streamThread != nullptr) {
         qDebug() << "Toggling transcoder";
         QMetaObject::invokeMethod(streamThread->getPlaybackController(), "togglePlayPause", Qt::QueuedConnection);
+        connect(streamThread->getPlaybackController(), &PlaybackController::finishedToggle, [&](bool paused) {
+            playbackToggled(paused);
+        });
         return true;
     } else {
         return false;

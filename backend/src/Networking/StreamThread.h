@@ -71,6 +71,8 @@ public:
 
     Q_INVOKABLE qint64 getVideoDuration();
 
+    Q_INVOKABLE bool waitForToggleFinished(qint64 msec = 100);
+
 public slots:
 
     Q_INVOKABLE void togglePlayPause();
@@ -87,12 +89,15 @@ signals:
 
     void playbackPositionChanged(qint64 pos);
 
+    void finishedToggle(bool paused);
+
 private:
     QMetaObject::Connection posCon1;
     VideoTranscoder *transcoder;
-    QTcpSocket *controlConnection;
     StreamThread *streamThread;
+    QTcpSocket *controlConnection;
     bool paused = false;
+    QMutex playbackStateMutex;
 };
 
 
