@@ -53,6 +53,10 @@ protected slots:
 
     void resumeControlHandling();
 
+    void suspendPositionEcho();
+
+    void resumePositionEcho();
+
 signals:
 
     void newConnection(NetworkDevice *device);
@@ -64,7 +68,7 @@ signals:
     void streamEnded();
 
 private:
-    QMetaObject::Connection posCon1, timerCon2, controlHandleCon;
+    QMetaObject::Connection posCon1, timerCon2, controlHandleCon, seekCon1;
     QUdpSocket *udpBroadcast;
     QUdpSocket *udpSocket;
     NetworkSinkTcpServer *controlConnectionServer;
@@ -98,8 +102,13 @@ public slots:
 
     void sendPlaybackPosition(qint64 position);
 
+    void restartPlayback();
+
+    void sendOK();
+
 private:
     NetworkSinkHandler *networkSinkHandler;
+    QMetaObject::Connection okConn;
 };
 
 #endif //NETWORKSINKHANDLER_H

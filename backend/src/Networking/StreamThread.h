@@ -58,6 +58,7 @@ private:
     QByteArray prevCommand;
     QQueue<QByteArray> commandQueue;
     PlaybackController *playbackController{};
+    QMetaObject::Connection controlHandleCon;
 
     friend class PlaybackController;
 };

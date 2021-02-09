@@ -17,20 +17,24 @@ bool VideoGuiLauncher::event(QEvent *event) {
         switch (eventAction) {
             case EventAction::CREATE: {
                 create();
+                emit actionFinished();
                 break;
             }
             case EventAction::DESTROY: {
                 destroy();
+                emit actionFinished();
                 break;
             }
             case EventAction::PAUSE: {
                 isPausedByUser = true;
                 avPlayer->pause(true);
+                emit actionFinished();
                 break;
             }
             case EventAction::RESUME: {
                 isPausedByUser = false;
                 avPlayer->pause(false);
+                emit actionFinished();
                 break;
             }
             case EventAction::RESET: {
@@ -40,6 +44,7 @@ bool VideoGuiLauncher::event(QEvent *event) {
             case EventAction::START_PLAYER: {
                 qDebug() << "[VideoGui] Starting resetted sink playback";
                 avPlayer->play();
+                emit actionFinished();
                 break;
             }
             case EventAction::NONE: {
@@ -47,9 +52,7 @@ bool VideoGuiLauncher::event(QEvent *event) {
                 break;
             }
         }
-        auto tmpAction = eventAction;
         eventAction = EventAction::NONE;
-        emit actionFinished(tmpAction);
         return true;
     } else {
         return false;
@@ -153,6 +156,7 @@ void VideoGuiLauncher::reset() {
         qDebug() << "[VideoGui] Resetting sink playback";
         avPlayer->stop();
         reinterpret_cast<CachedLocalStream *>(inputDevice->parent())->clear();
+        emit actionFinished();
     });
 }
 

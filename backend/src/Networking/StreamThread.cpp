@@ -19,14 +19,14 @@ void StreamThread::run() {
     controlConnection->connectToHost(target.getAddress(), 55555);
     controlConnection->waitForConnected();
     if (controlConnection->waitForReadyRead() && controlConnection->read(1) == Command::OK) {
-        qDebug() << "Sending data connection request to" << &target;
+        qDebug() << "[StreamThread] Sending data connection request to" << &target;
         QThread::msleep(100);
         controlConnection->write(Command::CONNECTDATA);
-        qDebug() << "Sent data connection request";
+        qDebug() << "[StreamThread] Sent data connection request";
         if (controlConnection->waitForReadyRead(20000)) {
             QByteArray buf = controlConnection->read(1);
             if (buf == Command::OK) {
-                connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
+                controlHandleCon = connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
                 dataConnection = new QTcpSocket;
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
                 dataConnection->waitForConnected(1000);
@@ -34,7 +34,7 @@ void StreamThread::run() {
                 transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::HIGH);
                 playbackController = new PlaybackController(controlConnection, transcoder, this);
                 qDebug() << "[StreamThread] Playback Controller lives in:" << playbackController->thread();
-                qDebug()  << "StreamThread::run() is running in:" << currentThread();
+                qDebug() << "[StreamThread] StreamThread::run() is running in:" << currentThread();
                 readTimer = new QTimer;
                 readTimer->setInterval(2);
                 connect(readTimer, &QTimer::timeout, this, &StreamThread::writeToOutput, Qt::DirectConnection);
@@ -45,10 +45,10 @@ void StreamThread::run() {
                     connected();
                 });
                 exec();
-                qDebug() << "Event queue terminated";
+                qDebug() << "[StreamThread] Event queue terminated";
                 readTimer->stop();
                 transcoder->stopTranscoding();
-                disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+                disconnect(controlHandleCon);
                 if (running) {
                     dataConnection->disconnectFromHost();
                     controlConnection->write(Command::OK);
@@ -66,11 +66,11 @@ void StreamThread::run() {
                 delete transcoder;
                 delete cachedOutput;
             } else if (buf == Command::CANCEL) {
-                qDebug() << "Streaming request rejected";
+                qDebug() << "[StreamThread] Streaming request rejected";
             }
         }
     }
-    qDebug() << "Stopping StreamThread";
+    qDebug() << "[StreamThread] Stopping StreamThread";
 
     controlConnection->disconnectFromHost();
     delete controlConnection;
@@ -137,16 +137,16 @@ void StreamThread::writeToOutput() {
 
 void StreamThread::handleControl() {
     QByteArray buf = controlConnection->readAll();
-    qDebug() << "Incoming command:" << buf;
+    qDebug() << "[StreamThread] Incoming command:" << buf;
     if (!buf.isEmpty()) {
         QByteArray command = buf.left(1);
         if (command == Command::CLOSEDATA) {
-            qDebug() << "CLOSEDATA command";
+            qDebug() << "[StreamThread] CLOSEDATA command";
             quit();
-            qDebug() << "Send quit() to event loop";
+            qDebug() << "[StreamThread] Send quit() to event loop";
         } else if (command == Command::POSITION) {
             buf.remove(0, 1);
-            qDebug() << "Incoming playback position:" << util::bytesToNum(buf);
+            qDebug() << "[StreamThread] Incoming playback position:" << util::bytesToNum(buf);
             playbackController->playbackPositionChanged(util::bytesToNum(buf));
         }
     }
@@ -176,11 +176,11 @@ StreamThread::~StreamThread() noexcept {
 }
 
 void StreamThread::suspendControlHandling() {
-    disconnect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl);
+    disconnect(controlHandleCon);
 }
 
 void StreamThread::resumeControlHandling() {
-    connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
+    controlHandleCon = connect(controlConnection, &QTcpSocket::readyRead, this, &StreamThread::handleControl, Qt::DirectConnection);
 }
 
 PlaybackController *StreamThread::getPlaybackController() {
@@ -250,6 +250,7 @@ bool PlaybackController::isPaused() {
 }
 
 bool PlaybackController::seek(qint64 absPos) {
+    streamThread->suspendControlHandling();
     streamThread->transcoder->pause();
     streamThread->cachedOutput->clear();
     controlConnection->write(Command::SEEK);
@@ -258,14 +259,12 @@ bool PlaybackController::seek(qint64 absPos) {
         qDebug() << "[PlaybackController]" << incoming << "?=" << Command::OK;
         if (incoming == Command::OK && transcoder->seek(absPos)) {
             transcoder->resume();
-            QMetaObject::Connection *connection = nullptr;
-            *connection = connect(streamThread->cachedOutput->getEnd1(), &End::inputEnoughData, [this, connection]() {
-                controlConnection->write(Command::OK);
-                QObject::disconnect(*connection);
-            });
+            TODO -> fix not send second ok
             return true;
         }
     }
+    controlConnection->readAll();
+    streamThread->resumeControlHandling();
     return false;
 }
 

@@ -84,13 +84,13 @@ qint64 End::readData(char *data, qint64 maxSize) {
 qint64 End::writeData(const char *data, qint64 inputSize) {
     QByteArray inputData(data, inputSize);
     qint64 bytesWritten = 0;
-    size_t availableSpaceLastElement = 0;
+    int availableSpaceLastElement = 0;
+    QMutexLocker lock(outputMutex);
 
     if (!outputQueue->isEmpty()) {
         availableSpaceLastElement = 1024 - outputQueue->last()->size();
     }
 
-    QMutexLocker lock(outputMutex);
     // If the last element in the output queue contains less than 1024 byte, append to it
     if (!outputQueue->isEmpty() && availableSpaceLastElement > 0) {
         outputQueue->last()->append(inputData.left(availableSpaceLastElement));

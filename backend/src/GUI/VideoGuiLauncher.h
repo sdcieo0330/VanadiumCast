@@ -14,6 +14,9 @@ public:
         CREATE, DESTROY, PAUSE, RESUME, RESET, START_PLAYER, NONE
     };
 
+
+    Q_ENUM(EventAction)
+
     explicit VideoGuiLauncher(End *inputDevice, QObject *parent = nullptr);
 
     QtAV::VideoRenderer *getVideoRenderer();
@@ -38,7 +41,7 @@ signals:
 
     void playbackPositionChanged(qint64 position);
 
-    void actionFinished(EventAction action);
+    void actionFinished();
 
 protected:
 
@@ -57,6 +60,9 @@ private:
     EventAction eventAction = EventAction::NONE;
     QMetaObject::Connection bufferCon1, bufferCon2, posCon1;
     bool isPausedByUser = false;
+    bool registeredMetaType = false;
 };
+
+Q_DECLARE_METATYPE(VideoGuiLauncher::EventAction)
 
 #endif // VIDEOGUILAUNCHER_H

@@ -20,6 +20,7 @@ void signalHandler(int signum) {
 
 int main(int argc, char *argv[])
 {
+    qRegisterMetaType<VideoGuiLauncher::EventAction>();
     signal(SIGINT, &signalHandler);
     signal(SIGTERM, &signalHandler);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -27,9 +28,9 @@ int main(int argc, char *argv[])
     app = new QApplication(argc, argv);
 
     NetworkAPI api;
+    api.init();
     QtAV::Widgets::registerRenderers();
     qDebug() << QtAV::VideoEncoder::supportedCodecs();
-    api.init();
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("deviceDirectory", api.getDeviceDirectory());
