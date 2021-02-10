@@ -157,6 +157,7 @@ void VideoGuiLauncher::reset() {
         avPlayer->stop();
         reinterpret_cast<CachedLocalStream *>(inputDevice->parent())->clear();
         emit actionFinished();
+        qDebug() << "[VideoGui] Resetted sink playback";
     });
 }
 

@@ -86,6 +86,10 @@ public slots:
 
     Q_INVOKABLE bool backward(qint64 secs);
 
+protected slots:
+
+    Q_INVOKABLE void sendOK();
+
 signals:
 
     void playbackPositionChanged(qint64 pos);
@@ -93,12 +97,14 @@ signals:
     void finishedToggle(bool paused);
 
 private:
-    QMetaObject::Connection posCon1;
+    QMetaObject::Connection posCon1, okCon;
     VideoTranscoder *transcoder;
     StreamThread *streamThread;
     QTcpSocket *controlConnection;
     bool paused = false;
     QMutex playbackStateMutex;
+    qint64 posOffset = 0;
+    friend class StreamThread;
 };
 
 

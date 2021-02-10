@@ -147,7 +147,7 @@ void StreamThread::handleControl() {
         } else if (command == Command::POSITION) {
             buf.remove(0, 1);
             qDebug() << "[StreamThread] Incoming playback position:" << util::bytesToNum(buf);
-            playbackController->playbackPositionChanged(util::bytesToNum(buf));
+            playbackController->playbackPositionChanged(util::bytesToNum(buf) + playbackController->posOffset);
         }
     }
 }
@@ -254,12 +254,18 @@ bool PlaybackController::seek(qint64 absPos) {
     streamThread->transcoder->pause();
     streamThread->cachedOutput->clear();
     controlConnection->write(Command::SEEK);
+    controlConnection->readAll();
     if (controlConnection->waitForReadyRead(3000)) {
+        posOffset = absPos;
         auto incoming = controlConnection->readAll();
-        qDebug() << "[PlaybackController]" << incoming << "?=" << Command::OK;
-        if (incoming == Command::OK && transcoder->seek(absPos)) {
+        qDebug() << "[PlaybackController]" << incoming.right(1) << "?=" << Command::OK;
+        if (incoming.right(1) == Command::OK && transcoder->seek(absPos)) {
+            qDebug() << "[PlaybackController] Seeked transcoder";
+//            okCon = connect(streamThread->cachedOutput->getEnd1(), &End::inputEnoughData, this, &PlaybackController::sendOK, Qt::QueuedConnection);
             transcoder->resume();
-            TODO -> fix not send second ok
+            controlConnection->readAll();
+            streamThread->resumeControlHandling();
+            controlConnection->write(Command::OK);
             return true;
         }
     }
@@ -274,4 +280,12 @@ bool PlaybackController::forward(qint64 secs) {
 
 bool PlaybackController::backward(qint64 secs) {
     return seek(transcoder->getPlaybackPosition() - secs);
+}
+
+void PlaybackController::sendOK()
+{
+    qDebug() << "[PlaybackController] Sending OK";
+    streamThread->controlConnection->write(Command::OK);
+    disconnect(okCon);
+    qDebug() << "[PlaybackController] Sent OK and disconnected okCon";
 }

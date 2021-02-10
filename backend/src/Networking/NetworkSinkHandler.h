@@ -85,6 +85,7 @@ private:
     int shouldConnect = 0;
     QByteArray prevCommand = nullptr;
     SinkController *controller = nullptr;
+    qint64 posOffset = 0;
 
     friend class SinkController;
 };
