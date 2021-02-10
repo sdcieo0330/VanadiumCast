@@ -66,10 +66,9 @@ void NetworkSinkHandler::run() {
 //                    positionTimer->setSingleShot(false);
                     posCon1 = connect(videoGuiLauncher, &VideoGuiLauncher::playbackPositionChanged, controller,
                                       &SinkController::sendPlaybackPosition, Qt::QueuedConnection);
-//                    timerCon2 = connect(videoGuiLauncher, &VideoGuiLauncher::created, [&](){3
+//                    timerCon2 = connect(videoGuiLauncher, &VideoGuiLauncher::created, [&](){
 //                        QMetaObject::invokeMethod(positionTimer, "start", Qt::QueuedConnection);
 //                    });
-                    msleep(100);
 //                    while (running) {
 //                        if (dataConnection->waitForReadyRead(8)) {
 //                            QByteArray buf = dataConnection->readAll();
@@ -129,7 +128,7 @@ void NetworkSinkHandler::run() {
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
     controlConnectionHandle = handle;
     qDebug() << "[NetworkSinkHandler] Incoming control connect";
-//    stopDiscoverable();
+    stopDiscoverable();
     start();
 }
 
@@ -152,19 +151,11 @@ void NetworkSinkHandler::handleControl() {
         running = false;
     } else if (command == Command::PAUSE) {
         qDebug() << "[NetworkSinkHandler] Pausing sink";
-        QMetaObject::Connection *conn = new QMetaObject::Connection;
-        *conn = connect(videoGuiLauncher, &VideoGuiLauncher::actionFinished, [this, conn]() {
-            controlConnection->write(Command::OK);
-            disconnect(*conn);
-        });
+        controller->okConn = connect(videoGuiLauncher, &VideoGuiLauncher::actionFinished, controller, &SinkController::sendOK, Qt::QueuedConnection);
         videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::PAUSE);
     } else if (command == Command::RESUME) {
         qDebug() << "[NetworkSinkHandler] Resuming sink";
-        QMetaObject::Connection *conn = new QMetaObject::Connection;
-        *conn = connect(videoGuiLauncher, &VideoGuiLauncher::actionFinished, [this, conn]() {
-            controlConnection->write(Command::OK);
-            disconnect(*conn);
-        });
+        controller->okConn = connect(videoGuiLauncher, &VideoGuiLauncher::actionFinished, controller, &SinkController::sendOK, Qt::QueuedConnection);
         videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::RESUME);
     } else if (command == Command::SEEK) {
         suspendPositionEcho();
@@ -211,12 +202,12 @@ void NetworkSinkHandler::start() {
 }
 
 void NetworkSinkHandler::readData() {
-    qDebug() << "[SinkHandler] Incoming data";
+//    qDebug() << "[SinkHandler] Incoming data";
     QByteArray buf = dataConnection->readAll();
     if (!buf.isEmpty()) {
-        while (!buf.isEmpty()) {
-            buf.remove(0, cachedLocalStream->getEnd1()->write(buf));
-        }
+//        while (!buf.isEmpty()) {
+    cachedLocalStream->getEnd1()->write(buf);
+//        }
     }
 }
 
@@ -250,7 +241,7 @@ void SinkController::sendPlaybackPosition(qint64 position) {
     qDebug() << "Playback position changed";
     QByteArray packet;
     packet.append(Command::POSITION);
-    packet.append(util::numToBytes(position - networkSinkHandler->posOffset));
+    packet.append(util::numToBytes(position));
     networkSinkHandler->controlConnection->write(packet);
 }
 
@@ -265,6 +256,7 @@ void SinkController::restartPlayback()
     QMetaObject::Connection *connection = new QMetaObject::Connection;
     *connection = connect(networkSinkHandler->controlConnection, &QTcpSocket::readyRead, [this, connection](){
         disconnect(*connection);
+        delete connection;
         auto incoming = networkSinkHandler->controlConnection->readAll();
         qDebug() << "[SinkController]" << incoming << (incoming == Command::OK ? "is equal to" : "is not equal to") << Command::OK;
         if (incoming == Command::OK) {
@@ -276,6 +268,7 @@ void SinkController::restartPlayback()
                 networkSinkHandler->videoGuiLauncher->triggerAction(VideoGuiLauncher::EventAction::START_PLAYER);
                 networkSinkHandler->resumePositionEcho();
                 qDebug() << "[SinkController] Restarted playback";
+                delete connection;
             });
         }
         networkSinkHandler->resumeControlHandling();

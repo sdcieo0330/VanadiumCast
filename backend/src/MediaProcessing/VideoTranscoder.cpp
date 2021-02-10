@@ -57,25 +57,7 @@ VideoTranscoder::VideoTranscoder(std::string inputFilePath, End *outputDevice, E
 
     avPlayer->setVideoDecoderPriority(videoCodecs);
 
-    bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
-        if (!isPausedByUser && avPlayer->isPaused()) {
-//            qDebug() << "[VideoTranscoder] Resuming";
-            avPlayer->pause(false);
-        }
-    });
-    bufferCon2 = connect(outputDevice, &End::outputEnoughData, [&]() {
-        if (!isPausedByUser && !avPlayer->isPaused()) {
-//            qDebug() << "[VideoTranscoder] Pausing";
-            avPlayer->pause(true);
-        }
-    });
     initTranscoder(profile);
-    posCon1 = connect(avPlayer, &QtAV::AVPlayer::positionChanged, [&](qint64 position) {
-        playbackPositionChanged(position);
-    });
-    posCon2 = connect(avPlayer, &QtAV::AVPlayer::loaded, [&]() {
-        duration = avPlayer->duration();
-    });
 }
 
 void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
@@ -132,6 +114,24 @@ void VideoTranscoder::initTranscoder(const EncodingProfile &profile) {
 }
 
 void VideoTranscoder::startTranscoding() {
+    bufferCon1 = connect(outputDevice, &End::outputUnderrun, [&]() {
+        if (!isPausedByUser && avPlayer->isPaused()) {
+//            qDebug() << "[VideoTranscoder] Resuming";
+            avPlayer->pause(false);
+        }
+    });
+    bufferCon2 = connect(outputDevice, &End::outputEnoughData, [&]() {
+        if (!isPausedByUser && !avPlayer->isPaused()) {
+//            qDebug() << "[VideoTranscoder] Pausing";
+            avPlayer->pause(true);
+        }
+    });
+    posCon1 = connect(avPlayer, &QtAV::AVPlayer::positionChanged, [&](qint64 position) {
+        playbackPositionChanged(position);
+    });
+    posCon2 = connect(avPlayer, &QtAV::AVPlayer::loaded, [&]() {
+        duration = avPlayer->duration();
+    });
     avTranscoder->start();
     avPlayer->play();
     QThread::msleep(100);
@@ -158,7 +158,9 @@ bool VideoTranscoder::isPaused() {
 
 bool VideoTranscoder::seek(qint64 secPos) {
     if (secPos <= avPlayer->duration() && secPos >= 0) {
-        avPlayer->seek(secPos);
+        pause();
+        avPlayer->setPosition(secPos);
+        resume();
         return true;
     }
     return false;

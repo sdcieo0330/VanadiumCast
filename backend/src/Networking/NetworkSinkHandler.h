@@ -110,6 +110,7 @@ public slots:
 private:
     NetworkSinkHandler *networkSinkHandler;
     QMetaObject::Connection okConn;
+    friend class NetworkSinkHandler;
 };
 
 #endif //NETWORKSINKHANDLER_H

@@ -4,6 +4,10 @@ QT += core gui widgets network multimedia quick concurrent
 
 QMAKE_CXXFLAGS += -Werror=all -Werror=extra
 
+unix: !macos: QMAKE_CXXFLAGS_RELEASE += -O4
+
+win32: QMAKE_CXXFLAGS_RELEASE += /O2
+
 win32 {
     QMAKE_CXXFLAGS_RELEASE += /O2 /Oy
     LIBS += -lOpenGL32
