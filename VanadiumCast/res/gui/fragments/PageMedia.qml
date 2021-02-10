@@ -25,7 +25,7 @@ Page {
     FileDialog {
         id: mediaSelectionDialog
         title: "Please choose a media file"
-        folder: "file://c/Users/Silas/Videos/Captures"
+        folder: "file:///Users/Silas/Videos/Captures"
         selectMultiple: false
         selectExisting: true
         selectFolder: false

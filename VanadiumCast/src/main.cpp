@@ -20,7 +20,6 @@ void signalHandler(int signum) {
 
 int main(int argc, char *argv[])
 {
-    qRegisterMetaType<VideoGuiLauncher::EventAction>();
     signal(SIGINT, &signalHandler);
     signal(SIGTERM, &signalHandler);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

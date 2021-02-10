@@ -44,6 +44,9 @@ bool VideoGuiLauncher::event(QEvent *event) {
             case EventAction::START_PLAYER: {
                 qDebug() << "[VideoGui] Starting resetted sink playback";
                 avPlayer->play();
+                if (isPausedByUser) {
+                    avPlayer->pause(true);
+                }
                 emit actionFinished();
                 break;
             }

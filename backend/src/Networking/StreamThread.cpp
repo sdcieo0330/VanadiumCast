@@ -15,6 +15,7 @@ StreamThread::StreamThread(NetworkDevice *target, std::string inputFile) : input
 }
 
 void StreamThread::run() {
+    qDebug() << "[StreamThread] Connecting to target...";
     controlConnection = new QTcpSocket;
     controlConnection->connectToHost(target.getAddress(), 55555);
     controlConnection->waitForConnected();

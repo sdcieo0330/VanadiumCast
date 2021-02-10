@@ -158,9 +158,26 @@ bool VideoTranscoder::isPaused() {
 
 bool VideoTranscoder::seek(qint64 secPos) {
     if (secPos <= avPlayer->duration() && secPos >= 0) {
-        pause();
-        avPlayer->setPosition(secPos);
-        resume();
+        switch (avPlayer->state()) {
+            case QtAV::AVPlayer::PlayingState: {
+                pause();
+                avPlayer->setPosition(secPos);
+                resume();
+                break;
+            }
+            case QtAV::AVPlayer::PausedState: {
+                avPlayer->setPosition(secPos);
+                resume();
+                QTimer::singleShot(1500, [&]() {
+                    pause();
+                });
+            }
+            case QtAV::AVPlayer::StoppedState: {
+                avTranscoder->start();
+                avPlayer->play();
+                avPlayer->setPosition(secPos);
+            }
+        }
         return true;
     }
     return false;

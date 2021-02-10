@@ -17,7 +17,7 @@
 NetworkSinkHandler::NetworkSinkHandler(QObject *parent) : QThread(parent) {
     controlConnectionServer = new NetworkSinkTcpServer(true);
     controlConnectionServer->listen(QHostAddress::Any, 55555);
-    connect(controlConnectionServer, SIGNAL(newConnection(qintptr)), this, SLOT(incomingTcpConnect(qintptr)));
+    connect(controlConnectionServer, &NetworkSinkTcpServer::newConnection, this, &NetworkSinkHandler::incomingTcpConnect, Qt::DirectConnection);
     connect(this, &NetworkSinkHandler::resumeAccepting, controlConnectionServer, &NetworkSinkTcpServer::resume, Qt::QueuedConnection);
     udpSocket = new QUdpSocket;
     udpBroadcast = new QUdpSocket;
@@ -28,6 +28,7 @@ NetworkSinkHandler::NetworkSinkHandler(QObject *parent) : QThread(parent) {
   * @return void
   */
 void NetworkSinkHandler::run() {
+    qDebug() << "[NetworkSinkHandler] Connecting to source";
     controlConnection = new QTcpSocket;
     controlConnection->setSocketDescriptor(controlConnectionHandle);
     controlConnection->write(Command::OK);
@@ -128,7 +129,7 @@ void NetworkSinkHandler::run() {
 void NetworkSinkHandler::incomingTcpConnect(qintptr handle) {
     controlConnectionHandle = handle;
     qDebug() << "[NetworkSinkHandler] Incoming control connect";
-    stopDiscoverable();
+//    stopDiscoverable();
     start();
 }
 

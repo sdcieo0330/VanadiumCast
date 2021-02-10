@@ -2,9 +2,28 @@ TEMPLATE = lib
 
 QT += core gui widgets network multimedia quick concurrent
 
-QMAKE_CXXFLAGS += -Werror=all -Werror=extra
+# copies the given files to the destination directory
+defineTest(copyToDestDir) {
+    files = $$1
+    dir = $$2
+    # replace slashes in destination path for Windows
+    win32:dir ~= s,/,\\,g
 
-unix: !macos: QMAKE_CXXFLAGS_RELEASE += -O4
+    for(file, files) {
+        # replace slashes in source path for Windows
+        win32:file ~= s,/,\\,g
+
+        unix: QMAKE_COPY_DIR += -P
+
+        QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_quote($$file) $$shell_quote($$dir) $$escape_expand(\\n\\t)
+    }
+
+    export(QMAKE_POST_LINK)
+}
+
+unix: QMAKE_CXXFLAGS += -Werror=all -Werror=extra
+
+unix: QMAKE_CXXFLAGS_RELEASE += -O4
 
 win32: QMAKE_CXXFLAGS_RELEASE += /O2
 
@@ -16,12 +35,14 @@ win32 {
         message("$$QT.core.libs")
 #        LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
         LIBS += -L$$QT.core.libs -lQt5AV -lQt5AVWidgets
+        copyToDestDir($$OUT_PWD/release/backend.dll, $$OUT_PWD/../VanadiumCast/release/)
     }
     CONFIG(debug, debug|release) {
         message("debug")
         message("$$QT.core.libs")
 #        LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
         LIBS += -L$$QT.core.libs -lQt5AVd -lQt5AVWidgetsd
+        copyToDestDir($$OUT_PWD/debug/backend.dll, $$OUT_PWD/../VanadiumCast/debug/)
     }
 }
 
@@ -29,6 +50,10 @@ unix {
     LIBS += -lQtAV -lQtAVWidgets
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+    copyToDestDir($$OUT_PWD/libbackend.so, $$OUT_PWD/VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so.1, $$OUT_PWD/VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so.1.0, $$OUT_PWD/VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so.1.0.0, $$OUT_PWD/VanadiumCast/)
 }
 
 

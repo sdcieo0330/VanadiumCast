@@ -148,41 +148,41 @@ bool NetworkAPI::setDevice(QString address) {
  */
 bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
     if (streamThread == nullptr) {
-        qDebug() << "Start source entered:" << inputFileUrl;
+        qDebug() << "[API] Start source entered:" << inputFileUrl;
         setDevice(address);
         if (!target) {
             return false;
         }
-        qDebug() << "target != nullptr";
+        qDebug() << "[API] target != nullptr";
         qDebug() << target;
-        qDebug() << "Current thread:" << QThread::currentThread();
+        qDebug() << "[API] Current thread:" << QThread::currentThread();
         QtConcurrent::run([&](const QUrl inputFileUrl) {
-            positionLog.open(QIODevice::ReadWrite | QIODevice::Truncate);
+//            positionLog.open(QIODevice::ReadWrite | QIODevice::Truncate);
             if (inputFileUrl.isEmpty()) {
                 setInputFile();
             }
-            qDebug() << "Input file" << inputFileUrl.toString(QUrl::PreferLocalFile) << ";"
+            qDebug() << "[API] Input file" << inputFileUrl.toString(QUrl::PreferLocalFile) << ";"
                      << QDir::toNativeSeparators(inputFileUrl.toLocalFile());
             streamThread = new StreamThread(target, QDir::toNativeSeparators(inputFileUrl.toLocalFile()).toStdString());
             streamConnecting();
             streamThreadCon1 = connect(streamThread, &StreamThread::stopped, this, &NetworkAPI::streamThreadFinished, Qt::QueuedConnection);
             streamThreadCon2 = connect(streamThread, &StreamThread::connected, [&]() {
                 streamStarted();
-                qDebug() << "Stream started";
-                qDebug() << "Video duration:" << getDuration();
+                qDebug() << "[API] Stream started";
+                qDebug() << "[API] Video duration:" << getDuration();
                 streamThreadCon3 = connect(streamThread->getPlaybackController(), &PlaybackController::playbackPositionChanged,
                                            [&](qint64 position) {
                                                if (firstPositionChange) {
                                                    durationLoaded(getDuration());
                                                    firstPositionChange = false;
                                                }
-                                               if (position > prevPosition) {
-                                                   qDebug() << "PlaybackPosition changed:" << getDuration() << "/" << position;
+                                               if (abs(position - prevPosition) > 100) {
+                                                   qDebug() << "[API] PlaybackPosition changed:" << position << "/" << getDuration();
                                                    playbackPositionChanged(position);
                                                    prevPosition = position;
                                                }
-                                               positionLog.write(QString::number(position).toUtf8());
-                                               positionLog.write("\r\n");
+//                                               positionLog.write(QString::number(position).toUtf8());
+//                                               positionLog.write("\r\n");
                                            });
             });
             streamThread->start();

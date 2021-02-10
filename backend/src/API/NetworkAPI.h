@@ -120,7 +120,7 @@ private:
     NetworkDeviceDirectory *deviceDirectory;
     NetworkInput *sinkInput = nullptr;
     NetworkSinkHandler *sinkHandler;
-    QFile positionLog{"positions.log"};
+//    QFile positionLog{"positions.log"};
     QMetaObject::Connection streamThreadCon1, streamThreadCon2, streamThreadCon3;
     qint64 prevPosition = 0;
     bool firstPositionChange = true;
