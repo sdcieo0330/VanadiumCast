@@ -50,10 +50,10 @@ unix {
     LIBS += -lQtAV -lQtAVWidgets
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
-    copyToDestDir($$OUT_PWD/libbackend.so, $$OUT_PWD/VanadiumCast/)
-    copyToDestDir($$OUT_PWD/libbackend.so.1, $$OUT_PWD/VanadiumCast/)
-    copyToDestDir($$OUT_PWD/libbackend.so.1.0, $$OUT_PWD/VanadiumCast/)
-    copyToDestDir($$OUT_PWD/libbackend.so.1.0.0, $$OUT_PWD/VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so, $$OUT_PWD/../VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so.1, $$OUT_PWD/../VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so.1.0, $$OUT_PWD/../VanadiumCast/)
+    copyToDestDir($$OUT_PWD/libbackend.so.1.0.0, $$OUT_PWD/../VanadiumCast/)
 }
 
 

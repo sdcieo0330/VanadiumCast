@@ -157,7 +157,9 @@ bool VideoTranscoder::isPaused() {
 }
 
 bool VideoTranscoder::seek(qint64 secPos) {
-    if (secPos <= avPlayer->duration() && secPos >= 0) {
+    if (secPos <= duration && secPos >= 0) {
+        qDebug() << "[VideoTranscoder] Seeking AVPlayer in state:" << (avPlayer->state() == QtAV::AVPlayer::PausedState ? "Paused"
+                                                                       : (avPlayer->state() == QtAV::AVPlayer::StoppedState ? "Stopped" : "Playing"));
         switch (avPlayer->state()) {
             case QtAV::AVPlayer::PlayingState: {
                 pause();
@@ -168,18 +170,30 @@ bool VideoTranscoder::seek(qint64 secPos) {
             case QtAV::AVPlayer::PausedState: {
                 avPlayer->setPosition(secPos);
                 resume();
-                QTimer::singleShot(1500, [&]() {
+                QTimer::singleShot(1000, [&]() {
                     pause();
                 });
+                break;
             }
             case QtAV::AVPlayer::StoppedState: {
+                qDebug() << "[VideoTranscoder] Restarting finished AVTranscoder and AVPlayer";
+                avTranscoder->stop();
+                qDebug() << "[VideoTranscoder] Stopped Transcoder";
+                avPlayer->stop();
+                qDebug() << "[VideoTranscoder] Stopped Player";
                 avTranscoder->start();
+                qDebug() << "[VideoTranscoder] Started Transcoder";
+                avPlayer->setStartPosition(secPos);
+                qDebug() << "[VideoTranscoder] Set Player start position";
                 avPlayer->play();
-                avPlayer->setPosition(secPos);
+                qDebug() << "[VideoTranscoder] Started Player";
+                qDebug() << "[VideoTranscoder] Restarted finished AVTranscoder and AVPlayer";
+                break;
             }
         }
         return true;
     }
+    qDebug() << "[VideoTranscoder] Invalid position";
     return false;
 }
 

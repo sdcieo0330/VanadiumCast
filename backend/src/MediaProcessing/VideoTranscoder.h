@@ -106,30 +106,30 @@ private:
 
             // High profile
             HIGH.audioCodecName = "aac";
-            HIGH.videoCodecName = videoCodecSQ;
+            HIGH.videoCodecName = videoCodecHQ;
             HIGH.width = 1920;
             HIGH.height = 1080;
-            HIGH.rate = 10000000;
+            HIGH.rate = 15000000;
             HIGH.framerate = 60;
             HIGH.bytesPerColor = 1;
 
-            // Ultra profile
-            ULTRA.audioCodecName = "aac";
-            ULTRA.videoCodecName = videoCodecHQ;
-            ULTRA.width = 2560;
-            ULTRA.height = 1440;
-            ULTRA.rate = 15000000;
-            ULTRA.framerate = 60;
-            ULTRA.bytesPerColor = 2;
+//            // Ultra profile
+//            ULTRA.audioCodecName = "aac";
+//            ULTRA.videoCodecName = videoCodecHQ;
+//            ULTRA.width = 2560;
+//            ULTRA.height = 1440;
+//            ULTRA.rate = 15000000;
+//            ULTRA.framerate = 60;
+//            ULTRA.bytesPerColor = 2;
 
-            // Extreme profile
-            EXTREME.audioCodecName = "aac";
-            EXTREME.videoCodecName = videoCodecHQ;
-            EXTREME.width = 3840;
-            EXTREME.height = 2160;
-            EXTREME.rate = 30000000;
-            EXTREME.framerate = 60;
-            EXTREME.bytesPerColor = 2;
+//            // Extreme profile
+//            EXTREME.audioCodecName = "aac";
+//            EXTREME.videoCodecName = videoCodecHQ;
+//            EXTREME.width = 3840;
+//            EXTREME.height = 2160;
+//            EXTREME.rate = 30000000;
+//            EXTREME.framerate = 60;
+//            EXTREME.bytesPerColor = 2;
 
             encodingProfilesInitialized = true;
         }

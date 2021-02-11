@@ -32,7 +32,7 @@ void StreamThread::run() {
                 dataConnection->connectToHost(controlConnection->peerAddress(), 55556);
                 dataConnection->waitForConnected(1000);
                 cachedOutput = new CachedLocalStream(64 * 1024 * 1024, 128, 1024);
-                transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::MEDIUM);
+                transcoder = new VideoTranscoder(inputFile, cachedOutput->getEnd2(), VideoTranscoder::HIGH);
                 playbackController = new PlaybackController(controlConnection, transcoder, this);
                 qDebug() << "[StreamThread] Playback Controller lives in:" << playbackController->thread();
                 qDebug() << "[StreamThread] StreamThread::run() is running in:" << currentThread();
@@ -252,7 +252,6 @@ bool PlaybackController::isPaused() {
 
 bool PlaybackController::seek(qint64 absPos) {
     streamThread->suspendControlHandling();
-    streamThread->transcoder->pause();
     streamThread->cachedOutput->clear();
     controlConnection->write(Command::SEEK);
     controlConnection->readAll();

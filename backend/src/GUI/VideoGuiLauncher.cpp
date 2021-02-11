@@ -42,9 +42,10 @@ bool VideoGuiLauncher::event(QEvent *event) {
                 break;
             }
             case EventAction::START_PLAYER: {
-                qDebug() << "[VideoGui] Starting resetted sink playback";
+                qDebug() << "[VideoGuiLauncher] Starting resetted sink playback";
                 avPlayer->play();
                 if (isPausedByUser) {
+                    qDebug() << "[VideoGuiLauncher] Pausing restarted Player";
                     avPlayer->pause(true);
                 }
                 emit actionFinished();
@@ -108,7 +109,7 @@ void VideoGuiLauncher::create() {
         qDebug() << "[VideoGui] nVidia CUVID decoder selected";
         videoCodecs << "CUDA";
     } else if (vendor.compare("AMD", Qt::CaseInsensitive) == 0) {
-        qDebug() << "[VideoGui] VAAPI decoder selected";
+        qDebug() << "[VideoGui] AMD VAAPI decoder selected";
         videoCodecs << "VAAPI";
     }
 #endif
@@ -120,7 +121,7 @@ void VideoGuiLauncher::create() {
 
     videoCodecs << "FFmpeg";
     avPlayer->setVideoDecoderPriority(videoCodecs);
-    videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P10LE);
+    videoRenderer->setPreferredPixelFormat(QtAV::VideoFormat::Format_YUV420P);
     //            avPlayer->setAutoLoad();
     //            avPlayer->setAsyncLoad();
     bufferCon1 = connect(inputDevice, &End::inputUnderrun, [&]() {

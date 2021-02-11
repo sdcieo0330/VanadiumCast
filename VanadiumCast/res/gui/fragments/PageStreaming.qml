@@ -8,6 +8,18 @@ Page {
     property alias togglePlayPauseBtn: playPauseBtn
     property alias positionChangeSlider: positionSlider
 
+    function msToTime(duration) {
+        var seconds = Math.floor((duration / 1000) % 60);
+        var minutes = Math.floor((duration / (1000 * 60)) % 60);
+        var hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        return hours + ":" + minutes + ":" + seconds;
+    }
+
     header: Label {
         font.pixelSize: Qt.application.font.pixelSize * 2
         text: qsTr("Streaming Control Panel")
@@ -82,11 +94,18 @@ Page {
         anchors.right: parent.right
         anchors.rightMargin: 20
         id: positionSlider
+
         onPressedChanged: {
             if (!pressed) {
                 backendAPI.seek(value)
             }
         }
+
+        onMoved: {
+            currentPlayPos.text = pageStreaming.msToTime(positionSlider.value)
+//            positionSliderPopup.label.text = msToTime(value)
+        }
+
         from: 0
         value: 0
         to: 100
@@ -100,29 +119,21 @@ Page {
         }
 
         Connections {
-            function msToTime(duration) {
-                var seconds = Math.floor((duration / 1000) % 60);
-                var minutes = Math.floor((duration / (1000 * 60)) % 60);
-                var hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-                hours = (hours < 10) ? "0" + hours : hours;
-                minutes = (minutes < 10) ? "0" + minutes : minutes;
-                seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-                return hours + ":" + minutes + ":" + seconds;
-            }
 
             target: backendAPI
             function onPlaybackPositionChanged(position) {
-                positionSlider.value = position
-                console.log("[PageStreaming] position set:" + position + "/" + positionSlider.to)
-                currentPlayPos.text = msToTime(position)
+                if (!positionSlider.pressed) {
+                    positionSlider.value = position
+                    console.log("[PageStreaming] position set:" + position + "/" + positionSlider.to)
+                    currentPlayPos.text = pageStreaming.msToTime(position)
+                }
             }
 
             function onDurationLoaded(dur) {
                 positionSlider.to = dur
                 console.log("[PageStreaming] duration set")
-                duration.text = "/ " +  msToTime(dur)
+                duration.text = "/ " +  pageStreaming.msToTime(dur)
             }
         }
     }
