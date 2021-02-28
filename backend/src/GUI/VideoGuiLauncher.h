@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <QWidget>
-#include "VideoGui.h"
+#include <QtAV/QtAV>
+#include <QtAVWidgets/QtAVWidgets>
 #include "WindowCloseEventFilter.h"
 #include "MediaProcessing/CachedLocalStream.h"
 

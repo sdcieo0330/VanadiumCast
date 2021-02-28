@@ -1,3 +1,5 @@
+TEMPLATE += vcapp
+
 QT += core quick quickcontrols2 gui widgets multimedia network concurrent opengl
 
 CONFIG += qtquickcompiler

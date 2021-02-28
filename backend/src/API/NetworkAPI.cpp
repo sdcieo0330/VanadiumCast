@@ -275,7 +275,7 @@ void NetworkAPI::streamThreadFinished() {
     disconnect(streamThreadCon3);
     delete streamThread;
     streamThread = nullptr;
-    firstPositionChange = false;
+    firstPositionChange = true;
 }
 
 qint64 NetworkAPI::getDuration() {
