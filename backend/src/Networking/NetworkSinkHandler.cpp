@@ -48,7 +48,7 @@ void NetworkSinkHandler::run() {
                 qDebug() << "[NetworkSinkHandler] Answered request";
                 if (dataConnectionServer->waitForNewConnection(30000)) {
                     dataConnection = dataConnectionServer->nextPendingConnection();
-                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 64, 512);
+                    cachedLocalStream = new CachedLocalStream(32 * 1024 * 1024, 128, 1024);
                     controller = new SinkController(this);
                     videoGuiLauncher = new VideoGuiLauncher(cachedLocalStream->getEnd2());
                     videoGuiLauncher->moveToThread(QApplication::instance()->thread());

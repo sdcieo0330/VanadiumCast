@@ -157,7 +157,7 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
         qDebug() << target;
         qDebug() << "[API] Current thread:" << QThread::currentThread();
         QtConcurrent::run([&](const QUrl inputFileUrl) {
-//            positionLog.open(QIODevice::ReadWrite | QIODevice::Truncate);
+            //            positionLog.open(QIODevice::ReadWrite | QIODevice::Truncate);
             if (inputFileUrl.isEmpty()) {
                 setInputFile();
             }
@@ -172,18 +172,19 @@ bool NetworkAPI::startSource(QUrl inputFileUrl, QString address) {
                 qDebug() << "[API] Video duration:" << getDuration();
                 streamThreadCon3 = connect(streamThread->getPlaybackController(), &PlaybackController::playbackPositionChanged,
                                            [&](qint64 position) {
-                                               if (firstPositionChange) {
-                                                   durationLoaded(getDuration());
-                                                   firstPositionChange = false;
-                                               }
-                                               if (abs(position - prevPosition) > 100) {
-                                                   qDebug() << "[API] PlaybackPosition changed:" << position << "/" << getDuration();
-                                                   playbackPositionChanged(position);
-                                                   prevPosition = position;
-                                               }
+                                                if (firstPositionChange) {
+                                                    qDebug() << "[API] First playback position change, setting duration";
+                                                    durationLoaded(getDuration());
+                                                    firstPositionChange = false;
+                                                }
+                                                    if (abs(position - prevPosition) > 100) {
+                                                    qDebug() << "[API] PlaybackPosition changed:" << position << "/" << getDuration();
+                                                    playbackPositionChanged(position);
+                                                    prevPosition = position;
+                                                }
 //                                               positionLog.write(QString::number(position).toUtf8());
 //                                               positionLog.write("\r\n");
-                                           });
+                                                });
             });
             streamThread->start();
         }, inputFileUrl);
@@ -269,13 +270,14 @@ qint64 NetworkAPI::getPlaybackPosition() {
 }
 
 void NetworkAPI::streamThreadFinished() {
+    qDebug() << "[API] StreamThread finished, cleaning up";
     streamEnded();
     disconnect(streamThreadCon1);
     disconnect(streamThreadCon2);
     disconnect(streamThreadCon3);
     delete streamThread;
     streamThread = nullptr;
-    firstPositionChange = false;
+    firstPositionChange = true;
 }
 
 qint64 NetworkAPI::getDuration() {

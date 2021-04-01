@@ -76,6 +76,7 @@ void StreamThread::run() {
     controlConnection->disconnectFromHost();
     delete controlConnection;
 
+    qDebug() << "[StreamThread] Stopped StreamThread";
     running = false;
     stopped();
 }
