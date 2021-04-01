@@ -1,0 +1,3 @@
+[submodule "LibAVQt"]
+	path = LibAVQt
+	url = https://github.com/sdcieo0330/LibAVQt
