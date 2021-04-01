@@ -1,4 +1,4 @@
-TEMPLATE = lib
+TEMPLATE = vclib
 
 QT += core gui widgets network multimedia quick concurrent
 
@@ -34,14 +34,14 @@ win32 {
         message("release")
         message("$$QT.core.libs")
 #        LIBS += -LE:/Dev/QtAV/build-release/lib_win_x86_64 -lQtAV1 -lQtAVWidgets1
-        LIBS += -L$$QT.core.libs -lQt5AV -lQt5AVWidgets
+        LIBS += -L$$QT.core.libs -lQt5AV -lQt5AVWidgets -ld3d9
         copyToDestDir($$OUT_PWD/release/backend.dll, $$OUT_PWD/../VanadiumCast/release/)
     }
     CONFIG(debug, debug|release) {
         message("debug")
         message("$$QT.core.libs")
 #        LIBS += -LE:/Dev/QtAV/build-debug/lib_win_x86_64 -lQtAVd1 -lQtAVWidgetsd1
-        LIBS += -L$$QT.core.libs -lQt5AVd -lQt5AVWidgetsd
+        LIBS += -L$$QT.core.libs -lQt5AVd -lQt5AVWidgetsd -ld3d9
         copyToDestDir($$OUT_PWD/debug/backend.dll, $$OUT_PWD/../VanadiumCast/debug/)
     }
 }
@@ -66,6 +66,7 @@ SOURCES += src/util.cpp \
            src/MediaProcessing/CachedLocalStream.cpp \
            src/MediaProcessing/InputFile.cpp \
            src/MediaProcessing/OGLUtil.cpp \
+           src/MediaProcessing/ScreenRecorder.cpp \
            src/MediaProcessing/VideoTranscoder.cpp \
            src/Networking/NetworkDevice.cpp \
            src/Networking/NetworkDeviceDirectory.cpp \
@@ -82,6 +83,7 @@ HEADERS += src/util.h \
            src/MediaProcessing/CachedLocalStream.h \
            src/MediaProcessing/InputFile.h \
            src/MediaProcessing/OGLUtil.h \
+           src/MediaProcessing/ScreenRecorder.h \
            src/MediaProcessing/VideoTranscoder.h \
            src/Networking/NetworkDevice.h \
            src/Networking/NetworkDeviceDirectory.h \

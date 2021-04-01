@@ -3,13 +3,12 @@
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
+      <file path="$PROJECT_DIR$/VanadiumCast" />
+      <file path="$PROJECT_DIR$/backend" />
       <file path="$PROJECT_DIR$/src/API" />
       <file path="$PROJECT_DIR$/src/GUI" />
       <file path="$PROJECT_DIR$/src/MediaProcessing" />
       <file path="$PROJECT_DIR$/src/Networking" />
     </sourceRoots>
-  </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/cmake-build-debug/src/CMakeFiles/VanadiumCastLib-obj.dir/GUI/VideoGui.cpp.obj" />
   </component>
 </project>
