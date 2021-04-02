@@ -1,5 +1,5 @@
 # VanadiumCast
-VanadiumCast is a simple and opensource video streaming tool
+VanadiumCast is a simple, peer-to-peer and opensource video streaming tool
 
 ## Install
 ### Windows
